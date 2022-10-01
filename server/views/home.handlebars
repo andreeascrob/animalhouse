@@ -1,0 +1,39 @@
+<div id="products" class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 max-w-screen-lg mx-auto"></div>
+<ah-productpill productname="Virtus Dog Adult Rustic" url="/front/product/virtus-rustic-cane-adult" price="47.9" image="https://arcaplanet.vtexassets.com/arquivos/ids/224338/virtus-rustic-cane-adult.jpg?v=637454741671700000"></ah-productpill>
+<div class="flex flex-row gap-4 justify-around max-w-screen-lg mx-auto">
+	<a href="" class="flex flex-row gap-2 rounded p-4 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-52 hover:font-bold">
+		<img class="dark:invert" width="20" src="/icons/chat.svg">
+		<span>Comunità<span>
+	</a>
+	<a href="" class="flex flex-row gap-2 rounded p-4 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-52 hover:font-bold">
+		<img class="dark:invert" width="20" src="/icons/house-medical.svg">
+		<span>Servizi in presenza<span>
+	</a>
+	<a href="" class="flex flex-row gap-2 rounded p-4 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-52 hover:font-bold">
+		<img class="dark:invert" width="20" src="/icons/globe.svg">
+		<span>Servizi online<span>
+	</a>
+</div>
+<div class="flex flex-row border border-neutral-300 dark:border-neutral-800 rounded-xl shadow-md max-w-screen-lg mx-auto">
+	<div class="w-1/5 p-4 gap-4">
+		<img class="w-24 rounded-full" src="https://www.computerprofile.com/wp-content/uploads/2017/04/Placeholder.png">
+		<p>Nome Cognome</p>
+	</div>
+	<div class="w-4/5 p-4">
+		<p>Messaggio</p>
+	</div>
+</div>
+<script>
+	fetch('/api/products/')
+		.then((response) => response.json())
+		.then((data) => {
+			data.forEach(productData => {
+				let productCard = document.createElement('ah-productcard');
+				productCard.setAttribute('productname', productData.name);
+				productCard.setAttribute('price', productData.price);
+				productCard.setAttribute('url', '/front/product/' + productData.slug);
+				productCard.setAttribute('image', productData.imageUrl);
+				document.getElementById('products').appendChild(productCard);
+			});
+		});
+</script>

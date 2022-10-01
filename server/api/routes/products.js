@@ -13,7 +13,7 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
-	const products = await Product.find().exec();
+	const products = await Product.find(req.query.animalId && {'animalId': req.query.animalId}).exec();
 	res.send(products);
 });
 

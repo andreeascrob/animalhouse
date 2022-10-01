@@ -1,0 +1,11 @@
+<ah-product id="product">
+<script>
+	fetch('/api/products/' + window.location.pathname.match(/[^\/]+(?=\/?$)/)[0])
+		.then((response) => response.json())
+		.then((data) => {
+			document.getElementById('product').setAttribute('productname', data.name);
+			document.getElementById('product').setAttribute('price', data.price);
+			document.getElementById('product').setAttribute('description', data.description);
+			document.getElementById('product').setAttribute('image', data.imageUrl);
+		});
+</script>

@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:productCategorySlug', async (req, res) => {
 	try {
-		const productCategory = await Product.findOne({'slug': req.params.productCategorySlug}).exec();
+		const productCategory = await ProductCategory.findOne({'slug': req.params.productCategorySlug}).exec();
 		if (productCategory == null) {
 			res.status(404).send();
 		} else {

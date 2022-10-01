@@ -1,0 +1,44 @@
+<h1 class="text-center text-3xl p-4">Accedi</h1>
+<form id="form" class="flex flex-col p-4 max-w-prose mx-auto gap-4">
+	<label for="email">Indirizzo e-mail</label>
+	<input id="email" class="dark:bg-neutral-800 rounded" type="email" required>
+	<label for="password">Password</label>
+	<input id="password" class="dark:bg-neutral-800 rounded" type="password" required>
+	<input type="submit" class="p-2 bg-emerald-500 dark:bg-emerald-800 rounded hover:font-bold" value="Accedi">
+</form>
+<p class="text-center">Non hai un account? <a href="/front/signup" class="underline decoration-emerald-500 dark:decoration-emerald-800 decoration-2 hover:decoration-4">Creane uno</a></p>
+<script>
+	document.getElementById('form').onsubmit = signin;
+	async function digestMessage(message) {
+		const msgUint8 = new TextEncoder().encode(message);
+		const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+		const hashArray = Array.from(new Uint8Array(hashBuffer));
+		const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+		return hashHex;
+	}
+	function signin(event) {
+		event.preventDefault();
+		digestMessage(document.getElementById('password').value)
+			.then((digestPassword) => {
+				fetch('/api/users/signin', {
+					method: 'POST',
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						email: document.getElementById('email').value,
+						password: digestPassword
+					}),
+				})
+					.then((response) => response.json())
+					.then((data) => {
+						localStorage.token = data.token;
+						window.location.href = '/front';
+					})
+					.catch((error) => {
+						console.error('Error:', error);
+					});
+			});
+	}
+</script>
