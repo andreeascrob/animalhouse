@@ -17,4 +17,17 @@ router.get('/', async (req, res) => {
 	res.send(animals);
 });
 
+router.get('/:animalSlug', async (req, res) => {
+	try {
+		const animal = await Animal.findOne({'slug': req.params.animalSlug}).exec();
+		if (animal == null) {
+			res.status(404).send();
+		} else {
+			res.send(animal);
+		}
+	} catch (err) {
+		res.status(400).send(err.message);
+	}
+});
+
 module.exports = router;

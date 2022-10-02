@@ -36,6 +36,27 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Animal'
+  /animals/{animalSlug}:
+    get:
+      summary: Returns an animal by slug.
+      tags:
+        - store
+      parameters:
+        - name: animalSlug
+          in: path
+          required: true
+          description: The slug of the animal.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Animal'
+        '404':
+          description: Animal non found.
   /categories:
     post:
       summary: Creates a category.

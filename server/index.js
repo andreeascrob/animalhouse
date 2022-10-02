@@ -25,6 +25,9 @@ mongoose.connect('mongodb://localhost:27017/test').then(() => {
 	app.get('/front/signup', (req, res) => {
 		res.render('signup');
 	});
+	app.get('/front/animal/:slug', (req, res) => {
+		res.render('animal', {slug: req.params.slug});
+	});
 	app.get('/front/product/:slug', (req, res) => {
 		res.render('product', {slug: req.params.slug});
 	});

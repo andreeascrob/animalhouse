@@ -13,8 +13,19 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
-	const products = await Product.find(req.query.animalId && {'animalId': req.query.animalId}).exec();
-	res.send(products);
+	try {
+		let query = {};
+		if (req.query.animalId) {
+			query['animalId'] = req.query.animalId;
+		}
+		if (req.query.categoryId) {
+			query['categoryId'] = req.query.categoryId;
+		}
+		const products = await Product.find(query).exec();
+		res.send(products);
+	} catch (err) {
+		res.status(400).send(err.message);
+	}
 });
 
 router.get('/:productSlug', async (req, res) => {
