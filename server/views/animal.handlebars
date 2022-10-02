@@ -15,37 +15,37 @@
 	</a>
 </div>
 <script>
-	fetch('/api/animals/' + window.location.pathname.match(/[^\/]+(?=\/?$)/)[0])
+	fetch('/api/categories/')
 		.then((response) => response.json())
-		.then((animal) => {
-			fetch('/api/categories/')
-				.then((response) => response.json())
-				.then((categories) => {
-					categories.forEach(category => {
-						fetch('/api/products/?animalId=' + animal._id + '&categoryId=' + category._id)
-							.then((response) => response.json())
-							.then((products) => {
-								if (products.length > 0) {
-									let categoryHeader = document.createElement('h2');
-									categoryHeader.innerText = category.name;
-									categoryHeader.classList = 'text-3xl font-bold';
-									document.getElementById('products').appendChild(categoryHeader);
-									let categoryDiv = document.createElement('div');
-									// categoryDiv.classList = 'grid grid-cols-1 md:grid-cols-3 gap-4 p-4 max-w-screen-lg mx-auto';
-									categoryDiv.classList = 'flex flex-row flex-nowrap w-full gap-4 p-4 max-w-screen-lg mx-auto overflow-x-scroll snap-x';
-									categoryDiv.id = category.slug;
-									document.getElementById('products').appendChild(categoryDiv);
-								}
-								products.forEach(productData => {
-									let productCard = document.createElement('ah-productcard');
-									productCard.setAttribute('productname', productData.name);
-									productCard.setAttribute('price', productData.price);
-									productCard.setAttribute('url', '/front/product/' + productData.slug);
-									productCard.setAttribute('image', productData.imageUrl);
-									document.getElementById(category.slug).appendChild(productCard);
-								});
+		.then((categories) => {
+			categories.forEach(category => {
+				// Immediately create the category header and div so the order is deterministic
+				let categoryHeader = document.createElement('h2');
+				categoryHeader.innerText = category.name;
+				categoryHeader.classList = 'text-3xl font-bold';
+				document.getElementById('products').appendChild(categoryHeader);
+				let categoryDiv = document.createElement('div');
+				categoryDiv.classList = 'flex flex-row flex-nowrap w-full gap-4 p-4 max-w-screen-lg mx-auto overflow-x-scroll snap-x';
+				categoryDiv.id = category.slug;
+				document.getElementById('products').appendChild(categoryDiv);
+				fetch('/api/products/?animalSlug=' + window.location.pathname.match(/[^\/]+(?=\/?$)/)[0] + '&categoryId=' + category._id)
+					.then((response) => response.json())
+					.then((products) => {
+						// Remove the category if there isn't any element
+						if (products.length == 0) {
+							categoryHeader.remove();
+							categoryDiv.remove();
+						} else {
+							products.forEach(productData => {
+								let productCard = document.createElement('ah-productcard');
+								productCard.setAttribute('productname', productData.name);
+								productCard.setAttribute('price', productData.price);
+								productCard.setAttribute('url', '/front/product/' + productData.slug);
+								productCard.setAttribute('image', productData.imageUrl);
+								document.getElementById(category.slug).appendChild(productCard);
 							});
+						}
 					});
-				});
-		});
+			});
+	});
 </script>

@@ -145,15 +145,20 @@ paths:
       - store
       parameters:
         - in: query
-          name: categoryId
-          schema:
-            type: integer
-          description: Filter products by category.
-        - in: query
           name: animalId
           schema:
-            type: integer
+            type: string
           description: Filter products by animal.
+        - in: query
+          name: animalSlug
+          schema:
+            type: string
+          description: Filter products by animal (has priority over animalId).
+        - in: query
+          name: categoryId
+          schema:
+            type: string
+          description: Filter products by category.
       responses:
         '200':
           description: A JSON array of products.

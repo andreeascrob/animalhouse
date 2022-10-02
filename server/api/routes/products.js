@@ -1,3 +1,4 @@
+const Animal = require("../models/Animal");
 const Product = require("../models/Product");
 const express = require("express");
 const router = express.Router();
@@ -17,6 +18,10 @@ router.get('/', async (req, res) => {
 		let query = {};
 		if (req.query.animalId) {
 			query['animalId'] = req.query.animalId;
+		}
+		if (req.query.animalSlug) {
+			const animal = await Animal.findOne({'slug': req.query.animalSlug}).exec();
+			query['animalId'] = animal._id.toString();
 		}
 		if (req.query.categoryId) {
 			query['categoryId'] = req.query.categoryId;
