@@ -17,19 +17,22 @@ mongoose.connect('mongodb://localhost:27017/test').then(() => {
 	app.set('view engine', 'handlebars');
 	app.set('views', './views');
 	app.get('/front/', (req, res) => {
-		res.render('home');
+		res.render('front/home');
 	});
 	app.get('/front/signin', (req, res) => {
-		res.render('signin');
+		res.render('front/signin');
 	});
 	app.get('/front/signup', (req, res) => {
-		res.render('signup');
+		res.render('front/signup');
 	});
 	app.get('/front/animal/:slug', (req, res) => {
-		res.render('animal', {slug: req.params.slug});
+		res.render('front/animal', {slug: req.params.slug});
 	});
 	app.get('/front/product/:slug', (req, res) => {
-		res.render('product', {slug: req.params.slug});
+		res.render('front/product', {slug: req.params.slug});
+	});
+	app.get('/back/', (req, res) => {
+		res.render('back/home');
 	});
 	app.use(express.static('static'));
 
