@@ -1,0 +1,58 @@
+<div class="flex flex-col max-w-screen-lg mx-auto w-full mt-4">
+<table class="table-auto">
+	<thead>
+		<tr class="border-b border-neutral-300 dark:border-neutral-800">
+			<th>Prodotto</th>
+			<th>Quantità</th>
+			<th>Costo</th>
+		</tr>
+	</thead>
+	<tbody id="cartbody">
+	</tbody>
+</table>
+<p class="text-right p-4">Totale:<br><ah-price id="total" value="0"></ah-price></p>
+</div>
+<script>
+	function calculateTotal() {
+		let total = 0;
+		document.querySelectorAll('.subtotal').forEach((subtotal) => {
+			total += parseFloat(subtotal.getAttribute('value'));
+		});
+		document.getElementById('total').setAttribute('value', total);
+	}
+	let cart = JSON.parse(localStorage.cart ?? '{}');
+	for (var slug in cart) {
+		let cartRow = document.createElement('tr');
+		cartRow.id = 'row-' + slug;
+		cartRow.classList = 'border-b border-neutral-300 dark:border-neutral-800';
+		let product = document.createElement('td');
+		product.classList = 'flex flex-row';
+		let removeProduct = document.createElement('ah-cartremovebutton');
+		removeProduct.setAttribute('slug', slug);
+		let quantity = document.createElement('td');
+		quantity.classList = 'text-center px-2';
+		quantity.innerHTML = cart[slug];
+		let subtotal = document.createElement('td');
+		subtotal.classList = 'text-center px-2';
+		fetch('/api/products/' + slug)
+			.then((response) => response.json())
+			.then((data) => {
+				let productPill = document.createElement('ah-productpill');
+				productPill.setAttribute('productname', data.name);
+				productPill.setAttribute('price', data.price);
+				productPill.setAttribute('slug', slug);
+				productPill.setAttribute('image', data.imageUrl);
+				let subtotalPrice = document.createElement('ah-price');
+				subtotalPrice.classList = 'subtotal';
+				subtotalPrice.setAttribute('value', data.price * cart[slug]);
+				subtotal.appendChild(subtotalPrice);
+				product.appendChild(removeProduct);
+				product.appendChild(productPill);
+				cartRow.appendChild(product);
+				cartRow.appendChild(quantity);
+				cartRow.appendChild(subtotal);
+				calculateTotal();
+		});
+		document.getElementById('cartbody').appendChild(cartRow);
+	}
+</script>

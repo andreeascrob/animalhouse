@@ -17,7 +17,7 @@ export class Product extends HTMLElement {
 					<label for="quantity">Quantità:</label>
 					<input class="w-24 dark:bg-neutral-800 rounded" type="number" id="quantity" name="quantity" min="1" max="5" value="1">
 				</div>
-				<button class="flex flex-row gap-2 rounded p-4 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-52 hover:font-bold">
+				<button class="flex flex-row gap-2 rounded p-4 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-52 hover:font-bold" onclick="this.getRootNode().host.addToCart()">
 					<img class="dark:invert" width="20" src="/icons/cart-plus.svg">
 					<span>Aggiungi al carrello<span>
 				</button>
@@ -40,5 +40,8 @@ export class Product extends HTMLElement {
 	}
 	attributeChangedCallback(name, oldValue, newValue) {
 		this.template(this.shadowRoot);
+	}
+	addToCart() {
+		addToCart(window.location.pathname.match(/[^\/]+(?=\/?$)/)[0], this.shadowRoot.getElementById('quantity').value);
 	}
 }

@@ -4,6 +4,16 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Front-office</title>
+		<script>
+			window.eurIT = Intl.NumberFormat('it-IT', {style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2});
+			function addToCart(product, quantity) {
+				let cart = JSON.parse(localStorage.cart ?? '{}');
+				let slug = product ?? window.location.pathname.match(/[^\/]+(?=\/?$)/)[0];
+				cart[slug] = parseInt(quantity) + (cart[slug] ?? 0);
+				localStorage.cart = JSON.stringify(cart);
+				window.location.href = '/front/cart';
+			}
+		</script>
 		<script type="module" src="/front/index.js"></script>
 		<link rel="stylesheet" href="/front/style.css">
 	</head>

@@ -26,10 +26,13 @@ mongoose.connect('mongodb://localhost:27017/test').then(() => {
 		res.render('front/signup');
 	});
 	app.get('/front/animal/:slug', (req, res) => {
-		res.render('front/animal', {slug: req.params.slug});
+		res.render('front/animal');
 	});
 	app.get('/front/product/:slug', (req, res) => {
-		res.render('front/product', {slug: req.params.slug});
+		res.render('front/product');
+	});
+	app.get('/front/cart', (req, res) => {
+		res.render('front/cart');
 	});
 	app.get('/back/', (req, res) => {
 		res.render('back/home');

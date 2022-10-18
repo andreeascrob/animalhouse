@@ -1,6 +1,9 @@
-window.eurIT = Intl.NumberFormat('it-IT', {style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2});
 import { AccountButton } from '/front/components/AccountButton.js'
 customElements.define('ah-accountbutton', AccountButton);
+import { CartRemoveButton } from '/front/components/CartRemoveButton.js'
+customElements.define('ah-cartremovebutton', CartRemoveButton);
+import { Price } from '/front/components/Price.js'
+customElements.define('ah-price', Price);
 import { Product } from '/front/components/Product.js'
 customElements.define('ah-product', Product);
 import { ProductCard } from '/front/components/ProductCard.js'

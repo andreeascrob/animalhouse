@@ -17,7 +17,7 @@
 				let productCard = document.createElement('ah-productcard');
 				productCard.setAttribute('productname', productData.name);
 				productCard.setAttribute('price', productData.price);
-				productCard.setAttribute('url', '/front/product/' + productData.slug);
+				productCard.setAttribute('slug', productData.slug);
 				productCard.setAttribute('image', productData.imageUrl);
 				document.getElementById('products').appendChild(productCard);
 			});
