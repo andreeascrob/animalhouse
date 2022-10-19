@@ -37,6 +37,9 @@ mongoose.connect('mongodb://localhost:27017/test').then(() => {
 	app.get('/back/', (req, res) => {
 		res.render('back/home');
 	});
+	app.get('/back/boards', (req, res) => {
+		res.render('back/boards');
+	});
 	app.use(express.static('static'));
 
 	app.use('/api/populate', require('./api/routes/populate.js'));
