@@ -4,6 +4,9 @@ const userSchema = new mongoose.Schema(
 		name: {
 			type: String,
 		},
+		surname: {
+			type: String,
+		},
 		email: {
 			type: String,
 			required: true,
@@ -12,6 +15,12 @@ const userSchema = new mongoose.Schema(
 		password: {
 			type: String,
 			required: true
+		},
+		address: {
+			type: String,
+		},
+		city: {
+			type: String,
 		}
 	}
 );

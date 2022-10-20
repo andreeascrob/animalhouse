@@ -205,6 +205,25 @@ paths:
           description: OK
         '400':
           description: Error.
+  /order:
+    post:
+      summary: Creates an order.
+      tags:
+        - store
+      security:
+        - {} # Optional auth
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderPost'
+      responses:
+        '201':
+          description: Created.
+        '400':
+          description: Error.
   /scores/{game}:
     get:
       summary: Returns a leaderboard by ID.
@@ -268,24 +287,44 @@ paths:
                     type: string
         '400':
           description: Error.
-  /users/name:
+  /users/info/{id}:
     get:
-      summary: Sign in an user.
+      summary: Public info about an user.
       tags:
         - user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the user.
+          schema:
+            type: string
       security:
         - {} # Optional auth
         - bearerAuth: []
       responses:
         '200':
-          description: The user name.
+          description: The public info about the user.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  name:
-                    type: string
+                $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /users/profile:
+    get:
+      summary: Get profile of the logged user.
+      tags:
+        - user
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: The complete profile of the logged user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
 components:
@@ -354,6 +393,72 @@ components:
       required:
         - name
         - slug
+    OrderPost:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        surname:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        cart:
+          type: array
+          items:
+            type: object # An object { 'slug': quantity, ... }
+      required:
+        - name
+        - surname
+        - email
+        - address
+        - city
+        - cart
+    Order:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        surname:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        cart:
+          type: array
+          items:
+            type: object
+            properties:
+              _id:
+                type: string
+              slug:
+                type: string
+              quantity:
+                type: integer
+              price:
+                type: number
+                format: float
+            required:
+              - slug
+              - quantity
+              - price
+      required:
+        - name
+        - surname
+        - email
+        - address
+        - city
+        - cart
     Score:
       type: object
       properties:
@@ -422,11 +527,17 @@ components:
           type: string
         name:
           type: string
+        surname:
+          type: string
         email:
           type: string
         password:
           type: string
           format: password
+        address:
+          type: string
+        city:
+          type: string
       required:
         - email
         - password

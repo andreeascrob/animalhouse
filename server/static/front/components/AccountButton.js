@@ -10,7 +10,7 @@ export class AccountButton extends HTMLElement {
 	constructor() {
 		super();
 		if (localStorage.token) {
-			fetch("http://localhost:8000/api/users/name/", {
+			fetch("http://localhost:8000/api/users/profile/", {
 				method: "get",
 				headers: {
 					'Accept': 'application/json',

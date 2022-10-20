@@ -45,6 +45,7 @@ mongoose.connect('mongodb://localhost:27017/test').then(() => {
 	app.use('/api/populate', require('./api/routes/populate.js'));
 	app.use('/api/animals', require('./api/routes/animals.js'));
 	app.use('/api/categories', require('./api/routes/categories.js'));
+	app.use('/api/order', require('./api/routes/order.js'));
 	app.use('/api/products', require('./api/routes/products.js'));
 	app.use('/api/users', require('./api/routes/users.js'));
 

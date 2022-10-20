@@ -2,6 +2,8 @@
 <form id="form" class="flex flex-col p-4 max-w-prose mx-auto gap-4">
 	<label for="email">Nome</label>
 	<input id="name" class="dark:bg-neutral-800 rounded" type="text" required>
+	<label for="surname">Cognome</label>
+	<input id="surname" class="dark:bg-neutral-800 rounded" type="text" required>
 	<label for="email">Indirizzo e-mail</label>
 	<input id="email" class="dark:bg-neutral-800 rounded" type="email" required>
 	<label for="password">Password</label>
@@ -29,6 +31,7 @@
 					},
 					body: JSON.stringify({
 						name: document.getElementById('name').value,
+						surname: document.getElementById('surname').value,
 						email: document.getElementById('email').value,
 						password: digestPassword
 					}),
