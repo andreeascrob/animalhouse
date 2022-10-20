@@ -17,28 +17,28 @@ mongoose.connect('mongodb://localhost:27017/test').then(() => {
 	app.set('view engine', 'handlebars');
 	app.set('views', './views');
 	app.get('/front/', (req, res) => {
-		res.render('front/home');
+		res.render('front/home', {layout: 'front/main'});
 	});
 	app.get('/front/signin', (req, res) => {
-		res.render('front/signin');
+		res.render('front/signin', {layout: 'front/main'});
 	});
 	app.get('/front/signup', (req, res) => {
-		res.render('front/signup');
+		res.render('front/signup', {layout: 'front/main'});
 	});
 	app.get('/front/animal/:slug', (req, res) => {
-		res.render('front/animal');
+		res.render('front/animal', {layout: 'front/main'});
 	});
 	app.get('/front/product/:slug', (req, res) => {
-		res.render('front/product');
+		res.render('front/product', {layout: 'front/main'});
 	});
 	app.get('/front/cart', (req, res) => {
-		res.render('front/cart');
+		res.render('front/cart', {layout: 'front/main'});
 	});
 	app.get('/back/', (req, res) => {
-		res.render('back/home');
+		res.render('back/home', {layout: 'back/main'});
 	});
 	app.get('/back/boards', (req, res) => {
-		res.render('back/boards');
+		res.render('back/boards', {layout: 'back/main'});
 	});
 	app.use(express.static('static'));
 
