@@ -248,6 +248,96 @@ paths:
                   $ref: '#/components/schemas/Score'
         '400':
           description: Error.
+  /topics:
+    post:
+      summary: Creates a topic.
+      tags:
+        - community
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TopicPost'
+      responses:
+        '201':
+          description: Created.
+        '400':
+          description: Error.
+    get:
+      summary: Returns the list of topics.
+      tags:
+      - community
+      parameters:
+        - in: query
+          name: animalSlug
+          required: true
+          schema:
+            type: string
+          description: Filter topics by animal.
+        - in: query
+          name: board
+          required: true
+          schema:
+            type: string
+          description: Filter topics by boards.
+      responses:
+        '200':
+          description: A JSON array of topics.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Topic'
+  /topics/{id}:
+    get:
+      summary: Returns a product by slug.
+      tags:
+        - community
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The _id of the topic.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Topic'
+        '404':
+          description: Topic non found.
+    delete:
+      summary: Deletes a topic by id.
+      tags:
+        - community
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The _id of the topic.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  animalSlug:
+                    type: string
+        '400':
+          description: Error.
   /users/signup:
     post:
       summary: Creates an user.
@@ -299,16 +389,13 @@ paths:
           description: The id of the user.
           schema:
             type: string
-      security:
-        - {} # Optional auth
-        - bearerAuth: []
       responses:
         '200':
           description: The public info about the user.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/PublicUser'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
   /users/profile:
@@ -349,6 +436,19 @@ components:
       required:
         - name
         - slug
+    Comment:
+      type: object
+      properties:
+        _id:
+          type: string
+        text:
+          type: string
+        authorId:
+          type: integer
+      required:
+        - id
+        - text
+        - authorId
     Product:
       type: object
       properties:
@@ -472,19 +572,6 @@ components:
         - game
         - player
         - score
-    Comment:
-      type: object
-      properties:
-        id:
-          type: string
-        text:
-          type: string
-        authorId:
-          type: integer
-      required:
-        - id
-        - text
-        - authorId
     Topic:
       type: object
       properties:
@@ -492,11 +579,13 @@ components:
           type: string
         title:
           type: string
-        slug:
-          type: string
         authorId:
-          type: integer
-        boardId:
+          type: string
+        animalId:
+          type: string
+        board:
+          type: string
+        text:
           type: string
         comments:
           type: array
@@ -504,8 +593,26 @@ components:
             $ref: '#/components/schemas/Comment'
       required:
         - title
-        - slug
         - authorId
+        - animalId
+        - board
+        - text
+    TopicPost:
+      type: object
+      properties:
+        title:
+          type: string
+        animalSlug:
+          type: string
+        board:
+          type: string
+        text:
+          type: string
+      required:
+        - title
+        - animalSlug
+        - board
+        - text
     Board:
       type: object
       properties:
@@ -541,3 +648,13 @@ components:
       required:
         - email
         - password
+    PublicUser:
+      type: object
+      properties:
+        name:
+          type: string
+        surname:
+          type: string
+      required:
+        - name
+        - surname

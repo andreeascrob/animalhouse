@@ -1,0 +1,61 @@
+<form id="form" class="flex flex-col p-4 max-w-prose mx-auto gap-4">
+	<label for="title">Titolo</label>
+	<input type="text" name="title" id="title" class="dark:bg-neutral-800 rounded" required>
+	<label for="animalSlug">Animale</label>
+	<select name="animalSlug" id="animalSlug" class="dark:bg-neutral-800 rounded" required>
+	</select>
+	<label for="board">Board</label>
+	<select name="board" id="board" class="dark:bg-neutral-800 rounded" required>
+		<option value="eccolo-qua">Eccolo qua</option>
+		<option value="cerco-partner">Cerco partner</option>
+		<option value="aiutatemi">Aiutatemi</option>
+	</select>
+	<label for="text">Testo</label>
+	<textarea id="text" class="dark:bg-neutral-800 rounded" rows="5" required></textarea>
+	<input type="submit" class="p-2 bg-emerald-500 dark:bg-emerald-800 rounded hover:font-bold" value="Crea post">
+</form>
+<script>
+	if (!localStorage.token) {
+		window.location.href = '/front/signin';
+	}
+	document.getElementById('form').onsubmit = createPost;
+	const urlParams = new URLSearchParams(window.location.search);
+	document.getElementById('board').value = urlParams.get('board');
+	fetch('/api/animals')
+		.then((response) => response.json())
+		.then((animals) => {
+			animals.forEach(animal => {
+				let option = document.createElement('option');
+				option.value = animal.slug;
+				option.innerHTML = animal.name;
+				document.getElementById('animalSlug').appendChild(option);
+			});
+			document.getElementById('animalSlug').value = urlParams.get('animalSlug');
+		});
+	function createPost(event) {
+		event.preventDefault();
+		fetch('/api/topics', {
+			method: 'POST',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.token}`
+			},
+			body: JSON.stringify({
+				title: document.getElementById('title').value,
+				animalSlug: document.getElementById('animalSlug').value,
+				board: document.getElementById('board').value,
+				text: document.getElementById('text').value,
+			}),
+		})
+			.then((response) => {
+				if (response.ok) {
+					window.location.href = '/front/board/' + document.getElementById('animalSlug').value;
+				}
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
+
+	}
+</script>

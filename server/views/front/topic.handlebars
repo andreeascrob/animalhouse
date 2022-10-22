@@ -1,0 +1,74 @@
+<div id="topic" class="flex flex-col gap-4 p-4 max-w-screen-lg mx-auto">
+	<div class="flex flex-row justify-between">
+		<h1 class="text-3xl font-bold"></h1>
+		<button id="delete-topic" class="flex flex-row gap-2 rounded p-1 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-40 hover:font-bold hidden" onclick="deleteTopic()">
+			<img class="dark:invert" src="/icons/trash.svg" width="20">
+			<span>Elimina post</span>
+		</button>
+	</div>
+	<ah-boardmessage></ah-boardmessage>
+	<div class="flex flex-col w-full gap-4 p-4" id="comments"></div>
+</div>
+<script>
+	fetch('/api/topics/' + window.location.pathname.match(/[^\/]+(?=\/?$)/)[0])
+		.then((response) => response.json())
+		.then((topic) => {
+			document.querySelector('h1').innerHTML = topic.title;
+			if (localStorage.token) {
+				fetch('/api/users/profile/', {
+					method: 'GET',
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json',
+						'Authorization': `Bearer ${localStorage.token}`
+					}
+				})
+					.then(response => response.json())
+					.then(data => {
+						if (data._id == topic.authorId) {
+							document.getElementById('delete-topic').classList.remove('hidden');
+						}
+					});
+			}
+			let boardMessage = document.querySelector('ah-boardmessage');
+			fetch('/api/users/info/' + topic.authorId)
+				.then(response => response.json())
+				.then(data => {
+					boardMessage.setAttribute('name', data.name);
+					boardMessage.setAttribute('surname', data.surname);
+				});
+			boardMessage.setAttribute('text', topic.text);
+			topic.comments.forEach(comment => {
+				let boardMessage = document.createElement('ah-boardmessage');
+				fetch('/api/users/info/' + comment.authorId)
+					.then(response => response.json())
+					.then(data => {
+						boardMessage.setAttribute('name', data.name);
+						boardMessage.setAttribute('surname', data.surname);
+					});
+				boardMessage.setAttribute('text', comment.text);
+				document.getElementById('comments').appendChild(boardMessage);
+			});
+		})
+		.catch((error) => {
+			console.error('Error:', error);
+		});
+	function deleteTopic() {
+		fetch('/api/topics/' + window.location.pathname.match(/[^\/]+(?=\/?$)/)[0], {
+			method: 'DELETE',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.token}`
+			}
+		})
+			.then(response => response.json())
+			.then(data => {
+				window.location.href = '/front/board/' + data.animalSlug;
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
+
+	}
+</script>

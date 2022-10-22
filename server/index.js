@@ -16,8 +16,15 @@ mongoose.connect('mongodb://localhost:27017/test').then(() => {
 	app.engine('handlebars', engine());
 	app.set('view engine', 'handlebars');
 	app.set('views', './views');
+
 	app.get('/front/', (req, res) => {
 		res.render('front/home', {layout: 'front/main'});
+	});
+	app.get('/front/cart', (req, res) => {
+		res.render('front/cart', {layout: 'front/main'});
+	});
+	app.get('/front/newpost', (req, res) => {
+		res.render('front/newpost', {layout: 'front/main'});
 	});
 	app.get('/front/signin', (req, res) => {
 		res.render('front/signin', {layout: 'front/main'});
@@ -28,12 +35,16 @@ mongoose.connect('mongodb://localhost:27017/test').then(() => {
 	app.get('/front/animal/:slug', (req, res) => {
 		res.render('front/animal', {layout: 'front/main'});
 	});
+	app.get('/front/board/:slug', (req, res) => {
+		res.render('front/board', {layout: 'front/main'});
+	});
 	app.get('/front/product/:slug', (req, res) => {
 		res.render('front/product', {layout: 'front/main'});
 	});
-	app.get('/front/cart', (req, res) => {
-		res.render('front/cart', {layout: 'front/main'});
+	app.get('/front/topic/:id', (req, res) => {
+		res.render('front/topic', {layout: 'front/main'});
 	});
+
 	app.get('/back/', (req, res) => {
 		res.render('back/home', {layout: 'back/main'});
 	});
@@ -47,6 +58,7 @@ mongoose.connect('mongodb://localhost:27017/test').then(() => {
 	app.use('/api/categories', require('./api/routes/categories.js'));
 	app.use('/api/order', require('./api/routes/order.js'));
 	app.use('/api/products', require('./api/routes/products.js'));
+	app.use('/api/topics', require('./api/routes/topics.js'));
 	app.use('/api/users', require('./api/routes/users.js'));
 
 	app.get('/', (req, res) => {
