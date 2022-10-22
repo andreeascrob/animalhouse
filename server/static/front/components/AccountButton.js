@@ -10,12 +10,12 @@ export class AccountButton extends HTMLElement {
 	constructor() {
 		super();
 		if (localStorage.token) {
-			fetch("http://localhost:8000/api/users/profile/", {
-				method: "get",
+			fetch('/api/users/profile/', {
+				method: 'GET',
 				headers: {
 					'Accept': 'application/json',
 					'Content-Type': 'application/json',
-					...(localStorage.token && {'Authorization': `Bearer ${localStorage.token}`})
+					'Authorization': `Bearer ${localStorage.token}`
 				}
 			})
 			.then(response => response.json())
