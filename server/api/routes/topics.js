@@ -4,9 +4,8 @@ const express = require("express");
 const router = express.Router();
 var { expressjwt: jwt } = require('express-jwt');
 const jsonwebtoken = require('jsonwebtoken');
-const secret = 'secret';
 
-router.post('/', jwt({secret: secret, algorithms: ["HS256"], credentialsRequired: true}), async (req, res) => {
+router.post('/', jwt({secret: jwtSecret, algorithms: ["HS256"], credentialsRequired: true}), async (req, res) => {
 	try {
 		let topicData = {};
 		topicData['title'] = req.body.title;
@@ -53,7 +52,7 @@ router.get('/:id', async (req, res) => {
 	}
 });
 
-router.delete('/:id', jwt({secret: secret, algorithms: ["HS256"], credentialsRequired: true}), async (req, res) => {
+router.delete('/:id', jwt({secret: jwtSecret, algorithms: ["HS256"], credentialsRequired: true}), async (req, res) => {
 	try {
 		const topic = await Topic.findOne({'_id': req.params.id}).exec();
 		if (req.auth == topic.authorId) {

@@ -5,9 +5,8 @@ const express = require("express");
 const router = express.Router();
 var { expressjwt: jwt } = require('express-jwt');
 const jsonwebtoken = require('jsonwebtoken');
-const secret = 'secret';
 
-router.post('/', jwt({secret: secret, algorithms: ["HS256"], credentialsRequired: false},), async (req, res) => {
+router.post('/', jwt({secret: jwtSecret, algorithms: ["HS256"], credentialsRequired: false},), async (req, res) => {
 	try {
 		let products = [];
 		for (var productSlug in req.body.cart) {

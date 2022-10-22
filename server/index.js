@@ -7,6 +7,7 @@ const expressjwt = require('express-jwt');
 const { engine } = require('express-handlebars');
 
 const port = 8000;
+global.jwtSecret = 'secret';
 
 mongoose.connect('mongodb://localhost:27017/test').then(() => {
 	const app = express();
