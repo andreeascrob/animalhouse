@@ -753,6 +753,10 @@ select {
   margin-bottom: auto;
 }
 
+.mr-1 {
+  margin-right: 0.25rem;
+}
+
 .mt-4 {
   margin-top: 1rem;
 }

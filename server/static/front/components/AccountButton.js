@@ -4,7 +4,10 @@ export class AccountButton extends HTMLElement {
 <style>
 @import "/front/style.css";
 </style>
-<a class="flex flex-row gap-2" href="/front/${localStorage.token ? 'profile' : 'signin'}"><img width="20" class="dark:invert inline" src="/icons/person.svg"><span class="hidden md:inline">${this.getAttribute('username') ?? 'Accedi'}</span></a>
+<div class="flex flex-row gap-2">
+<a href="/front/${localStorage.token ? 'profile' : 'signin'}"><img width="20" class="mr-1 dark:invert inline" src="/icons/person.svg" alt=""><span class="hidden md:inline">${this.getAttribute('username') ?? 'Accedi'}</span></a>
+<button class="${localStorage.token ? '' : 'hidden'}" onclick="this.getRootNode().host.logout()"><img width="20" class="dark:invert inline" src="/icons/logout.svg" alt="Esci dall'account"></button>
+</div>
 `;
 	}
 	constructor() {
@@ -31,5 +34,10 @@ export class AccountButton extends HTMLElement {
 	}
 	attributeChangedCallback(name, oldValue, newValue) {
 		this.template(this.shadowRoot);
+	}
+	logout() {
+		delete localStorage.userId;
+		delete localStorage.token;
+		window.location.reload();
 	}
 }
