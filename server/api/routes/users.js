@@ -29,7 +29,7 @@ router.post('/signin', async (req, res) => {
 	} else {
 		if (user.password == req.body.password) {
 			const token = jsonwebtoken.sign(user._id.toString(), jwtSecret);
-			res.status(201).send(JSON.stringify({token: token}));
+			res.status(201).send(JSON.stringify({'id': user._id, 'token': token}));
 		} else {
 			res.status(404).send();
 		}

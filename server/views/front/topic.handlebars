@@ -24,20 +24,9 @@
 		.then((topic) => {
 			document.querySelector('h1').innerHTML = topic.title;
 			if (localStorage.token) {
-				fetch('/api/users/profile/', {
-					method: 'GET',
-					headers: {
-						'Accept': 'application/json',
-						'Content-Type': 'application/json',
-						'Authorization': `Bearer ${localStorage.token}`
-					}
-				})
-					.then(response => response.json())
-					.then(data => {
-						if (data._id == topic.authorId) {
-							document.getElementById('delete-topic').classList.remove('hidden');
-						}
-					});
+				if (localStorage.userId == topic.authorId) {
+					document.getElementById('delete-topic').classList.remove('hidden');
+				}
 			}
 			let boardMessage = document.querySelector('ah-boardmessage');
 			fetch('/api/users/info/' + topic.authorId)
@@ -58,24 +47,13 @@
 						boardMessage.setAttribute('name', commentAuthor.name);
 						boardMessage.setAttribute('surname', commentAuthor.surname);
 						if (localStorage.token) {
-							fetch('/api/users/profile/', {
-								method: 'GET',
-								headers: {
-									'Accept': 'application/json',
-									'Content-Type': 'application/json',
-									'Authorization': `Bearer ${localStorage.token}`
-								}
-							})
-								.then(response => response.json())
-								.then(profile => {
-									if (profile._id == comment.authorId) {
-										let deleteButton = document.createElement('button');
-										deleteButton.classList = 'rounded p-1 bg-emerald-500 dark:bg-emerald-800 w-40 hover:font-bold';
-										deleteButton.innerHTML = 'Elimina commento';
-										deleteButton.onclick = () => { deleteComment(comment._id) };
-										commentDiv.appendChild(deleteButton);
-									}
-								});
+							if (localStorage.userId == comment.authorId) {
+								let deleteButton = document.createElement('button');
+								deleteButton.classList = 'rounded p-1 bg-emerald-500 dark:bg-emerald-800 w-40 hover:font-bold';
+								deleteButton.innerHTML = 'Elimina commento';
+								deleteButton.onclick = () => { deleteComment(comment._id) };
+								commentDiv.appendChild(deleteButton);
+							}
 						}
 					});
 				boardMessage.setAttribute('text', comment.text);

@@ -33,6 +33,7 @@
 				})
 					.then((response) => response.json())
 					.then((data) => {
+						localStorage.userId = data.id;
 						localStorage.token = data.token;
 						window.location.href = '/front';
 					})

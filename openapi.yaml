@@ -424,12 +424,14 @@ paths:
               $ref: '#/components/schemas/User'
       responses:
         '200':
-          description: The JWT token.
+          description: The JWT token and the user id.
           content:
             application/json:
               schema:
                 type: object
                 properties:
+                  id:
+                    type: string
                   token:
                     type: string
         '400':

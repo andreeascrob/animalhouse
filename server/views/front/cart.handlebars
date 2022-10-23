@@ -35,8 +35,8 @@
 		document.getElementById('total').setAttribute('value', total);
 	}
 	if (localStorage.token) {
-		fetch("http://localhost:8000/api/users/profile/", {
-			method: "get",
+		fetch('/api/users/profile/', {
+			method: 'GET',
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
