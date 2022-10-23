@@ -338,6 +338,63 @@ paths:
                     type: string
         '400':
           description: Error.
+        '403':
+          description: Only the author can delete a topic
+  /topics/{id}/comment:
+    post:
+      summary: Adds a comment to a topic.
+      tags:
+        - community
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The _id of the topic.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                type: object
+                properties:
+                  text:
+                    type: string
+      responses:
+        '201':
+          description: Added
+        '400':
+          description: Error.
+  /topics/{id}/comment/{commentId}:
+    delete:
+      summary: Deletes a comment by id.
+      tags:
+        - community
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The _id of the topic.
+          schema:
+            type: string
+        - name: commentId
+          in: path
+          required: true
+          description: The _id of the comment.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Error.
+        '403':
+          description: Only the author can delete a comment
   /users/signup:
     post:
       summary: Creates an user.

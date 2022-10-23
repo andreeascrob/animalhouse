@@ -60,7 +60,37 @@ router.delete('/:id', jwt({secret: jwtSecret, algorithms: ["HS256"], credentials
 			const animal = await Animal.findOne({'_id': topic.animalId}).select('slug').exec();
 			res.status(200).send({'animalSlug': animal.slug});
 		} else {
-			res.status(404).send('Only the author can delete a topic');
+			res.status(403).send('Only the author can delete a topic');
+		}
+	} catch (err) {
+		res.status(400).send(err.message);
+	}
+});
+
+router.post('/:id/comments', jwt({secret: jwtSecret, algorithms: ["HS256"], credentialsRequired: true}), async (req, res) => {
+	try {
+		await Topic.updateOne(
+			{'_id': req.params.id},
+			{$push: {'comments': {
+				'authorId': req.auth,
+				'text': req.body.text
+			}}}).exec();
+		const topic = await Topic.findOne({'_id': req.params.id}).exec();
+		res.status(201).send();
+	} catch (err) {
+		res.status(400).send(err.message);
+	}
+});
+
+router.delete('/:id/comment/:commentId', jwt({secret: jwtSecret, algorithms: ["HS256"], credentialsRequired: true}), async (req, res) => {
+	try {
+		const topic = await Topic.findOne({'_id': req.params.id}).exec();
+		if (req.auth == topic.comments.id(req.params.commentId).authorId) {
+			await topic.comments.pull({'_id': req.params.commentId});
+			await topic.save();
+			res.status(200).send();
+		} else {
+			res.status(403).send('Only the author can delete a comment');
 		}
 	} catch (err) {
 		res.status(400).send(err.message);

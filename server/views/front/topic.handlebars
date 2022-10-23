@@ -7,9 +7,18 @@
 		</button>
 	</div>
 	<ah-boardmessage></ah-boardmessage>
-	<div class="flex flex-col w-full gap-4 p-4" id="comments"></div>
+	<div class="flex flex-col w-full gap-4 pl-8" id="comments"></div>
 </div>
+<form id="newComment" class="flex flex-col p-4 max-w-prose mx-auto gap-4 hidden">
+	<label for="commentText">Testo</label>
+	<textarea id="commentText" class="dark:bg-neutral-800 rounded" rows="5" required></textarea>
+	<input type="submit" class="p-2 bg-emerald-500 dark:bg-emerald-800 rounded hover:font-bold" value="Pubblica commento">
+</form>
 <script>
+	if (localStorage.token) {
+		document.getElementById('newComment').onsubmit = addComment;
+		document.getElementById('newComment').classList.remove('hidden');
+	}
 	fetch('/api/topics/' + window.location.pathname.match(/[^\/]+(?=\/?$)/)[0])
 		.then((response) => response.json())
 		.then((topic) => {
@@ -39,15 +48,38 @@
 				});
 			boardMessage.setAttribute('text', topic.text);
 			topic.comments.forEach(comment => {
+				let commentDiv = document.createElement('div');
+				commentDiv.classList = 'flex flex-col gap-2';
 				let boardMessage = document.createElement('ah-boardmessage');
+				commentDiv.appendChild(boardMessage);
 				fetch('/api/users/info/' + comment.authorId)
 					.then(response => response.json())
-					.then(data => {
-						boardMessage.setAttribute('name', data.name);
-						boardMessage.setAttribute('surname', data.surname);
+					.then(commentAuthor => {
+						boardMessage.setAttribute('name', commentAuthor.name);
+						boardMessage.setAttribute('surname', commentAuthor.surname);
+						if (localStorage.token) {
+							fetch('/api/users/profile/', {
+								method: 'GET',
+								headers: {
+									'Accept': 'application/json',
+									'Content-Type': 'application/json',
+									'Authorization': `Bearer ${localStorage.token}`
+								}
+							})
+								.then(response => response.json())
+								.then(profile => {
+									if (profile._id == comment.authorId) {
+										let deleteButton = document.createElement('button');
+										deleteButton.classList = 'rounded p-1 bg-emerald-500 dark:bg-emerald-800 w-40 hover:font-bold';
+										deleteButton.innerHTML = 'Elimina commento';
+										deleteButton.onclick = () => { deleteComment(comment._id) };
+										commentDiv.appendChild(deleteButton);
+									}
+								});
+						}
 					});
 				boardMessage.setAttribute('text', comment.text);
-				document.getElementById('comments').appendChild(boardMessage);
+				document.getElementById('comments').appendChild(commentDiv);
 			});
 		})
 		.catch((error) => {
@@ -69,6 +101,46 @@
 			.catch((error) => {
 				console.error('Error:', error);
 			});
-
+	}
+	function addComment(event) {
+		event.preventDefault();
+		fetch('/api/topics/' + window.location.pathname.match(/[^\/]+(?=\/?$)/)[0] + '/comments', {
+			method: 'POST',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.token}`
+			},
+			body: JSON.stringify({
+				text: document.getElementById('commentText').value
+			}),
+		})
+			.then((response) => {
+				if (response.ok) {
+					document.getElementById('commentText').value = '';
+					window.location.reload();
+				}
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
+	}
+	function deleteComment(commentId) {
+		fetch('/api/topics/' + window.location.pathname.match(/[^\/]+(?=\/?$)/)[0] + '/comment/' + commentId, {
+			method: 'DELETE',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.token}`
+			}
+		})
+			.then((response) => {
+				if (response.ok) {
+					window.location.reload();
+				}
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
 	}
 </script>

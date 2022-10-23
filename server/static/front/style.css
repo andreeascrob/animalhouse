@@ -1024,6 +1024,10 @@ select {
   padding-right: 0.5rem;
 }
 
+.pl-8 {
+  padding-left: 2rem;
+}
+
 .text-center {
   text-align: center;
 }
