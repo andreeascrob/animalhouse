@@ -28,7 +28,11 @@ export class CartRemoveButton extends HTMLElement {
 		let cart = JSON.parse(localStorage.cart ?? '{}');
 		delete cart[this.getAttribute('slug')];
 		localStorage.cart = JSON.stringify(cart);
-		document.getElementById('row-' + this.getAttribute('slug')).remove();
-		calculateTotal();
+		if (localStorage.cart == '{}') {
+			window.location.reload();
+		} else {
+			document.getElementById('row-' + this.getAttribute('slug')).remove();
+			calculateTotal();
+		}
 	}
 }
