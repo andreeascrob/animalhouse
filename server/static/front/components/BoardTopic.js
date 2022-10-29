@@ -10,7 +10,7 @@ export class BoardTopic extends HTMLElement {
 		<p>${this.getAttribute('name') ?? ''} ${this.getAttribute('surname') ?? ''}</p>
 	</div>
 	<div class="w-4/5 p-4">
-		<img src="${this.getAttribute('imageUrl') ?? ''}" class="max-h-60">
+		${this.getAttribute('imageUrl') ? '<img src="' + this.getAttribute('imageUrl') + '" class="max-h-60">' : ''}
 		<p>${this.getAttribute('text')}</p>
 	</div>
 </div>

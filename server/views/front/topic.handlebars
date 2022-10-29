@@ -36,7 +36,9 @@
 					boardTopic.setAttribute('surname', data.surname);
 				});
 			boardTopic.setAttribute('text', topic.text);
-			boardTopic.setAttribute('imageUrl', topic.imageUrl);
+			if (topic.imageUrl) {
+				boardTopic.setAttribute('imageUrl', topic.imageUrl);
+			}
 			topic.comments.forEach(comment => {
 				let commentDiv = document.createElement('div');
 				commentDiv.classList = 'flex flex-col gap-2';

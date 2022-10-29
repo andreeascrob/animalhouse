@@ -54,7 +54,9 @@
 								boardTopic.setAttribute('surname', data.surname);
 							});
 						boardTopic.setAttribute('text', topic.text);
-						boardTopic.setAttribute('imageUrl', topic.imageUrl);
+						if (topic.imageUrl) {
+							boardTopic.setAttribute('imageUrl', topic.imageUrl);
+						}
 						document.getElementById(board).appendChild(boardTopicTitle);
 						document.getElementById(board).appendChild(boardTopic);
 					});

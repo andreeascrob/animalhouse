@@ -20,7 +20,9 @@ router.post('/', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequi
 			return;
 		}
 		topicData['board'] = req.body.board;
-		topicData['imageUrl'] = req.file.path.replace('static', '');
+		if (req.file) {
+			topicData['imageUrl'] = req.file.path.replace('static', '');
+		}
 		topicData['text'] = req.body.text;
 		const newTopic = new Topic(topicData);
 		await newTopic.save();
@@ -61,7 +63,9 @@ router.delete('/:id', jwt({secret: jwtSecret, algorithms: ['HS256'], credentials
 		const topic = await Topic.findOne({'_id': req.params.id}).exec();
 		if (req.auth == topic.authorId) {
 			await Topic.findByIdAndDelete(req.params.id).exec();
-			fs.unlinkSync('static' + topic.imageUrl);
+			if (topic.imageUrl) {
+				fs.unlinkSync('static' + topic.imageUrl);
+			}
 			const animal = await Animal.findOne({'_id': topic.animalId}).select('slug').exec();
 			res.status(200).send({'animalSlug': animal.slug});
 		} else {
