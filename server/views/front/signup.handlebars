@@ -39,6 +39,7 @@
 					.then((response) => response.json())
 					.then((data) => {
 						localStorage.token = data.token;
+						localStorage.userId = data.id;
 						window.location.href = '/front';
 					})
 					.catch((error) => {
