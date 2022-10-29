@@ -258,7 +258,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/TopicPost'
       responses:
@@ -646,6 +646,8 @@ components:
           type: string
         text:
           type: string
+        imageUrl:
+          type: string
         comments:
           type: array
           items:
@@ -667,6 +669,9 @@ components:
           type: string
         text:
           type: string
+        image:
+          type: string
+          format: binary
       required:
         - title
         - animalSlug

@@ -1,11 +1,14 @@
-const Animal = require("../models/Animal");
-const Topic = require("../models/Topic");
-const express = require("express");
+const Animal = require('../models/Animal');
+const Topic = require('../models/Topic');
+const express = require('express');
 const router = express.Router();
 var { expressjwt: jwt } = require('express-jwt');
 const jsonwebtoken = require('jsonwebtoken');
+const multer  = require('multer');
+const upload = multer({ dest: 'static/uploads/' });
+const fs = require('fs');
 
-router.post('/', jwt({secret: jwtSecret, algorithms: ["HS256"], credentialsRequired: true}), async (req, res) => {
+router.post('/', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true}), upload.single('image'), async (req, res) => {
 	try {
 		let topicData = {};
 		topicData['title'] = req.body.title;
@@ -17,6 +20,7 @@ router.post('/', jwt({secret: jwtSecret, algorithms: ["HS256"], credentialsRequi
 			return;
 		}
 		topicData['board'] = req.body.board;
+		topicData['imageUrl'] = req.file.path.replace('static', '');
 		topicData['text'] = req.body.text;
 		const newTopic = new Topic(topicData);
 		await newTopic.save();
@@ -52,11 +56,12 @@ router.get('/:id', async (req, res) => {
 	}
 });
 
-router.delete('/:id', jwt({secret: jwtSecret, algorithms: ["HS256"], credentialsRequired: true}), async (req, res) => {
+router.delete('/:id', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true}), async (req, res) => {
 	try {
 		const topic = await Topic.findOne({'_id': req.params.id}).exec();
 		if (req.auth == topic.authorId) {
 			await Topic.findByIdAndDelete(req.params.id).exec();
+			fs.unlinkSync('static' + topic.imageUrl);
 			const animal = await Animal.findOne({'_id': topic.animalId}).select('slug').exec();
 			res.status(200).send({'animalSlug': animal.slug});
 		} else {
@@ -67,7 +72,7 @@ router.delete('/:id', jwt({secret: jwtSecret, algorithms: ["HS256"], credentials
 	}
 });
 
-router.post('/:id/comments', jwt({secret: jwtSecret, algorithms: ["HS256"], credentialsRequired: true}), async (req, res) => {
+router.post('/:id/comments', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true}), async (req, res) => {
 	try {
 		await Topic.updateOne(
 			{'_id': req.params.id},
@@ -82,7 +87,7 @@ router.post('/:id/comments', jwt({secret: jwtSecret, algorithms: ["HS256"], cred
 	}
 });
 
-router.delete('/:id/comment/:commentId', jwt({secret: jwtSecret, algorithms: ["HS256"], credentialsRequired: true}), async (req, res) => {
+router.delete('/:id/comment/:commentId', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true}), async (req, res) => {
 	try {
 		const topic = await Topic.findOne({'_id': req.params.id}).exec();
 		if (req.auth == topic.comments.id(req.params.commentId).authorId) {

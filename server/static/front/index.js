@@ -2,6 +2,8 @@ import { AccountButton } from '/front/components/AccountButton.js'
 customElements.define('ah-accountbutton', AccountButton);
 import { BoardMessage } from '/front/components/BoardMessage.js'
 customElements.define('ah-boardmessage', BoardMessage);
+import { BoardTopic } from '/front/components/BoardTopic.js'
+customElements.define('ah-boardtopic', BoardTopic);
 import { CartRemoveButton } from '/front/components/CartRemoveButton.js'
 customElements.define('ah-cartremovebutton', CartRemoveButton);
 import { Price } from '/front/components/Price.js'

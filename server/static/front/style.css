@@ -801,6 +801,10 @@ select {
   height: 3rem;
 }
 
+.max-h-60 {
+  max-height: 15rem;
+}
+
 .w-1\/5 {
   width: 20%;
 }

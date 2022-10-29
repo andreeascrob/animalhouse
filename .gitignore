@@ -1,4 +1,5 @@
 node_modules/
+static/uploads/
 package-lock.json
 yarn.lock
 *.swp

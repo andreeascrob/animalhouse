@@ -6,7 +6,7 @@
 			<span>Elimina post</span>
 		</button>
 	</div>
-	<ah-boardmessage></ah-boardmessage>
+	<ah-boardtopic></ah-boardtopic>
 	<div class="flex flex-col w-full gap-4 pl-8" id="comments"></div>
 </div>
 <form id="newComment" class="flex flex-col p-4 max-w-prose mx-auto gap-4 hidden">
@@ -28,14 +28,15 @@
 					document.getElementById('delete-topic').classList.remove('hidden');
 				}
 			}
-			let boardMessage = document.querySelector('ah-boardmessage');
+			let boardTopic = document.querySelector('ah-boardtopic');
 			fetch('/api/users/info/' + topic.authorId)
 				.then(response => response.json())
 				.then(data => {
-					boardMessage.setAttribute('name', data.name);
-					boardMessage.setAttribute('surname', data.surname);
+					boardTopic.setAttribute('name', data.name);
+					boardTopic.setAttribute('surname', data.surname);
 				});
-			boardMessage.setAttribute('text', topic.text);
+			boardTopic.setAttribute('text', topic.text);
+			boardTopic.setAttribute('imageUrl', topic.imageUrl);
 			topic.comments.forEach(comment => {
 				let commentDiv = document.createElement('div');
 				commentDiv.classList = 'flex flex-col gap-2';

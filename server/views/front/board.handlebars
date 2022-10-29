@@ -42,20 +42,21 @@
 					document.getElementById(board).appendChild(nopost);
 				} else {
 					topics.forEach(topic => {
-						let boardMessageTitle = document.createElement('a');
-						boardMessageTitle.href = '/front/topic/' + topic._id;
-						boardMessageTitle.classList = 'text-xl font-bold';
-						boardMessageTitle.innerHTML = topic.title;
-						let boardMessage = document.createElement('ah-boardmessage');
+						let boardTopicTitle = document.createElement('a');
+						boardTopicTitle.href = '/front/topic/' + topic._id;
+						boardTopicTitle.classList = 'text-xl font-bold';
+						boardTopicTitle.innerHTML = topic.title;
+						let boardTopic = document.createElement('ah-boardtopic');
 						fetch('/api/users/info/' + topic.authorId)
 							.then(response => response.json())
 							.then(data => {
-								boardMessage.setAttribute('name', data.name);
-								boardMessage.setAttribute('surname', data.surname);
+								boardTopic.setAttribute('name', data.name);
+								boardTopic.setAttribute('surname', data.surname);
 							});
-						boardMessage.setAttribute('text', topic.text);
-						document.getElementById(board).appendChild(boardMessageTitle);
-						document.getElementById(board).appendChild(boardMessage);
+						boardTopic.setAttribute('text', topic.text);
+						boardTopic.setAttribute('imageUrl', topic.imageUrl);
+						document.getElementById(board).appendChild(boardTopicTitle);
+						document.getElementById(board).appendChild(boardTopic);
 					});
 				}
 			});
