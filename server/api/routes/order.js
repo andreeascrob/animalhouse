@@ -13,7 +13,6 @@ router.post('/', jwt({secret: jwtSecret, algorithms: ["HS256"], credentialsRequi
 			let product = await Product.findOne({'slug': productSlug}).exec();
 			products.push({'slug': product.slug, 'price': product.price, 'quantity': req.body.cart[productSlug]});
 		}
-		console.log(products.length);
 		if (products.length > 0) {
 			delete req.body.productsSlugs;
 			req.body.products = products;
@@ -26,7 +25,6 @@ router.post('/', jwt({secret: jwtSecret, algorithms: ["HS256"], credentialsRequi
 						'city': req.body.city
 					}}
 				);
-				const user = await User.findOne({'_id': req.auth}).exec();
 			}
 			res.status(201).send();
 		} else {
