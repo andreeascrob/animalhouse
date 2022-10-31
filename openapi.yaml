@@ -405,7 +405,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/SignUpUser'
       responses:
         '201':
           description: Created.
@@ -421,7 +421,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/SignInUser'
       responses:
         '200':
           description: The JWT token and the user id.
@@ -458,6 +458,25 @@ paths:
         '401':
           $ref: '#/components/responses/UnauthorizedError'
   /users/profile:
+    post:
+      summary: Update profile of the logged user.
+      tags:
+        - user
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User updated.
+        '400':
+          description: Error
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
     get:
       summary: Get profile of the logged user.
       tags:
@@ -710,6 +729,35 @@ components:
         city:
           type: string
       required:
+        - name
+        - surname
+        - email
+    SignInUser:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+          format: password
+      required:
+        - email
+        - password
+    SignUpUser:
+      type: object
+      properties:
+        name:
+          type: string
+        surname:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+          format: password
+      required:
+        - name
+        - surname
         - email
         - password
     PublicUser:

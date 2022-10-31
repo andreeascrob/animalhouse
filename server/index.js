@@ -27,6 +27,9 @@ mongoose.connect('mongodb://localhost:27017/test').then(() => {
 	app.get('/front/newpost', (req, res) => {
 		res.render('front/newpost', {layout: 'front/main'});
 	});
+	app.get('/front/profile', (req, res) => {
+		res.render('front/profile', {layout: 'front/main'});
+	});
 	app.get('/front/signin', (req, res) => {
 		res.render('front/signin', {layout: 'front/main'});
 	});

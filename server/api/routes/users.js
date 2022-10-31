@@ -13,6 +13,24 @@ router.get('/info/:id', async (req, res) => {
 	}
 });
 
+router.post('/profile', jwt({secret: jwtSecret, algorithms: ["HS256"], credentialsRequired: true},), async (req, res) => {
+	try {
+		await User.updateOne(
+			{'_id': req.auth},
+			{$set: {
+				'name': req.body.name,
+				'surname': req.body.surname,
+				'email': req.body.email,
+				'address': req.body.address,
+				'city': req.body.city
+			}}
+		);
+		res.status(200).send();
+	} catch (err) {
+		res.status(400).send(err.message);
+	}
+});
+
 router.get('/profile', jwt({secret: jwtSecret, algorithms: ["HS256"], credentialsRequired: true},), async (req, res) => {
 	const user = await User.findOne({'_id': req.auth}).exec();
 	if (user == null) {
