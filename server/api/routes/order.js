@@ -18,7 +18,7 @@ router.post('/', jwt({secret: jwtSecret, algorithms: ["HS256"], credentialsRequi
 			req.body.products = products;
 			const order = new Order(req.body);
 			if (req.headers.authorization) {
-				await User.update(
+				await User.updateOne(
 					{'_id': req.auth},
 					{$set: {
 						'address': req.body.address,
