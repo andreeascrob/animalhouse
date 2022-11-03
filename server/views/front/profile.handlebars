@@ -12,6 +12,16 @@
 	<input id="city" class="dark:bg-neutral-800 rounded" type="text">
 	<input type="submit" class="p-2 bg-emerald-500 dark:bg-emerald-800 rounded hover:font-bold" value="Aggiorna profilo">
 </form>
+<div class="flex flex-row flex-wrap justify-around max-w-prose mx-auto my-4">
+	<a href="/front/changepassword" class="flex flex-row gap-2 rounded p-4 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-52 hover:font-bold">
+		<img class="dark:invert" width="20" src="/icons/key.svg">
+		<span>Cambia password</span>
+	</a>
+	<a href="/front/mypets" class="flex flex-row gap-2 rounded p-4 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-52 hover:font-bold">
+		<img class="dark:invert" width="20" src="/icons/paw.svg">
+		<span>I miei animali</span>
+	</a>
+</div>
 <script>
 	if (!localStorage.token) {
 		window.location.href = '/front/signin';

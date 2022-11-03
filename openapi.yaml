@@ -457,6 +457,36 @@ paths:
                 $ref: '#/components/schemas/PublicUser'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+  /users/changepassword:
+    post:
+      summary: Update the password of the logged user.
+      tags:
+        - user
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                oldpassword:
+                  type: string
+                newpassword:
+                  type: string
+              required:
+              - oldpassword
+              - newpassword
+      responses:
+        '200':
+          description: Password updated.
+        '400':
+          description: Error
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: Incorrect old password.
   /users/profile:
     post:
       summary: Update profile of the logged user.

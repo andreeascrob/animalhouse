@@ -753,6 +753,11 @@ select {
   margin-bottom: auto;
 }
 
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
 .mr-1 {
   margin-right: 0.25rem;
 }
