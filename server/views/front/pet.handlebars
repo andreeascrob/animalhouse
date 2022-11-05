@@ -1,0 +1,108 @@
+<div class="flex flex-row justify-between max-w-prose gap-4 p-4 mx-auto">
+	<h1 class="text-3xl font-bold"></h1>
+	<button class="flex flex-row gap-2 rounded p-1 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-40 h-9 hover:font-bold" onclick="deletePet()">
+		<img class="dark:invert" src="/icons/trash.svg" width="20">
+		<span>Elimina</span>
+	</button>
+</div>
+<form id="form" class="flex flex-col p-4 max-w-prose mx-auto gap-4">
+	<label for="name">Nome</label>
+	<input type="text" name="name" id="name" class="dark:bg-neutral-800 rounded" required>
+	<label for="animalSlug">Animale</label>
+	<select name="animalSlug" id="animalSlug" class="dark:bg-neutral-800 rounded" required>
+	</select>
+	<label for="species">Razza</label>
+	<input type="text" name="species" id="species" class="dark:bg-neutral-800 rounded" required>
+	<label for="birth">Data di nascita</label>
+	<input type="date" name="birth" id="birth" class="dark:bg-neutral-800 rounded">
+	<label for="informations">Informazioni</label>
+	<textarea id="informations" name="informations" class="dark:bg-neutral-800 rounded" rows="5"></textarea>
+	<label for="image">Immagine</label>
+	<input type="file" id="image" name="image" accept="image/png, image/jpeg">
+	<input type="submit" class="p-2 bg-emerald-500 dark:bg-emerald-800 rounded hover:font-bold" value="Aggiorna">
+</form>
+<script>
+	if (!localStorage.token) {
+		window.location.href = '/front/signin';
+	} else {
+		document.getElementById('form').onsubmit = updateAnimal;
+		fetch('/api/animals')
+			.then((response) => response.json())
+			.then((animals) => {
+				animals.forEach(animal => {
+					let option = document.createElement('option');
+					option.value = animal.slug;
+					option.innerHTML = animal.name;
+					document.getElementById('animalSlug').appendChild(option);
+				});
+				fetch('/api/pets/' + window.location.pathname.match(/[^\/]+(?=\/?$)/)[0], {
+					method: 'GET',
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json',
+						'Authorization': `Bearer ${localStorage.token}`
+					}
+				})
+					.then(response => response.json())
+					.then(data => {
+						if (data.ownerId != localStorage.userId) {
+							window.location.href = '/front/profile';
+						}
+						document.querySelector('h1').innerHTML = data.name;
+						document.getElementById('name').value = data.name;
+						fetch('/api/animals/' + data.animalId)
+							.then((response) => response.json())
+							.then((animal) => {
+								document.getElementById('animalSlug').value = animal.slug;
+							});
+						document.getElementById('species').value = data.species;
+						document.getElementById('birth').value = data.birth ? data.birth.substring(0,10) : '';
+						document.getElementById('informations').innerHTML = data.informations;
+					});
+			});
+	}
+	function updateAnimal(event) {
+		event.preventDefault();
+		const formData = new FormData(document.getElementById('form'));
+		fetch('/api/pets/' + window.location.pathname.match(/[^\/]+(?=\/?$)/)[0], {
+			method: 'POST',
+			headers: {
+				'Accept': 'application/json',
+				'Authorization': `Bearer ${localStorage.token}`
+			},
+			body: formData
+		})
+			.then((response) => {
+				if (response.ok) {
+					alert('Animale aggiornato');
+					window.location.href = '/front/profile';
+				} else {
+					alert('Si è verificato un errore');
+				}
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
+	}
+	function deletePet() {
+		fetch('/api/pets/' + window.location.pathname.match(/[^\/]+(?=\/?$)/)[0], {
+			method: 'DELETE',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.token}`
+			}
+		})
+			.then(response => {
+				if (response.ok) {
+					alert('Animale eliminato');
+					window.location.href = '/front/profile';
+				} else {
+					alert('Si è verificato un errore');
+				}
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
+	}
+</script>

@@ -6,6 +6,8 @@ import { BoardTopic } from '/front/components/BoardTopic.js'
 customElements.define('ah-boardtopic', BoardTopic);
 import { CartRemoveButton } from '/front/components/CartRemoveButton.js'
 customElements.define('ah-cartremovebutton', CartRemoveButton);
+import { PetCard } from '/front/components/PetCard.js'
+customElements.define('ah-petcard', PetCard);
 import { Price } from '/front/components/Price.js'
 customElements.define('ah-price', Price);
 import { Product } from '/front/components/Product.js'

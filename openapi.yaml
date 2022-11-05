@@ -36,16 +36,16 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Animal'
-  /animals/{animalSlug}:
+  /animals/{id}:
     get:
-      summary: Returns an animal by slug.
+      summary: Returns an animal by id.
       tags:
         - store
       parameters:
-        - name: animalSlug
+        - name: id
           in: path
           required: true
-          description: The slug of the animal.
+          description: The id of the animal.
           schema:
             type: string
       responses:
@@ -123,6 +123,110 @@ paths:
           description: OK
         '400':
           description: Error.
+  /pets:
+    post:
+      summary: Adds a pet.
+      tags:
+      - pet
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PetPost'
+      responses:
+        '201':
+          description: Added.
+        '400':
+          description: Error.
+    get:
+      summary: Returns the list of pets.
+      tags:
+      - pet
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: A JSON array of pets.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+  /pets/{id}:
+    post:
+      summary: Updates a pet by id.
+      tags:
+      - pet
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The _id of the pet.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PetPost'
+      responses:
+        '201':
+          description: Updated.
+        '400':
+          description: Error.
+        '403':
+          description: Only the owner can update a pet.
+    get:
+      summary: Returns a pet by id.
+      tags:
+        - pet
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The _id of the pet.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+        '403':
+          description: Only the owner can get a pet.
+        '404':
+          description: Pet non found.
+    delete:
+      summary: Deletes a pet by id.
+      tags:
+        - pet
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The _id of the pet.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Error.
+        '403':
+          description: Only the owner can delete a pet.
   /products:
     post:
       summary: Creates a product.
@@ -557,6 +661,54 @@ components:
         - id
         - text
         - authorId
+    Pet:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        ownerId:
+          type: string
+        animalId:
+          type: string
+        species:
+          type: string
+        birth:
+          type: string
+          format: date
+        informations:
+          type: string
+        imageUrl:
+          type: string
+      required:
+        - name
+        - ownerId
+        - animalId
+        - species
+        - imageUrl
+    PetPost:
+      type: object
+      properties:
+        name:
+          type: string
+        animalSlug:
+          type: string
+        species:
+          type: string
+        birth:
+          type: string
+        informations:
+          type: string
+        image:
+          type: string
+          format: binary
+      required:
+        - name
+        - animalSlug
+        - text
+        - species
+        - image
     Product:
       type: object
       properties:

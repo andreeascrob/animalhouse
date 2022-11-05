@@ -1,0 +1,53 @@
+<form id="form" class="flex flex-col p-4 max-w-prose mx-auto gap-4">
+	<label for="name">Nome</label>
+	<input type="text" name="name" id="name" class="dark:bg-neutral-800 rounded" required>
+	<label for="animalSlug">Animale</label>
+	<select name="animalSlug" id="animalSlug" class="dark:bg-neutral-800 rounded" required>
+	</select>
+	<label for="species">Razza</label>
+	<input type="text" name="species" id="species" class="dark:bg-neutral-800 rounded" required>
+	<label for="birth">Data di nascita</label>
+	<input type="date" name="birth" id="birth" class="dark:bg-neutral-800 rounded">
+	<label for="informations">Informazioni</label>
+	<textarea id="informations" name="informations" class="dark:bg-neutral-800 rounded" rows="5"></textarea>
+	<label for="image">Immagine</label>
+	<input type="file" id="image" name="image" accept="image/png, image/jpeg" required>
+	<input type="submit" class="p-2 bg-emerald-500 dark:bg-emerald-800 rounded hover:font-bold" value="Aggiungi animale">
+</form>
+<script>
+	if (!localStorage.token) {
+		window.location.href = '/front/signin';
+	} else {
+		document.getElementById('form').onsubmit = addPet;
+		fetch('/api/animals')
+			.then((response) => response.json())
+			.then((animals) => {
+				animals.forEach(animal => {
+					let option = document.createElement('option');
+					option.value = animal.slug;
+					option.innerHTML = animal.name;
+					document.getElementById('animalSlug').appendChild(option);
+				});
+			});
+	}
+	function addPet(event) {
+		event.preventDefault();
+		const formData = new FormData(document.getElementById('form'));
+		fetch('/api/pets', {
+			method: 'POST',
+			headers: {
+				'Accept': 'application/json',
+				'Authorization': `Bearer ${localStorage.token}`
+			},
+			body: formData
+		})
+			.then((response) => {
+				if (response.ok) {
+					window.location.href = '/front/profile/';
+				}
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
+	}
+</script>

@@ -1,4 +1,13 @@
-<h1 class="text-center text-3xl p-4">Il tuo profilo</h1>
+<div class="flex flex-row justify-between max-w-screen-lg mx-auto p-4">
+	<h2 class="text-3xl font-bold">I tuoi animali</h2>
+	<a href="/front/addpet" class="flex flex-row gap-2 rounded p-1 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-52 hover:font-bold">
+		<img class="dark:invert" src="/icons/plus.svg" width="20">
+		<span>Aggiungi animale</span>
+	</a>
+</div>
+<div id="pets" class="flex flex-row flex-nowrap w-full gap-4 p-4 max-w-screen-lg mx-auto overflow-x-scroll snap-x">
+</div>
+<h2 class="text-center text-3xl p-4">Il tuo profilo</h2>
 <form id="form" class="flex flex-col p-4 max-w-prose mx-auto gap-4">
 	<label for="email">Nome</label>
 	<input id="name" class="dark:bg-neutral-800 rounded" type="text" required>
@@ -12,21 +21,32 @@
 	<input id="city" class="dark:bg-neutral-800 rounded" type="text">
 	<input type="submit" class="p-2 bg-emerald-500 dark:bg-emerald-800 rounded hover:font-bold" value="Aggiorna profilo">
 </form>
-<div class="flex flex-row flex-wrap justify-around max-w-prose mx-auto my-4">
-	<a href="/front/changepassword" class="flex flex-row gap-2 rounded p-4 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-52 hover:font-bold">
-		<img class="dark:invert" width="20" src="/icons/key.svg">
-		<span>Cambia password</span>
-	</a>
-	<a href="/front/mypets" class="flex flex-row gap-2 rounded p-4 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-52 hover:font-bold">
-		<img class="dark:invert" width="20" src="/icons/paw.svg">
-		<span>I miei animali</span>
-	</a>
-</div>
+<a href="/front/changepassword" class="flex flex-row w-52 mx-auto gap-2 rounded p-2 bg-emerald-500 dark:bg-emerald-800 justify-center items-center hover:font-bold">
+	<img class="dark:invert" width="20" src="/icons/key.svg">
+	<span>Cambia password</span>
+</a>
 <script>
 	if (!localStorage.token) {
 		window.location.href = '/front/signin';
 	} else {
 		document.getElementById('form').onsubmit = update;
+		fetch('/api/pets/')
+			.then((response) => response.json())
+			.then((pets) => {
+				pets.forEach(pet => {
+					let petCard = document.createElement('ah-petcard');
+					petCard.setAttribute('petid', pet._id);
+					petCard.setAttribute('petname', pet.name);
+					petCard.setAttribute('species', pet.species);
+					fetch('/api/animals/' + pet.animalId)
+						.then((response) => response.json())
+						.then((animal) => {
+							petCard.setAttribute('animal', animal.name);
+						});
+					petCard.setAttribute('image', pet.imageUrl);
+					document.getElementById('pets').appendChild(petCard);
+				});
+			});
 		fetch('/api/users/profile/', {
 			method: 'GET',
 			headers: {

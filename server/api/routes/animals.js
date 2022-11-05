@@ -17,9 +17,9 @@ router.get('/', async (req, res) => {
 	res.send(animals);
 });
 
-router.get('/:animalSlug', async (req, res) => {
+router.get('/:animalId', async (req, res) => {
 	try {
-		const animal = await Animal.findOne({'slug': req.params.animalSlug}).exec();
+		const animal = await Animal.findOne({'_id': req.params.animalId}).exec();
 		if (animal == null) {
 			res.status(404).send();
 		} else {
