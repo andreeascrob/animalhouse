@@ -84,6 +84,21 @@
 						alert('Ordine effettuato');
 						localStorage.removeItem('cart');
 						window.location.href = '/front';
+					} else if (response.status == 409) {
+						response.json().then((remainingQuantities) => {
+							let summary = [];
+							remainingQuantities.forEach((product) => {
+								summary.push(`${product.name} (${cart[product.slug]}->${product.quantity})`);
+								if (product.quantity == 0) {
+									delete cart[product.slug];
+								} else {
+									cart[product.slug] = product.quantity;
+								}
+							});
+							localStorage.cart = JSON.stringify(cart);
+							alert(`Alcuni prodotti non sono disponibili nelle quantità richieste: ${summary.join(', ')}.`);
+							window.location.reload();
+						});
 					}
 				});
 		}

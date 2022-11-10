@@ -12,16 +12,17 @@ export class Product extends HTMLElement {
 		<div class="flex flex-col basis-3/4 gap-2">
 			${this.getAttribute('productname') ? ('<h1 class="text-3xl font-bold">' + this.getAttribute('productname') + '</h1>') : '<div class="animate-pulse w-full h-9 bg-neutral-300 dark:bg-neutral-800 rounded"></div>'}
 			${this.getAttribute('price') ? ('<p class="text-lg">' + window.eurIT.format(this.getAttribute('price')) + '</p>') : '<div class="animate-pulse w-20 h-7 bg-neutral-300 dark:bg-neutral-800 rounded"></div>'}
-			<div class="flex flex-row gap-2">
+			<div class="flex flex-row gap-2${this.getAttribute('available') > 0 ? '' : ' hidden'}">
 				<div class="flex flex-col">
 					<label for="quantity">Quantità:</label>
-					<input class="w-24 dark:bg-neutral-800 rounded" type="number" id="quantity" name="quantity" min="1" max="5" value="1">
+					<input class="w-24 dark:bg-neutral-800 rounded" type="number" id="quantity" name="quantity" min="1" max="${this.getAttribute('available')}" value="1">
 				</div>
 				<button class="flex flex-row gap-2 rounded p-4 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-52 hover:font-bold" onclick="this.getRootNode().host.addToCart()">
 					<img class="dark:invert" width="20" src="/icons/cart-plus.svg">
 					<span>Aggiungi al carrello<span>
 				</button>
 			</div>
+			<p class="font-bold${this.getAttribute('available') == 0 ? '' : ' hidden'}">Prodotto non disponibile</p>
 			${this.getAttribute('description') ? ('<p class="text-justify">' + this.getAttribute('description') + '</p>') : '<div class="animate-pulse w-full h-12 bg-neutral-300 dark:bg-neutral-800 rounded"></div>'}
 		</div>
 	</div>
@@ -36,7 +37,7 @@ export class Product extends HTMLElement {
 		shadowRoot.appendChild(template.content.cloneNode(true));
 	}
 	static get observedAttributes() {
-		return ['image', 'productname', 'price', 'description'];
+		return ['image', 'productname', 'price', 'description', 'available'];
 	}
 	attributeChangedCallback(name, oldValue, newValue) {
 		this.template(this.shadowRoot);

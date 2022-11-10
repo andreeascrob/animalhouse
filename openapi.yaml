@@ -328,6 +328,14 @@ paths:
           description: Created.
         '400':
           description: Error.
+        '409':
+          description: Not all products are available in the requested quantities.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductRemainingQuantity'
   /scores/{game}:
     get:
       summary: Returns a leaderboard by ID.
@@ -753,6 +761,19 @@ components:
       required:
         - name
         - slug
+    ProductRemainingQuantity:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        quantity:
+          type: integer
+      required:
+        - name
+        - slug
+        - quantity
     OrderPost:
       type: object
       properties:

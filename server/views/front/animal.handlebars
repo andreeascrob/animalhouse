@@ -43,6 +43,7 @@
 								productCard.setAttribute('price', productData.price);
 								productCard.setAttribute('slug', productData.slug);
 								productCard.setAttribute('image', productData.imageUrl);
+								productCard.setAttribute('available', productData.available[0]);
 								document.getElementById(category.slug).appendChild(productCard);
 							});
 						}
