@@ -26,6 +26,9 @@ router.get('/', async (req, res) => {
 		if (req.query.categoryId) {
 			query['categoryId'] = req.query.categoryId;
 		}
+		if (req.query.name) {
+			query['$or'] = [{'name': {$regex: req.query.name, $options: "i"}}, {'description': {$regex: req.query.name, $options: "i"}}];
+		}
 		const products = await Product.find(query).exec();
 		res.send(products);
 	} catch (err) {

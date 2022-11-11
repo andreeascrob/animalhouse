@@ -1,0 +1,26 @@
+<h1 class="text-3xl font-bold max-w-screen-lg mx-auto p-4">Risultati della ricerca</h1>
+<div id="products" class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 max-w-screen-lg mx-auto"></div>
+<script>
+	const urlParams = new URLSearchParams(window.location.search);
+	if (!urlParams.has('name')) {
+		window.location.href = '/front';
+	} else {
+		fetch('/api/products/?name=' + urlParams.get('name'))
+			.then((response) => response.json())
+			.then((data) => {
+				if (data.length == 0) {
+					document.querySelector('h1').innerHTML = 'Nessun prodotto trovato';
+				} else {
+					data.forEach(productData => {
+						let productCard = document.createElement('ah-productcard');
+						productCard.setAttribute('productname', productData.name);
+						productCard.setAttribute('price', productData.price);
+						productCard.setAttribute('slug', productData.slug);
+						productCard.setAttribute('image', productData.imageUrl);
+						productCard.setAttribute('available', productData.available[0]);
+						document.getElementById('products').appendChild(productCard);
+					});
+				}
+			});
+	}
+</script>
