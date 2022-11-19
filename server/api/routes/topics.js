@@ -84,7 +84,6 @@ router.post('/:id/comments', jwt({secret: jwtSecret, algorithms: ['HS256'], cred
 				'authorId': req.auth,
 				'text': req.body.text
 			}}}).exec();
-		const topic = await Topic.findOne({'_id': req.params.id}).exec();
 		res.status(201).send();
 	} catch (err) {
 		res.status(400).send(err.message);
