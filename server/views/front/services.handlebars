@@ -1,0 +1,17 @@
+<h1 class="text-3xl font-bold text-center">I nostri servizi</h1>
+<div id="services" class="flex flex-col gap-4 p-4 max-w-screen-lg mx-auto">
+</div>
+<script>
+	fetch('/api/services/')
+		.then((response) => response.json())
+		.then((services) => {
+			services.forEach(serviceData => {
+				let service = document.createElement('ah-service');
+				service.setAttribute('serviceid', serviceData._id);
+				service.setAttribute('servicename', serviceData.name);
+				service.setAttribute('description', serviceData.description);
+				service.setAttribute('image', serviceData.imageUrl);
+				document.getElementById('services').appendChild(service);
+			});
+		});
+</script>

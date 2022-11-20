@@ -1,0 +1,80 @@
+<form id="form" class="flex flex-col p-4 max-w-prose mx-auto gap-4">
+	<label for="branch">Sede</label>
+	<select name="branch" id="branch" class="dark:bg-neutral-800 rounded" required>
+	</select>
+	<label for="pet">Animale</label>
+	<select name="pet" id="pet" class="dark:bg-neutral-800 rounded" required>
+	</select>
+	<input type="submit" class="p-2 bg-emerald-500 dark:bg-emerald-800 rounded hover:font-bold" value="Cerca disponibilità">
+</form>
+<div id="slots" class="max-w-prose mx-auto">
+</div>
+<script>
+	const urlParams = new URLSearchParams(window.location.search);
+	if (!localStorage.token) {
+		window.location.href = '/front/signin';
+	} else {
+		document.getElementById('form').onsubmit = viewSlots;
+		fetch('/api/branches/?serviceId=' + urlParams.get('serviceId'))
+			.then((response) => response.json())
+			.then((branches) => {
+				branches.forEach(branch => {
+					let option = document.createElement('option');
+					option.value = branch._id;
+					option.innerHTML = `${branch.city} (${branch.address})`;
+					document.getElementById('branch').appendChild(option);
+				});
+				if (urlParams.get('branchId')) {
+					document.getElementById('branch').value = urlParams.get('branchId');
+				}
+			});
+		fetch('/api/pets', {
+			method: 'GET',
+			headers: {
+				'Accept': 'application/json',
+				'Authorization': `Bearer ${localStorage.token}`
+			}
+		})
+			.then((response) => response.json())
+			.then((pets) => {
+				pets.forEach(pet => {
+					let option = document.createElement('option');
+					option.value = pet._id;
+					option.innerHTML = pet.name;
+					document.getElementById('pet').appendChild(option);
+				});
+			});
+	}
+	function viewSlots(event) {
+		event.preventDefault();
+		fetch(`/api/branches/${document.getElementById('branch').value}/servicesSlots/?serviceId=${urlParams.get('serviceId')}&petId=${document.getElementById('pet').value}`)
+			.then((response) => response.json())
+			.then((slots) => {
+				document.getElementById('slots').innerHTML = '';
+				if (slots.length == 0) {
+					let info = document.createElement('p');
+					info.innerHTML = 'Nessuna dispobilità trovata';
+					document.getElementById('slots').appendChild(info);
+				} else {
+					const dateTimeFormat = Intl.DateTimeFormat('it-IT', {
+						hour: 'numeric',
+						minute: 'numeric',
+						day: 'numeric',
+						month: 'short',
+						year: 'numeric',
+						weekday: 'short',
+					});
+					slots.forEach(slot => {
+						let info = document.createElement('p');
+						const start = new Date(slot.start);
+						const end = new Date(slot.end);
+						info.innerHTML = `${slot.info} (${dateTimeFormat.format(start)} - ${dateTimeFormat.format(end)})`;
+						document.getElementById('slots').appendChild(info);
+					});
+				}
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
+	}
+</script>

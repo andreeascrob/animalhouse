@@ -1,7 +1,9 @@
-const Animal = require("../models/Animal");
-const Product = require("../models/Product");
-const ProductCategory = require("../models/ProductCategory");
-const express = require("express");
+const Animal = require('../models/Animal');
+const Branch = require('../models/Branch');
+const Product = require('../models/Product');
+const ProductCategory = require('../models/ProductCategory');
+const Service = require('../models/Service');
+const express = require('express');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
@@ -130,6 +132,93 @@ router.get('/', async (req, res) => {
 		},
 	];
 	await Product.insertMany(products)
+		.then(docs => {
+			// res.status(201).send(docs);
+		})
+		.catch(err => {
+			res.status(400).send(err);
+		});
+	const services = [
+		{
+			name: "Veterinario",
+			description: "Descrizione",
+			imageUrl: "https://images.unsplash.com/photo-1630438994394-3deff7a591bf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8dmV0fGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
+		},
+		{
+			name: "Dog sitter",
+			description: "Descrizione",
+			imageUrl: "https://images.unsplash.com/photo-1494947665470-20322015e3a8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
+		},
+		{
+			name: "Toelettatura",
+			description: "Descrizione",
+			imageUrl: "https://images.unsplash.com/photo-1528846104175-4fd300ee59da?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=872&q=80https://images.unsplash.com/photo-1528846104175-4fd300ee59da?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=872&q=80",
+		},
+	];
+	await Service.insertMany(services)
+		.then(docs => {
+			// res.status(201).send(docs);
+		})
+		.catch(err => {
+			res.status(400).send(err);
+		});
+	const veterinarioService = await Service.findOne({'name': 'Veterinario'}).exec();
+	const dogSitterService = await Service.findOne({'name': 'Dog sitter'}).exec();
+	const toelettaturaService = await Service.findOne({'name': 'Toelettatura'}).exec();
+	const branches = [
+		{
+			city: "Bologna",
+			address: "Via Zamboni, 1",
+			servicesSlots: [
+				{
+					serviceId: veterinarioService._id,
+					animalId: caneAnimal._id,
+					info: "Evento passato",
+					start: "2022-11-19T09:00:00.000Z",
+					end: "2022-11-19T10:00:00.000Z",
+				},
+				{
+					serviceId: veterinarioService._id,
+					animalId: caneAnimal._id,
+					info: "Dott. Tizio, Ambulatorio 1",
+					start: "2022-12-19T09:00:00.000Z",
+					end: "2022-12-19T10:00:00.000Z",
+				},
+				{
+					serviceId: veterinarioService._id,
+					animalId: gattoAnimal._id,
+					info: "Dott. Caio, Ambulatorio 3",
+					start: "2022-12-19T09:00:00.000Z",
+					end: "2022-12-19T10:00:00.000Z",
+				},
+				{
+					serviceId: dogSitterService._id,
+					animalId: caneAnimal._id,
+					info: "Mario, A domicilio",
+					start: "2022-12-19T08:00:00.000Z",
+					end: "2022-12-19T18:00:00.000Z",
+				},
+			],
+		},
+		{
+			city: "Roma",
+			address: "Via Celio Vibenna",
+			servicesSlots: [
+				{
+					serviceId: veterinarioService._id,
+					animalId: caneAnimal._id,
+					info: "Dott. Sempronio, Ambulatorio 10",
+					start: "2022-12-19T10:00:00.000Z",
+					end: "2022-12-19T11:00:00.000Z",
+				},
+			],
+		},
+		{
+			city: "Milano",
+			address: "Via Celio Vibenna",
+		},
+	];
+	await Branch.insertMany(branches)
 		.then(docs => {
 			res.status(201).send(docs);
 		})

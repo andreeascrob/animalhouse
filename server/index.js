@@ -24,6 +24,12 @@ mongoose.connect('mongodb://localhost:27017/test').then(() => {
 	app.get('/front/addpet', (req, res) => {
 		res.render('front/addpet', {layout: 'front/main'});
 	});
+	app.get('/front/book', (req, res) => {
+		res.render('front/book', {layout: 'front/main'});
+	});
+	app.get('/front/branches', (req, res) => {
+		res.render('front/branches', {layout: 'front/main'});
+	});
 	app.get('/front/cart', (req, res) => {
 		res.render('front/cart', {layout: 'front/main'});
 	});
@@ -41,6 +47,9 @@ mongoose.connect('mongodb://localhost:27017/test').then(() => {
 	});
 	app.get('/front/search', (req, res) => {
 		res.render('front/search', {layout: 'front/main'});
+	});
+	app.get('/front/services', (req, res) => {
+		res.render('front/services', {layout: 'front/main'});
 	});
 	app.get('/front/signin', (req, res) => {
 		res.render('front/signin', {layout: 'front/main'});
@@ -71,10 +80,12 @@ mongoose.connect('mongodb://localhost:27017/test').then(() => {
 
 	app.use('/api/populate', require('./api/routes/populate.js'));
 	app.use('/api/animals', require('./api/routes/animals.js'));
+	app.use('/api/branches', require('./api/routes/branches.js'));
 	app.use('/api/categories', require('./api/routes/categories.js'));
 	app.use('/api/order', require('./api/routes/order.js'));
 	app.use('/api/pets', require('./api/routes/pets.js'));
 	app.use('/api/products', require('./api/routes/products.js'));
+	app.use('/api/services', require('./api/routes/services.js'));
 	app.use('/api/topics', require('./api/routes/topics.js'));
 	app.use('/api/users', require('./api/routes/users.js'));
 

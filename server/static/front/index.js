@@ -16,3 +16,5 @@ import { ProductCard } from '/front/components/ProductCard.js'
 customElements.define('ah-productcard', ProductCard);
 import { ProductPill } from '/front/components/ProductPill.js'
 customElements.define('ah-productpill', ProductPill);
+import { Service } from '/front/components/Service.js'
+customElements.define('ah-service', Service);

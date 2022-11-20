@@ -57,6 +57,163 @@ paths:
                 $ref: '#/components/schemas/Animal'
         '404':
           description: Animal non found.
+  /branches:
+    post:
+      summary: Creates a branch.
+      tags:
+        - service
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Branch'
+      responses:
+        '201':
+          description: Created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Branch'
+        '400':
+          description: Error.
+    get:
+      summary: Returns the list of branches.
+      tags:
+        - service
+      parameters:
+        - in: query
+          name: serviceId
+          schema:
+            type: string
+          description: Filter branches by services.
+      responses:
+        '200':
+          description: A JSON array of branches.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Branch'
+        '400':
+          description: Error.
+  /branches/{id}:
+    get:
+      summary: Returns a branch by id.
+      tags:
+        - service
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The _id of the branch.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Branch'
+        '400':
+          description: Error.
+    delete:
+      summary: Deletes a branch by id.
+      tags:
+        - service
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The _id of the branch.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Error.
+  /branch/{id}/servicesSlots:
+    post:
+      summary: Adds a service to a branch.
+      tags:
+        - service
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The _id of the topic.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceSlot'
+      responses:
+        '201':
+          description: Added
+        '400':
+          description: Error.
+    get:
+      summary: Returns the list of services slots.
+      tags:
+        - service
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The _id of the branch.
+          schema:
+            type: string
+        - in: query
+          name: serviceId
+          description: Filter services slots by services.
+          schema:
+            type: string
+        - in: query
+          name: petId
+          required: true
+          description: Filter services slot by pet.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A JSON array of services slots.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServiceSlot'
+        '400':
+          description: Error.
+  /branch/{id}/servicesSlots/{serviceSlotId}:
+    delete:
+      summary: Deletes a service slot by id.
+      tags:
+        - service
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The _id of the service.
+          schema:
+            type: string
+        - name: serviceSlotId
+          in: path
+          required: true
+          description: The _id of the service slot.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Error.
   /categories:
     post:
       summary: Creates a category.
@@ -341,6 +498,78 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ProductRemainingQuantity'
+  /services:
+    post:
+      summary: Creates a service.
+      tags:
+        - service
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Service'
+      responses:
+        '201':
+          description: Created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+        '400':
+          description: Error.
+    get:
+      summary: Returns the list of categories.
+      tags:
+        - service
+      responses:
+        '200':
+          description: A JSON array of services.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Service'
+  /services/{serviceId}:
+    get:
+      summary: Returns a service by id.
+      tags:
+        - service
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          description: The _id of the service.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+        '400':
+          description: Error.
+        '404':
+          description: Service non found.
+    delete:
+      summary: Deletes a service by id.
+      tags:
+        - service
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          description: The _id of the service.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Error.
   /scores/{game}:
     get:
       summary: Returns a leaderboard by ID.
@@ -670,6 +899,22 @@ components:
       required:
         - name
         - slug
+    Branch:
+      type: object
+      properties:
+        _id:
+          type: string
+        city:
+          type: string
+        address:
+          type: string
+        servicesSlots:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceSlot'
+      required:
+        - city
+        - address
     Comment:
       type: object
       properties:
@@ -867,6 +1112,42 @@ components:
         - game
         - player
         - score
+    Service:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+      required:
+        - name
+        - description
+        - imageUrl
+    ServiceSlot:
+      type: object
+      properties:
+        serviceId:
+          type: string
+        animalId:
+          type: string
+        info:
+          type: string
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+      required:
+        - serviceId
+        - animalId
+        - info
+        - start
+        - end
     Topic:
       type: object
       properties:
