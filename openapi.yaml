@@ -526,6 +526,15 @@ paths:
       responses:
         '201':
           description: Created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  token:
+                    type: string
         '400':
           description: Error.
   /users/signin:

@@ -87,7 +87,7 @@ router.post('/signup', async (req, res) => {
 		const newUser = new User(req.body);
 		await newUser.save();
 		const token = jsonwebtoken.sign(newUser._id.toString(), jwtSecret);
-		res.status(201).send(JSON.stringify({token: token}));
+		res.status(201).send(JSON.stringify({'id': newUser._id, 'token': token}));
 	} catch (err) {
 		res.status(400).send(err.message);
 	}
