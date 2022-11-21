@@ -21,7 +21,11 @@ const userSchema = new mongoose.Schema(
 		},
 		city: {
 			type: String,
-		}
+		},
+		isadmin: {
+			type: Boolean,
+		},
+
 	}
 );
 module.exports = mongoose.model('User', userSchema);

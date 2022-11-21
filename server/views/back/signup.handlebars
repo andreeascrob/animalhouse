@@ -1,0 +1,50 @@
+<h1 class="text-center text-3xl p-4">Registrati</h1>
+<form id="form" class="flex flex-col p-4 max-w-prose mx-auto gap-4">
+  <label for="email">Nome</label>
+  <input id="name" class="dark:bg-neutral-800 rounded" type="text" required>
+  <label for="surname">Cognome</label>
+  <input id="surname" class="dark:bg-neutral-800 rounded" type="text" required>
+  <label for="email">Indirizzo e-mail</label>
+  <input id="email" class="dark:bg-neutral-800 rounded" type="email" required>
+  <label for="password">Password</label>
+  <input id="password" class="dark:bg-neutral-800 rounded" type="password" required>
+  <input type="submit" class="p-2 bg-emerald-500 dark:bg-emerald-800 rounded hover:font-bold" value="Registrati">
+</form>
+<script>
+  document.getElementById('form').onsubmit = signup;
+  async function digestMessage(message) {
+    const msgUint8 = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
+  }
+  function signup(event) {
+    event.preventDefault();
+    digestMessage(document.getElementById('password').value)
+      .then(async (digestPassword) => {
+        try {
+          let res = await fetch('/api/users/signup/admin', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              name: document.getElementById('name').value,
+              surname: document.getElementById('surname').value,
+              email: document.getElementById('email').value,
+              password: digestPassword
+            }),
+          })
+          let data = await res.json()
+          localStorage.token = data.token;
+          localStorage.userId = data.id;
+          window.location.href = '/back';
+        } catch (error) {
+          console.error('Error:', error);
+        }
+
+      });
+  }
+</script>

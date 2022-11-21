@@ -5,7 +5,7 @@ var { expressjwt: jwt } = require('express-jwt');
 const jsonwebtoken = require('jsonwebtoken');
 
 router.get('/info/:id', async (req, res) => {
-	const user = await User.findOne({'_id': req.params.id}).select('name surname').exec();
+	const user = await User.findOne({'_id': req?.params?.id}).select('name surname').exec();
 	if (user) {
 		res.status(200).send(user);
 	} else {
@@ -16,7 +16,7 @@ router.get('/info/:id', async (req, res) => {
 router.post('/changepassword', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true},), async (req, res) => {
 	try {
 		const user = await User.findOne({'_id': req.auth}).exec();
-		if (user.password == req.body.oldpassword) {
+		if (user.password == req?.body?.oldpassword) {
 			await User.updateOne(
 				{'_id': req.auth},
 				{$set: {
@@ -84,6 +84,18 @@ router.post('/signin', async (req, res) => {
 
 router.post('/signup', async (req, res) => {
 	try {
+		const newUser = new User(req.body);
+		await newUser.save();
+		const token = jsonwebtoken.sign(newUser._id.toString(), jwtSecret);
+		res.status(201).send(JSON.stringify({'id': newUser._id, 'token': token}));
+	} catch (err) {
+		res.status(400).send(err.message);
+	}
+});
+
+router.post('/signup/admin', async (req, res) => {
+	try { 
+		req.body.isadmin = true;
 		const newUser = new User(req.body);
 		await newUser.save();
 		const token = jsonwebtoken.sign(newUser._id.toString(), jwtSecret);

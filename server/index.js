@@ -9,7 +9,7 @@ const { engine } = require('express-handlebars');
 const port = 8000;
 global.jwtSecret = 'secret';
 
-mongoose.connect('mongodb://localhost:27017/test').then(() => {
+mongoose.connect('mongodb://0.0.0.0:27017/test').then(() => {
 	const app = express();
 	app.use(cors());
 	app.use(express.json());
@@ -76,6 +76,10 @@ mongoose.connect('mongodb://localhost:27017/test').then(() => {
 	app.get('/back/boards', (req, res) => {
 		res.render('back/boards', {layout: 'back/main'});
 	});
+	app.get('/back/signup', (req, res) => {
+		res.render('back/signup', {layout: 'back/main'});
+	});
+
 	app.use(express.static('static'));
 
 	app.use('/api/populate', require('./api/routes/populate.js'));
