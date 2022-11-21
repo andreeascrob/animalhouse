@@ -793,6 +793,10 @@ select {
   width: 10rem;
 }
 
+.min-w-\[16rem\] {
+  min-width: 16rem;
+}
+
 .max-w-screen-lg {
   max-width: 1024px;
 }
