@@ -9,7 +9,11 @@ const animalSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 			unique: true
-		}
+		},
+		iconUrl: {
+			type: String,
+			required: true
+		},
 	}
 );
 module.exports = mongoose.model('Animal', animalSchema);

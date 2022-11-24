@@ -11,10 +11,32 @@ router.get('/', async (req, res) => {
 		{
 			name: "Cane",
 			slug: "cane",
+			iconUrl: "/icons/dog.svg",
 		},
 		{
 			name: "Gatto",
 			slug: "gatto",
+			iconUrl: "/icons/cat.svg",
+		},
+		{
+			name: "Volatili",
+			slug: "volatili",
+			iconUrl: "/icons/bird.svg",
+		},
+		{
+			name: "Pesci",
+			slug: "pesci",
+			iconUrl: "/icons/fish.svg",
+		},
+		{
+			name: "Cavallo",
+			slug: "cavallo",
+			iconUrl: "/icons/horse.svg",
+		},
+		{
+			name: "Altri animali",
+			slug: "altri-animali",
+			iconUrl: "/icons/paw.svg",
 		},
 	];
 	await Animal.insertMany(animals)

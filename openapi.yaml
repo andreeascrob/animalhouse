@@ -896,9 +896,12 @@ components:
           type: string
         slug:
           type: string
+        iconUrl:
+          type: string
       required:
         - name
         - slug
+        - iconUrl
     Branch:
       type: object
       properties:
