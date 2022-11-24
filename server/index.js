@@ -77,6 +77,9 @@ mongoose.connect('mongodb://localhost:27017/test').then(() => {
 		res.render('back/boards', {layout: 'back/main'});
 	});
 	app.use(express.static('static'));
+	app.get('/game/game-*', (req, res) => {
+		res.sendFile(path.join(__dirname + '/static/game/index.html'));
+	});
 
 	app.use('/api/populate', require('./api/routes/populate.js'));
 	app.use('/api/animals', require('./api/routes/animals.js'));
