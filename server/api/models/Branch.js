@@ -31,6 +31,9 @@ const branchSchema = new mongoose.Schema(
 					type: Date,
 					required: true,
 				},
+				petId: {
+					type: mongoose.ObjectId,
+				},
 			}]
 		},
 	}

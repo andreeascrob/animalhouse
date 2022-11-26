@@ -7,6 +7,8 @@
 </div>
 <div id="pets" class="flex flex-row flex-nowrap w-full gap-4 p-4 max-w-screen-lg mx-auto overflow-x-scroll snap-x">
 </div>
+<div id="bookings" class="flex flex-col gap-2 p-4 max-w-screen-lg mx-auto">
+</div>
 <h2 class="text-center text-3xl p-4">Il tuo profilo</h2>
 <form id="form" class="flex flex-col p-4 max-w-prose mx-auto gap-4">
 	<label for="email">Nome</label>
@@ -63,6 +65,37 @@
 				document.getElementById('address').value = data.address || '';
 				document.getElementById('city').value = data.city || '';
 			});
+		fetch('/api/bookings', {
+			method: 'GET',
+			headers: {
+				'Accept': 'application/json',
+				'Authorization': `Bearer ${localStorage.token}`
+			}
+		})
+			.then(response => response.json())
+			.then(bookings => {
+				const dateTimeFormat = Intl.DateTimeFormat('it-IT', {
+					hour: 'numeric',
+					minute: 'numeric',
+					day: 'numeric',
+					month: 'short',
+					year: 'numeric',
+					weekday: 'short',
+				});
+				for (var pet in bookings) {
+					let petName = document.createElement('h3');
+					petName.classList = 'text-xl font-bold';
+					petName.innerHTML = pet;
+					document.getElementById('bookings').appendChild(petName);
+					bookings[pet].sort((a, b) => a.start > b.start).forEach((booking) => {
+						let info = document.createElement('p');
+						const start = new Date(booking.start);
+						const end = new Date(booking.end);
+						info.innerHTML = `${booking.serviceName}: ${booking.info}, ${booking.address}, ${booking.city} (${dateTimeFormat.format(start)} - ${dateTimeFormat.format(end)}) <button class="rounded p-1 bg-emerald-500 dark:bg-emerald-800 items-center w-24 hover:font-bold" onclick="cancel('${booking._id}')">Disdici</button>`;
+						document.getElementById('bookings').appendChild(info);
+					});
+				}
+			});
 	}
 	function update(event) {
 		event.preventDefault();
@@ -86,6 +119,26 @@
 					alert('Profilo aggiornato');
 					window.location.reload();
 				}
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
+	}
+	function cancel(serviceSlotId) {
+		fetch(`/api/bookings/${serviceSlotId}`, {
+			method: 'DELETE',
+			headers: {
+				'Accept': 'application/json',
+				'Authorization': `Bearer ${localStorage.token}`
+			}
+		})
+			.then((response) => {
+				if (response.ok) {
+					alert('Appuntamento annullato');
+				} else {
+					alert('Si è verificato un errore');
+				}
+				window.location.reload();
 			})
 			.catch((error) => {
 				console.error('Error:', error);

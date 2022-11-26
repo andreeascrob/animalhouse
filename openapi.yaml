@@ -57,6 +57,75 @@ paths:
                 $ref: '#/components/schemas/Animal'
         '404':
           description: Animal non found.
+  /bookings:
+    post:
+      summary: Book a service slot by id.
+      tags:
+        - service
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                type: object
+                properties:
+                  serviceSlotId:
+                    type: string
+                  petId:
+                    type: string
+                required:
+                  - serviceSlotId
+                  - petId
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Error.
+        '403':
+          description: Only the owner can book a service for a pet.
+    get:
+      summary: Returns the list of bookings.
+      tags:
+        - service
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: An object with one property for each animal with bookings, the value is a JSON array of bookings.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  animalName: # The actual animal name
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Booking'
+        '400':
+          description: Error.
+  /bookings/{serviceSlotId}:
+    delete:
+      summary: Cancel a service slot by id.
+      tags:
+        - service
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: serviceSlotId
+          in: path
+          required: true
+          description: The _id of the service slot.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Error.
+        '403':
+          description: Only the owner can cancel a service for a pet.
   /branches:
     post:
       summary: Creates a branch.
@@ -137,14 +206,14 @@ paths:
           description: Error.
   /branch/{id}/servicesSlots:
     post:
-      summary: Adds a service to a branch.
+      summary: Adds a service slot to a branch.
       tags:
         - service
       parameters:
         - name: id
           in: path
           required: true
-          description: The _id of the topic.
+          description: The _id of the branch.
           schema:
             type: string
       requestBody:
@@ -200,7 +269,7 @@ paths:
         - name: id
           in: path
           required: true
-          description: The _id of the service.
+          description: The _id of the branch.
           schema:
             type: string
         - name: serviceSlotId
@@ -902,6 +971,33 @@ components:
         - name
         - slug
         - iconUrl
+    Booking:
+      type: object
+      properties:
+        _id:
+          type: string
+        serviceName:
+          type: string
+        info:
+          type: string
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+        address:
+          type: string
+        city:
+          type: string
+      required:
+        - _id
+        - serviceName
+        - info
+        - start
+        - end
+        - address
+        - city
     Branch:
       type: object
       properties:
@@ -1133,6 +1229,8 @@ components:
     ServiceSlot:
       type: object
       properties:
+        _id:
+          type: string
         serviceId:
           type: string
         animalId:
@@ -1145,6 +1243,8 @@ components:
         end:
           type: string
           format: date-time
+        petId:
+          type: string
       required:
         - serviceId
         - animalId

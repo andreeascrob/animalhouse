@@ -65,7 +65,7 @@ router.get('/:id/servicesSlots', async (req, res) => {
 			const pet = await Pet.findOne({'_id': req.query.petId}).exec();
 			const branch = await Branch.findOne({'_id': req.params.id}).exec();
 			let slots = branch.servicesSlots.filter((element) => {
-				return element.serviceId == req.query.serviceId && element.animalId.equals(pet.animalId) && element.start > new Date();
+				return element.serviceId == req.query.serviceId && element.animalId.equals(pet.animalId) && element.start > new Date() && !element.petId;
 			});
 			res.status(200).send(slots);
 		} else {

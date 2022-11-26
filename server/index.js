@@ -83,6 +83,7 @@ mongoose.connect('mongodb://localhost:27017/test').then(() => {
 
 	app.use('/api/populate', require('./api/routes/populate.js'));
 	app.use('/api/animals', require('./api/routes/animals.js'));
+	app.use('/api/bookings', require('./api/routes/bookings.js'));
 	app.use('/api/branches', require('./api/routes/branches.js'));
 	app.use('/api/categories', require('./api/routes/categories.js'));
 	app.use('/api/order', require('./api/routes/order.js'));
