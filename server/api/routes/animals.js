@@ -13,7 +13,7 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
-	const animals = await Animal.find();
+	const animals = await Animal.find().exec();
 	res.send(animals);
 });
 

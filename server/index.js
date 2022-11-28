@@ -45,6 +45,9 @@ mongoose.connect('mongodb://localhost:27017/test').then(() => {
 	app.get('/front/profile', (req, res) => {
 		res.render('front/profile', {layout: 'front/main'});
 	});
+	app.get('/front/scores', (req, res) => {
+		res.render('front/scores', {layout: 'front/main'});
+	});
 	app.get('/front/search', (req, res) => {
 		res.render('front/search', {layout: 'front/main'});
 	});
@@ -89,6 +92,7 @@ mongoose.connect('mongodb://localhost:27017/test').then(() => {
 	app.use('/api/order', require('./api/routes/order.js'));
 	app.use('/api/pets', require('./api/routes/pets.js'));
 	app.use('/api/products', require('./api/routes/products.js'));
+	app.use('/api/scores', require('./api/routes/scores.js'));
 	app.use('/api/services', require('./api/routes/services.js'));
 	app.use('/api/topics', require('./api/routes/topics.js'));
 	app.use('/api/users', require('./api/routes/users.js'));

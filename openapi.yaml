@@ -639,19 +639,34 @@ paths:
           description: OK
         '400':
           description: Error.
+  /scores:
+    post:
+      summary: Adds a score.
+      tags:
+      - game
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Score'
+      responses:
+        '201':
+          description: Added.
+        '400':
+          description: Error.
   /scores/{game}:
     get:
-      summary: Returns a leaderboard by ID.
+      summary: Returns all scores in descending order of a game.
       tags:
         - game
       parameters:
         - name: game
           in: path
           required: true
-          description: Name of the game.
+          description: The name of the game.
           schema:
             type: string
-            minimum: 1
       responses:
         '200':
           description: OK
@@ -1201,6 +1216,8 @@ components:
     Score:
       type: object
       properties:
+        _id:
+          type: string
         game:
           type: string
         player:

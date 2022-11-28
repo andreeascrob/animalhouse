@@ -1,0 +1,39 @@
+<h1 class="text-3xl font-bold text-center">Classifiche</h1>
+<div id="scores" class="flex flex-col md:flex-row justify-between gap-4 p-4 max-w-screen-lg mx-auto">
+	<div id="memory" class="hidden">
+		<h2 class="text-xl font-bold">Memory</h2>
+		<ol id="memoryScores" class="list-decimal list-inside">
+		</ol>
+	</div>
+	<div id="trivia" class="hidden">
+		<h2 class="text-xl font-bold">Trivia</h2>
+		<ol id="triviaScores" class="list-decimal list-inside">
+		</ol>
+	</div>
+	<div id="multiple-choice" class="hidden">
+		<h2 class="text-xl font-bold">Multiple choice</h2>
+		<ol id="multiple-choiceScores" class="list-decimal list-inside">
+		</ol>
+	</div>
+	<div id="hangman" class="hidden">
+		<h2 class="text-xl font-bold">Hangman</h2>
+		<ol id="hangmanScores" class="list-decimal list-inside">
+		</ol>
+	</div>
+</div>
+<script>
+	['memory', 'trivia', 'multiple-choice', 'hangman'].forEach((game) => {
+		fetch(`/api/scores/${game}`)
+			.then((response) => response.json())
+			.then((scores) => {
+				if (scores.length > 0) {
+					document.getElementById(game).classList.remove('hidden');
+					scores.forEach(score => {
+						let gameScore = document.createElement('li');
+						gameScore.innerHTML = `${score['player']} (${score['score']})`;
+						document.getElementById(`${game}Scores`).appendChild(gameScore);
+					});
+				}
+			});
+	});
+</script>
