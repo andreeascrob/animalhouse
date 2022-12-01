@@ -76,8 +76,17 @@ mongoose.connect('mongodb://0.0.0.0:27017/test').then(() => {
 	app.get('/back/boards', (req, res) => {
 		res.render('back/boards', {layout: 'back/main'});
 	});
+	app.get('/back/changepassword', (req, res) => {
+		res.render('back/changepassword', {layout: 'back/main'});
+	});
+	app.get('/back/profile', (req, res) => {
+		res.render('back/profile', {layout: 'back/main'});
+	});
 	app.get('/back/signup', (req, res) => {
 		res.render('back/signup', {layout: 'back/main'});
+	});
+	app.get('/back/signin', (req, res) => {
+		res.render('back/signin', {layout: 'back/main'});
 	});
 
 	app.use(express.static('static'));
