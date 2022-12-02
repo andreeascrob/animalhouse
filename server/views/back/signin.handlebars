@@ -34,6 +34,7 @@
 				})
           let data = await res.json()
 						localStorage.userId = data.id;
+						localStorage.isAdmin = true;
 						localStorage.token = data.token;
 						window.location.href = '/back';
 					} catch (error) {

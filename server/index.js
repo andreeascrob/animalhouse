@@ -70,6 +70,10 @@ mongoose.connect('mongodb://0.0.0.0:27017/test').then(() => {
 		res.render('front/topic', {layout: 'front/main'});
 	});
 
+	app.get('/back/animals', (req, res) => {
+		res.render('back/animals', {layout: 'back/main'});
+	});
+
 	app.get('/back/', (req, res) => {
 		res.render('back/home', {layout: 'back/main'});
 	});

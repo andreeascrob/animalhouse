@@ -37,10 +37,15 @@ router.get('/', async (req, res) => {
 		let query = {};
 		if (req.query.animalSlug && req.query.board) {
 			const animal = await Animal.findOne({'slug': req.query.animalSlug}).select('_id').exec();
-			query['animalId'] = animal._id.toString();
-			query['board'] = req.query.board;
-			const topics = await Topic.find(query).select('-comments').exec();
-			res.status(200).send(topics);
+			if(animal){
+				query['animalId'] = animal._id.toString();
+			  query['board'] = req.query.board;
+			  const topics = await Topic.find(query).select('-comments').exec();
+			  res.status(200).send(topics);
+			}else{
+				res.status(400).send('topics not found');
+			}
+			
 		} else {
 			res.status(400).send('animalSlug and board query parameters are mandatory');
 		}

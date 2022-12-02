@@ -6,7 +6,7 @@ router.post('/', async (req, res) => {
 	try {
 		const newAnimal = new Animal(req.body);
 		await newAnimal.save();
-		res.status(201).send(newProduct);
+		res.status(201).send(newAnimal);
 	} catch (err) {
 		res.status(400).send(err.message);
 	}
