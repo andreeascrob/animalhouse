@@ -9,7 +9,7 @@ const { engine } = require('express-handlebars');
 const port = 8000;
 global.jwtSecret = 'secret';
 
-mongoose.connect('mongodb://localhost:27017/test').then(() => {
+mongoose.connect('mongodb://0.0.0.0:27017/test').then(() => {
 	const app = express();
 	app.use(cors());
 	app.use(express.json());
@@ -73,12 +73,34 @@ mongoose.connect('mongodb://localhost:27017/test').then(() => {
 		res.render('front/topic', {layout: 'front/main'});
 	});
 
+	app.get('/back/animals', (req, res) => {
+		res.render('back/animals', {layout: 'back/main'});
+	});
+
 	app.get('/back/', (req, res) => {
 		res.render('back/home', {layout: 'back/main'});
 	});
 	app.get('/back/boards', (req, res) => {
 		res.render('back/boards', {layout: 'back/main'});
 	});
+	app.get('/back/changepassword', (req, res) => {
+		res.render('back/changepassword', {layout: 'back/main'});
+	});
+	app.get('/back/profile', (req, res) => {
+		res.render('back/profile', {layout: 'back/main'});
+	});
+	app.get('/back/signup', (req, res) => {
+		res.render('back/signup', {layout: 'back/main'});
+	});
+	app.get('/back/signin', (req, res) => {
+		res.render('back/signin', {layout: 'back/main'});
+	});
+	app.get('/back/e-commerce', (req, res) => {
+		res.render('back/e-commerce', {layout: 'back/main'});
+	});
+
+
+
 	app.use(express.static('static'));
 	app.get('/game/game-*', (req, res) => {
 		res.sendFile(path.join(__dirname + '/static/game/index.html'));

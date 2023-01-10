@@ -1,0 +1,79 @@
+<h1 class="text-center text-3xl p-4">Il tuo profilo</h1>
+<form id="form" class="flex flex-col p-4 max-w-prose mx-auto gap-4">
+  <label for="email">Nome</label>
+  <input id="name" class="dark:bg-neutral-800 rounded" type="text" required>
+  <label for="surname">Cognome</label>
+  <input id="surname" class="dark:bg-neutral-800 rounded" type="text" required>
+  <label for="email">Indirizzo e-mail</label>
+  <input id="email" class="dark:bg-neutral-800 rounded" type="email" required>
+  <label for="address">Indirizzo</label>
+  <input id="address" class="dark:bg-neutral-800 rounded" type="text">
+  <label for="city">Città</label>
+  <input id="city" class="dark:bg-neutral-800 rounded" type="text">
+  <input type="submit" class="p-2 bg-emerald-500 dark:bg-emerald-800 rounded hover:font-bold" value="Aggiorna profilo">
+</form>
+<a href="/back/changepassword"
+  class="flex flex-row w-52 mx-auto gap-2 rounded p-2 bg-emerald-500 dark:bg-emerald-800 justify-center items-center hover:font-bold">
+  <img class="dark:invert" width="20" src="/icons/key.svg">
+  <span>Cambia password</span>
+</a>
+<script>
+
+  if (!localStorage.token) {
+    window.location.href = '/back/signin';
+  } else {
+    console.log("entro")
+    document.getElementById('form').onsubmit = update;
+    fetch('/api/users/profile/admin', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.token}`
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success == true) {
+          document.getElementById('name').value = data.user.name;
+          document.getElementById('surname').value = data.user.surname;
+          document.getElementById('email').value = data.user.email;
+          document.getElementById('address').value = data.user.address || '';
+          document.getElementById('city').value = data.user.city || '';
+        } else {
+          alert(data.description)
+          window.location.href = '/front';
+        }
+      });
+  }
+  function update(event) {
+    event.preventDefault();
+    fetch('/api/users/profile/admin', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.token}`
+      },
+      body: JSON.stringify({
+        name: document.getElementById('name').value,
+        surname: document.getElementById('surname').value,
+        email: document.getElementById('email').value,
+        address: document.getElementById('address').value,
+        city: document.getElementById('city').value,
+      }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success == true) {
+           alert('Profilo aggiornato')
+        } else {
+          alert(data.description)
+          window.location.href = '/back/signin';
+        }
+      })
+      .catch ((error) => {
+      console.error('Error:', error);
+    });
+  }
+</script>

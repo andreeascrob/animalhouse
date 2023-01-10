@@ -24,7 +24,7 @@
 		.then((topic) => {
 			document.querySelector('h1').innerHTML = topic.title;
 			if (localStorage.token) {
-				if (localStorage.userId == topic.authorId) {
+				if (localStorage.userId == topic.authorId || localStorage.isAdmin == true) {
 					document.getElementById('delete-topic').classList.remove('hidden');
 				}
 			}
@@ -50,7 +50,7 @@
 						boardMessage.setAttribute('name', commentAuthor.name);
 						boardMessage.setAttribute('surname', commentAuthor.surname);
 						if (localStorage.token) {
-							if (localStorage.userId == comment.authorId) {
+							if (localStorage.userId == comment.authorId  ) {
 								let deleteButton = document.createElement('button');
 								deleteButton.classList = 'rounded p-1 bg-emerald-500 dark:bg-emerald-800 w-40 hover:font-bold';
 								deleteButton.innerHTML = 'Elimina commento';
@@ -77,7 +77,11 @@
 		})
 			.then(response => response.json())
 			.then(data => {
-				window.location.href = '/front/board/' + data.animalSlug;
+				if(localStorage.isAdmin)
+					window.location.href = '/back/boards/' 
+				else
+					window.location.href = '/front/board/' + data.animalSlug;
+
 			})
 			.catch((error) => {
 				console.error('Error:', error);

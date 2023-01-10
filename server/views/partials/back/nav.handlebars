@@ -5,7 +5,8 @@
 			<input class="dark:bg-neutral-800 border-r-0 rounded-l-full" type="search" name="q" placeholder="Cerca"><button class="bg-emerald-500 dark:bg-emerald-700 rounded-r-full px-4"><img class="dark:invert" src="/icons/search.svg"></button>
 		</div>
 		<div class="flex flex-row gap-4">
-			<ah-accountbutton></ah-accountbutton>
+			<a href="/back/signin" id="signin"><img width="20" class="mr-1 dark:invert inline" src="/icons/person.svg" alt=""><span class="hidden md:inline">Accedi</span></a>
+			<button class="hidden" id="logout" onclick="delete localStorage.userId; delete localStorage.token; localStorage.isAdmin; window.location.reload();"><img width="20" class="dark:invert inline" src="/icons/logout.svg" alt="Esci dall'account"></button>
 			<a href="/front/cart" class="flex flex-row gap-2"><img width="20" class="dark:invert inline" src="/icons/cart.svg"><span class="hidden md:inline">Carrello (0)</span></a>
 			<button class="md:hidden" onclick="document.getElementById('menu').classList.toggle('hidden');document.getElementById('x').classList.toggle('hidden');document.getElementById('categories').classList.toggle('hidden')">
 				<img id="menu" width="20" class="dark:invert" src="/icons/menu.svg">
@@ -20,3 +21,21 @@
 		<a href="/back/impostazioni" class="flex flex-row gap-2" href=""><img width="20" class="dark:invert inline" src="/icons/settings.svg"><span>impostazioni</span></a>
 	</div>
 </nav>
+<script>
+	if(localStorage.token){
+		document.getElementById("logout").classList.remove("hidden");
+		document.getElementById("signin").setAttribute("href","/back/profile");
+					fetch('/api/users/profile/', {
+				method: 'GET',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${localStorage.token}`
+				}
+			})
+			.then(response => response.json())
+			.then(data => document.getElementById("signin").textContent=data.name);
+
+	}
+
+</script>

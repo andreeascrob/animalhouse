@@ -1,1 +1,76 @@
-bachceche
+<label for="animalSlug">Animale</label>
+<select name="animalSlug" id="animalSlug" class="dark:bg-neutral-800 rounded" onchange="load_topics()">
+</select>
+<div id="boards" class="flex flex-col gap-4 p-4 max-w-screen-lg mx-auto">
+	<div class="flex flex-row justify-between">
+		<h2 class="text-3xl font-bold">Eccolo qua</h2>
+	</div>
+	<div class="flex flex-col w-full gap-4 p-4" id="eccolo-qua">
+	</div>
+	<div class="flex flex-row justify-between">
+		<h2 class="text-3xl font-bold">Cerco partner</h2>
+	</div>
+	<div class="flex flex-col w-full gap-4 p-4" id="cerco-partner">
+	</div>
+	<div class="flex flex-row justify-between">
+		<h2 class="text-3xl font-bold">Aiutatemi</h2>
+	</div>
+	<div class="flex flex-col w-full gap-4 p-4" id="aiutatemi">
+	</div>
+</div>
+<script>
+	fetch('/api/animals')
+		.then((response) => response.json())
+		.then((animals) => {
+			animals.forEach(animal => {
+				let option = document.createElement('option');
+				option.value = animal.slug;
+				option.innerHTML = animal.name;
+				document.getElementById('animalSlug').appendChild(option);
+			});
+			document.getElementById('animalSlug').value='cane';
+			load_topics();
+		});
+	function load_topics() {
+		['eccolo-qua', 'cerco-partner', 'aiutatemi'].forEach((board) => {
+
+			fetch(`/api/topics/?animalSlug=${document.getElementById('animalSlug').value}&board=` + board)
+				.then((response) => response.json())
+				.then((topics) => {
+					document.getElementById(board).innerHTML='';
+					if (topics.length == 0) {
+						let nopost = document.createElement('p');
+						nopost.innerHTML = 'Nessun post creato';
+						document.getElementById(board).appendChild(nopost);
+					} else {
+						topics.forEach(topic => {
+							let boardTopicTitle = document.createElement('a');
+							boardTopicTitle.href = '/front/topic/' + topic._id;
+							boardTopicTitle.classList = 'text-xl font-bold';
+							boardTopicTitle.innerHTML = topic.title;
+							let boardTopic = document.createElement('div');
+							fetch('/api/users/info/' + topic.authorId)
+								.then(response => response.json())
+								.then(data => {
+									boardTopic.innerHTML = `
+<div class="flex flex-row border border-neutral-300 dark:border-neutral-800 rounded-xl shadow-md max-w-screen-lg mx-auto">
+	<div class="w-1/5 p-4 gap-4">
+		<img class="w-24 rounded-full" src="${topic.imageUrl ?? 'https://placeholder.pics/svg/96x96/FFFFFF-FFFFFF/FFFFFF/%F0%9F%98%80'}">
+		<p>${data.name ?? ''} ${data.surname ?? ''}</p>
+	</div>
+	<div class="w-4/5 p-4">
+		${topic.imageUrl ? '<img src="' + topic.imageUrl + '" class="max-h-60">' : ''}
+		<p>${topic.text}</p>
+	</div>
+</div>
+`
+									document.getElementById(board).appendChild(boardTopicTitle);
+									document.getElementById(board).appendChild(boardTopic);
+								});
+
+						});
+					}
+				});
+		});
+	}
+</script>

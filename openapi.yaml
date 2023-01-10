@@ -961,6 +961,56 @@ paths:
                 $ref: '#/components/schemas/User'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+  /users/signup/admin:
+    post:
+      summary: Creates an user.
+      tags:
+        - user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignUpUser'
+      responses:
+        '201':
+          description: Created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  token:
+                    type: string
+        '400':
+          description: Error.
+  /users/signin/admin:
+    post:
+      summary: Sign in an user.
+      tags:
+        - user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignInUser'
+      responses:
+        '200':
+          description: The JWT token and the user id.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  token:
+                    type: string
+        '400':
+          description: Error.
 components:
   securitySchemes:
     bearerAuth:
@@ -1388,3 +1438,4 @@ components:
       required:
         - name
         - surname
+  
