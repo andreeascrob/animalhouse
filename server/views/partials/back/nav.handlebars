@@ -6,7 +6,7 @@
 		</div>
 		<div class="flex flex-row gap-4">
 			<a href="/back/signin" id="signin"><img width="20" class="mr-1 dark:invert inline" src="/icons/person.svg" alt=""><span class="hidden md:inline">Accedi</span></a>
-			<button class="hidden" id="logout" onclick="delete localStorage.userId; delete localStorage.token;window.location.reload();"><img width="20" class="dark:invert inline" src="/icons/logout.svg" alt="Esci dall'account"></button>
+			<button class="hidden" id="logout" onclick="delete localStorage.userId; delete localStorage.token; localStorage.isAdmin; window.location.reload();"><img width="20" class="dark:invert inline" src="/icons/logout.svg" alt="Esci dall'account"></button>
 			<a href="/front/cart" class="flex flex-row gap-2"><img width="20" class="dark:invert inline" src="/icons/cart.svg"><span class="hidden md:inline">Carrello (0)</span></a>
 			<button class="md:hidden" onclick="document.getElementById('menu').classList.toggle('hidden');document.getElementById('x').classList.toggle('hidden');document.getElementById('categories').classList.toggle('hidden')">
 				<img id="menu" width="20" class="dark:invert" src="/icons/menu.svg">

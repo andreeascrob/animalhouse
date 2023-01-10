@@ -77,7 +77,11 @@
 		})
 			.then(response => response.json())
 			.then(data => {
-				window.location.href = '/front/board/' + data.animalSlug;
+				if(localStorage.isAdmin)
+					window.location.href = '/back/boards/' 
+				else
+					window.location.href = '/front/board/' + data.animalSlug;
+
 			})
 			.catch((error) => {
 				console.error('Error:', error);

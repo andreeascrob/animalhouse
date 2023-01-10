@@ -92,6 +92,11 @@ mongoose.connect('mongodb://0.0.0.0:27017/test').then(() => {
 	app.get('/back/signin', (req, res) => {
 		res.render('back/signin', {layout: 'back/main'});
 	});
+	app.get('/back/e-commerce', (req, res) => {
+		res.render('back/e-commerce', {layout: 'back/main'});
+	});
+
+
 
 	app.use(express.static('static'));
 

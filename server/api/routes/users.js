@@ -13,9 +13,32 @@ router.get('/info/:id', async (req, res) => {
 	}
 });
 
-router.post('/changepassword', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true},), async (req, res) => {
+async function getUser(req, res, isadmin) {
+	let query = User.findOne({'_id': req.auth});
+	if(isadmin)
+		query = query.where('isadmin').equals(true);
+	const user = await query.exec();
+	if (user == null) {
+		res.status(404).send(isadmin ? {success: false, description: 'Non sei un admin'} : undefined);
+	} else {
+		res.status(200).send(isadmin ? {success: true, user} : user);
+	}
+};
+
+router.get('/profile', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true},), async (req, res) => {
+	await getUser(req, res, false)
+});
+
+router.get('/profile/admin', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true},), async (req, res) => {
+	await getUser(req, res, true)
+});
+
+async function postChangep(req, res, isadmin){
 	try {
-		const user = await User.findOne({'_id': req.auth}).exec();
+		let query = await User.findOne({'_id': req.auth});
+		if(isadmin)
+			query = query.where('isadmin').equals(true);
+		const user = await query.exec();
 		if (user.password == req?.body?.oldpassword) {
 			await User.updateOne(
 				{'_id': req.auth},
@@ -30,20 +53,20 @@ router.post('/changepassword', jwt({secret: jwtSecret, algorithms: ['HS256'], cr
 	} catch (err) {
 		res.status(400).send(err.message);
 	}
+};
+
+router.post('/changepassword', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true},), async (req, res) => {
+	await postChangep(res, req, false)
 });
 
-router.get('/profile', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true},), async (req, res) => {
-	const user = await User.findOne({'_id': req.auth}).exec();
-	if (user == null) {
-		res.status(404).send();
-	} else {
-		res.status(200).send(user);
-	}
+router.post('/changepassword/admin', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true},), async (req, res) => {
+	await postChangep(req, res, true)
 });
 
-router.post('/profile', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true},), async (req, res) => {
+
+async function postProfile(req, res, isamin){
 	try {
-		await User.updateOne(
+		let query = await User.updateOne(
 			{'_id': req.auth},
 			{$set: {
 				'name': req.body.name,
@@ -53,64 +76,22 @@ router.post('/profile', jwt({secret: jwtSecret, algorithms: ['HS256'], credentia
 				'city': req.body.city
 			}}
 		);
+		if(isadmin)
+			query = query.where('isadmin').equals(true);
 		res.status(200).send();
 	} catch (err) {
 		res.status(400).send(err.message);
 	}
+}
+
+router.post('/profile', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true},), async (req, res) => {
+	await getUser(req, res, false)
 });
 
-router.post('/changepassword/admin', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true},), async (req, res) => {
-	try {
-		const user = await User.findOne({'_id': req.auth}).where('isadmin').equals(true).exec();
-		if(user==null){ 
-			res.status(404).send({success: false, description: 'Non sei un admin'});
-			return;
-		}
-		if (user.password == req?.body?.oldpassword) {
-			await User.updateOne(
-				{'_id': req.auth},
-				{$set: {
-					'password': req.body.newpassword
-				}}
-			);
-			res.status(200).send({success: true});
-		} else {
-			res.status(403).send({success: false, description: 'Incorrect old password'});
-		}
-	} catch (err) {
-		res.status(400).send({success: false, description: err.message});
-	}
-});
-
-
-router.get('/profile/admin', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true},), async (req, res) => {
-	const user = await User.findOne({'_id': req.auth}).where('isadmin').equals(true).exec();
-	if (user == null) {
-		res.status(404).send({success: false, description: 'Non sei un admin'});
-	} else {
-		res.status(200).send({success: true, user});
-	}
-});
 
 router.post('/profile/admin', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true},), async (req, res) => {
-	try {
-		await User.updateOne(
-			{'_id': req.auth},
-			{$set: {
-				'name': req.body.name,
-				'surname': req.body.surname,
-				'email': req.body.email,
-				'address': req.body.address,
-				'city': req.body.city
-			}}
-		).where('isadmin').equals(true);
-		res.status(200).send({success: true});
-	} catch (err) {
-		res.status(400).send({success: false, description: err.message});
-	}
+	await postProfile(req, res, false) 
 });
-
-
 
 const signin = async (req, res) => {
 	const user = await User.findOne({'email': req.body.email}).exec();
@@ -127,32 +108,29 @@ const signin = async (req, res) => {
 		}
 	}
 }
+async function singup(req, res, isadmin){
+	try {
+		if(isadmin)
+			req.body.isadmin = true;
+		const newUser = new User(req.body);
+		await newUser.save();
+		const token = jsonwebtoken.sign(newUser._id.toString(), jwtSecret);
+		res.status(201).send(JSON.stringify({'id': newUser._id, 'token': token}));
+	} catch (err) {
+		res.status(400).send(err.message);
+	}
+}
 
 router.post('/signin', signin);
 
 router.post('/signin/admin', signin);
 
 router.post('/signup', async (req, res) => {
-	try {
-		const newUser = new User(req.body);
-		await newUser.save();
-		const token = jsonwebtoken.sign(newUser._id.toString(), jwtSecret);
-		res.status(201).send(JSON.stringify({'id': newUser._id, 'token': token}));
-	} catch (err) {
-		res.status(400).send(err.message);
-	}
+	await singup(req, res, false)
 });
 
 router.post('/signup/admin', async (req, res) => {
-	try { 
-		req.body.isadmin = true;
-		const newUser = new User(req.body);
-		await newUser.save();
-		const token = jsonwebtoken.sign(newUser._id.toString(), jwtSecret);
-		res.status(201).send(JSON.stringify({'id': newUser._id, 'token': token}));
-	} catch (err) {
-		res.status(400).send(err.message);
-	}
+	await singup(req, res, true)
 });
 
 module.exports = router;
