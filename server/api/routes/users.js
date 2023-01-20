@@ -108,7 +108,7 @@ const signin = async (req, res) => {
 		}
 	}
 }
-async function singup(req, res, isadmin){
+async function signup(req, res, isadmin){
 	try {
 		if(isadmin)
 			req.body.isadmin = true;
@@ -126,11 +126,11 @@ router.post('/signin', signin);
 router.post('/signin/admin', signin);
 
 router.post('/signup', async (req, res) => {
-	await singup(req, res, false)
+	await signup(req, res, false)
 });
 
 router.post('/signup/admin', async (req, res) => {
-	await singup(req, res, true)
+	await signup(req, res, true)
 });
 
 module.exports = router;
