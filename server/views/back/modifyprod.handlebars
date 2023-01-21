@@ -21,12 +21,12 @@ product.innerHTML =`<div class="basis-1/4">
 				<button class="flex flex-row gap-2 rounded p-4 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-52 hover:font-bold" onclick="this.getRootNode().host.addToCart()">
 					<span> Aggiorna prodotto <span>
 				</button>
-        <button class="flex flex-row gap-2 rounded p-4 bg-red-500 dark:bg-red-700 justify-center items-center w-52 hover:font-bold" onclick="this.getRootNode().host.addToCart()">
+        <button class="flex flex-row gap-2 rounded p-4 bg-red-500 dark:bg-red-800 justify-center items-center w-52 hover:font-bold" onclick="this.getRootNode().host.addToCart()">
 					<span> Elimina prodotto <span>
 				</button>
 			</div>
 			<p class="font-bold${data.available[0] == 0 ? '' : ' hidden'}">Prodotto non disponibile</p>
-			${data.description ? ('<label for="description" class="text-justify"> Descrizione</label><textarea id=description class="dark:bg-neutral-800 rounded">' + data.description + '</textarea>') : '<div class="animate-pulse w-full h-12 bg-neutral-300 dark:bg-neutral-800 rounded"></div>'}
+			${data.description ? ('<label for="description" class="text-justify"> Descrizione </label><textarea id=description class="dark:bg-neutral-800 rounded" rows="5">' + data.description + '</textarea>') : '<div class="animate-pulse w-full h-12 bg-neutral-300 dark:bg-neutral-800 rounded"></div>'}
 		</div>
 	</div>`
   document.getElementById('product').appendChild(product)

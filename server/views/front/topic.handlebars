@@ -1,7 +1,7 @@
 <div id="topic" class="flex flex-col gap-4 p-4 max-w-screen-lg mx-auto">
 	<div class="flex flex-row justify-between">
 		<h1 class="text-3xl font-bold"></h1>
-		<button id="delete-topic" class="flex flex-row gap-2 rounded p-1 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-40 hover:font-bold hidden" onclick="deleteTopic()">
+		<button id="delete-topic" class="flex flex-row gap-2 rounded p-1 bg-red-500 dark:bg-red-800 justify-center items-center w-40 hover:font-bold hidden" onclick="deleteTopic()">
 			<img class="dark:invert" src="/icons/trash.svg" width="20">
 			<span>Elimina post</span>
 		</button>
@@ -52,7 +52,7 @@
 						if (localStorage.token) {
 							if (localStorage.userId == comment.authorId  ) {
 								let deleteButton = document.createElement('button');
-								deleteButton.classList = 'rounded p-1 bg-emerald-500 dark:bg-emerald-800 w-40 hover:font-bold';
+								deleteButton.classList = 'rounded p-1 bg-red-500 dark:bg-red-800 w-40 hover:font-bold';
 								deleteButton.innerHTML = 'Elimina commento';
 								deleteButton.onclick = () => { deleteComment(comment._id) };
 								commentDiv.appendChild(deleteButton);
