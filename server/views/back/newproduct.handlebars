@@ -62,6 +62,16 @@
 				document.getElementById('animalSlug').appendChild(option);
 			});
     });
+    	fetch('/api/categories/')
+		.then((response) => response.json())
+		.then((categories) => {
+			categories.forEach(category => {
+				let option = document.createElement('option');
+				option.value = category.slug;
+				option.innerHTML = category.name;
+				document.getElementById('category').appendChild(option);
+			});
+    });
     function add_product(event) {
     event.preventDefault();
     fetch('/api/products', {

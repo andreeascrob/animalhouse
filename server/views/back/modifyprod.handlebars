@@ -1,0 +1,35 @@
+<div id="product" class="flex flex-col gap-4 p-4 max-w-screen-lg mx-auto">
+</div><script>
+	fetch('/api/products/' + window.location.pathname.match(/[^\/]+(?=\/?$)/)[0])
+  .then((response) => response.json())
+		.then((data) => {
+let product = document.createElement("div");
+product.className = 'flex flex-col md:flex-row gap-4 p-4 max-w-screen-lg mx-auto'
+product.innerHTML =`<div class="basis-1/4">
+		<img class="rounded-xl aspect-square w-full bg-neutral-300 dark:bg-neutral-800" src="${data.imageUrl}">
+	</div>
+	<div class="basis-3/4">
+		<div class="flex flex-col basis-3/4 gap-2">
+			${data.name ? ('<h1 class="text-3xl font-bold">' + data.name + '</h1>') : '<div class="animate-pulse w-full h-9 bg-neutral-300 dark:bg-neutral-800 rounded"></div>'}
+			${data.price ? ('<label for="price" class="text-lg">Prezzo</label><input id="price" class=" w-24 dark:bg-neutral-800 rounded" value="' + data.price + '"/>') : '<div class="animate-pulse w-20 h-7 bg-neutral-300 dark:bg-neutral-800 rounded"></div>'}
+			<div class="flex flex-row gap-2${data.available[0] > 0 ? '' : ' hidden'}">
+				<div class="flex flex-col">
+					<label for="quantity">Quantità:</label>
+					<input class="w-24 dark:bg-neutral-800 rounded" type="number" id="quantity" name="quantity" min="1" max="${data.available[0]}" value="1">
+				</div>
+
+				<button class="flex flex-row gap-2 rounded p-4 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-52 hover:font-bold" onclick="this.getRootNode().host.addToCart()">
+					<span> Aggiorna prodotto <span>
+				</button>
+        <button class="flex flex-row gap-2 rounded p-4 bg-red-500 dark:bg-red-700 justify-center items-center w-52 hover:font-bold" onclick="this.getRootNode().host.addToCart()">
+					<span> Elimina prodotto <span>
+				</button>
+			</div>
+			<p class="font-bold${data.available[0] == 0 ? '' : ' hidden'}">Prodotto non disponibile</p>
+			${data.description ? ('<label for="description" class="text-justify"> Descrizione</label><textarea id=description class="dark:bg-neutral-800 rounded">' + data.description + '</textarea>') : '<div class="animate-pulse w-full h-12 bg-neutral-300 dark:bg-neutral-800 rounded"></div>'}
+		</div>
+	</div>`
+  document.getElementById('product').appendChild(product)
+    });
+
+</script>

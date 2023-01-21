@@ -101,6 +101,10 @@ mongoose.connect('mongodb://0.0.0.0:27017/test').then(() => {
 	app.get('/back/newproduct', (req, res) => {
 		res.render('back/newproduct', {layout: 'back/main'});
 	});
+	app.get('/back/modifyprod/:slug', (req, res) => {
+		res.render('back/modifyprod', {layout: 'back/main'});
+	});
+
 
 
 
