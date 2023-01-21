@@ -21,7 +21,7 @@ product.innerHTML =`<div class="basis-1/4">
 				<button type="submit" class="flex flex-row gap-2 rounded p-4 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-52 hover:font-bold">
 					<span> Aggiorna prodotto <span>
 				</button>
-        <button class="flex flex-row gap-2 rounded p-4 bg-red-500 dark:bg-red-800 justify-center items-center w-52 hover:font-bold" onclick="deleteProduct('${data.slug}')">
+        <button type="button" class="flex flex-row gap-2 rounded p-4 bg-red-500 dark:bg-red-800 justify-center items-center w-52 hover:font-bold" onclick="deleteProduct('${data.slug}')">
 					<span> Elimina prodotto <span>
 				</button>
 			</div>
@@ -41,7 +41,7 @@ product.innerHTML =`<div class="basis-1/4">
   })
     });
 	function modifyProduct(productslug, data) {
-		fetch('/api/products/' + window.location.pathname.match(/[^\/]+(?=\/?$)/)[0], {
+		fetch('/api/products/' + productslug, {
 			method: 'PATCH',
 			headers: {
 				'Accept': 'application/json',
@@ -60,7 +60,7 @@ product.innerHTML =`<div class="basis-1/4">
 			});
 	}
 	function deleteProduct(productslug) {
-		fetch('/api/products/' + window.location.pathname.match(/[^\/]+(?=\/?$)/)[0], {
+		fetch('/api/products/' + productslug, {
 			method: 'DELETE',
 			headers: {
 				'Accept': 'application/json',
