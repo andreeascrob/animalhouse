@@ -32,7 +32,7 @@ router.get('/:serviceId', async (req, res) => {
 
 router.delete('/:serviceId', async (req, res) => {
 	try {
-		await Service.findByOneAndDelete({'_id': req.params.serviceId}).exec();
+		await Service.findOneAndDelete({'_id': req.params.serviceId}).exec();
 		res.status(200).send();
 	} catch (err) {
 		res.status(400).send(err.message);

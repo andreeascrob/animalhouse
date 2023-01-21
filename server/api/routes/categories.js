@@ -32,7 +32,7 @@ router.get('/:productCategorySlug', async (req, res) => {
 
 router.delete('/:productCategorySlug', async (req, res) => {
 	try {
-		await ProductCategory.findByOneAndDelete({'slug': req.params.productCategorySlug}).exec();
+		await ProductCategory.findOneAndDelete({'slug': req.params.productCategorySlug}).exec();
 		res.status(200).send();
 	} catch (err) {
 		res.status(400).send(err.message);
