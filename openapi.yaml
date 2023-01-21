@@ -524,6 +524,32 @@ paths:
                 $ref: '#/components/schemas/Product'
         '404':
           description: Product non found.
+    patch:
+      summary: Modify a product by slug.
+      tags:
+        - store
+      parameters:
+        - name: productSlug
+          in: path
+          required: true
+          description: The slug of the product.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product non found.
     delete:
       summary: Deletes a product by slug.
       tags:

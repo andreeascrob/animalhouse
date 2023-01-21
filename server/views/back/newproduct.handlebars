@@ -1,6 +1,14 @@
 <h1 class="font-bold text-3xl text-center p-4">Aggiungi un nuovo Prodotto</h1>
 
 <form id="form" class="flex flex-col p-4 max-w-prose mx-auto gap-4">
+  <label for="slug">Slug</label>
+  <input
+    type="text"
+    name="slug"
+    id="slug"
+    class="dark:bg-neutral-800 rounded"
+    required
+  />
   <label for="name">Nome</label>
   <input
     type="text"
@@ -44,11 +52,11 @@
 	<textarea id="text" name="text" class="dark:bg-neutral-800 rounded" rows="5" required></textarea>
   <label for="image">Immagine</label>
   <input type="file" id="image" name="image" accept="image/png, image/jpeg" />
-  <input
+  <button
     type="submit"
-    class="p-2 bg-emerald-500 dark:bg-emerald-800 rounded hover:font-bold"
-    value="Aggiungi prodotto"
-  />
+    class="p-2 bg-emerald-500 dark:bg-emerald-800 rounded hover:font-bold" onclick="add_product()">
+    <span>Aggiungi prodotto</span>
+  </button>
 
 </form>
 <script>
@@ -57,7 +65,7 @@
 		.then((animals) => {
 			animals.forEach(animal => {
 				let option = document.createElement('option');
-				option.value = animal.slug;
+				option.value = animal._id;
 				option.innerHTML = animal.name;
 				document.getElementById('animalSlug').appendChild(option);
 			});
@@ -67,13 +75,13 @@
 		.then((categories) => {
 			categories.forEach(category => {
 				let option = document.createElement('option');
-				option.value = category.slug;
+				option.value = category._id;
 				option.innerHTML = category.name;
 				document.getElementById('category').appendChild(option);
 			});
     });
-    function add_product(event) {
-    event.preventDefault();
+    function add_product() {
+      console.log(document.getElementById('slug'), document.getElementById('slug').value)
     fetch('/api/products', {
       method: 'POST',
       headers: {
@@ -82,17 +90,21 @@
         'Authorization': `Bearer ${localStorage.token}`
       },
       body: JSON.stringify({
-        name: document.getElementById('name').value,
         slug: document.getElementById('slug').value,
+        name: document.getElementById('name').value,
         price: document.getElementById('price').value,
         available: document.getElementById('available').value,
-
+        animalId: document.getElementById('animalSlug').value,
+        categoryId: document.getElementById('category').value,
+        description: document.getElementById('text').value,
+        imageUrl: document.getElementById('image').value
       }),
     })
       .then(response => {
-        if (response.status == 201)
+        if (response.status == 201){
+          window.location.replace('/back/e-commerce');
           return response.json()
-        else
+        }else
           alert("Si è verificato un errore")
 
       })

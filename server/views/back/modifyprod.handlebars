@@ -3,7 +3,7 @@
 	fetch('/api/products/' + window.location.pathname.match(/[^\/]+(?=\/?$)/)[0])
   .then((response) => response.json())
 		.then((data) => {
-let product = document.createElement("div");
+let product = document.createElement("form");
 product.className = 'flex flex-col md:flex-row gap-4 p-4 max-w-screen-lg mx-auto'
 product.innerHTML =`<div class="basis-1/4">
 		<img class="rounded-xl aspect-square w-full bg-neutral-300 dark:bg-neutral-800" src="${data.imageUrl}">
@@ -12,16 +12,16 @@ product.innerHTML =`<div class="basis-1/4">
 		<div class="flex flex-col basis-3/4 gap-2">
 			${data.name ? ('<h1 class="text-3xl font-bold">' + data.name + '</h1>') : '<div class="animate-pulse w-full h-9 bg-neutral-300 dark:bg-neutral-800 rounded"></div>'}
 			${data.price ? ('<label for="price" class="text-lg">Prezzo</label><input id="price" class=" w-24 dark:bg-neutral-800 rounded" value="' + data.price + '"/>') : '<div class="animate-pulse w-20 h-7 bg-neutral-300 dark:bg-neutral-800 rounded"></div>'}
-			<div class="flex flex-row gap-2${data.available[0] > 0 ? '' : ' hidden'}">
+			<div class="flex flex-row gap-2">
 				<div class="flex flex-col">
 					<label for="quantity">Quantità:</label>
-					<input class="w-24 dark:bg-neutral-800 rounded" type="number" id="quantity" name="quantity" min="1" max="${data.available[0]}" value="1">
+					<input class="w-24 dark:bg-neutral-800 rounded" type="number" id="quantity" name="quantity" value="1">
 				</div>
 
-				<button class="flex flex-row gap-2 rounded p-4 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-52 hover:font-bold" onclick="this.getRootNode().host.addToCart()">
+				<button type="submit" class="flex flex-row gap-2 rounded p-4 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-52 hover:font-bold">
 					<span> Aggiorna prodotto <span>
 				</button>
-        <button class="flex flex-row gap-2 rounded p-4 bg-red-500 dark:bg-red-800 justify-center items-center w-52 hover:font-bold" onclick="this.getRootNode().host.addToCart()">
+        <button class="flex flex-row gap-2 rounded p-4 bg-red-500 dark:bg-red-800 justify-center items-center w-52 hover:font-bold" onclick="deleteProduct('${data.slug}')">
 					<span> Elimina prodotto <span>
 				</button>
 			</div>
@@ -30,6 +30,52 @@ product.innerHTML =`<div class="basis-1/4">
 		</div>
 	</div>`
   document.getElementById('product').appendChild(product)
+  product.addEventListener('submit', function() {
+    const price = document.getElementById('price').value
+    const description = document.getElementById('description').value
+
+    modifyProduct(data.slug, {
+      price,
+      description
+    })
+  })
     });
+	function modifyProduct(productslug, data) {
+		fetch('/api/products/' + window.location.pathname.match(/[^\/]+(?=\/?$)/)[0], {
+			method: 'PATCH',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.token}`
+			},
+			body: JSON.stringify(data),
+		})
+			.then((response) => {
+				if (response.ok) {
+					window.location.reload();
+				}
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
+	}
+	function deleteProduct(productslug) {
+		fetch('/api/products/' + window.location.pathname.match(/[^\/]+(?=\/?$)/)[0], {
+			method: 'DELETE',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.token}`
+			}
+		})
+			.then((response) => {
+				if (response.ok) {
+					window.location.replace('/back/e-commerce');
+				}
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
+	}
 
 </script>
