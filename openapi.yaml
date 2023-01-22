@@ -876,6 +876,8 @@ paths:
                     type: string
         '400':
           description: Error.
+        '403':
+          description: E-mail already in use.
   /users/signin:
     post:
       summary: Sign in an user.
