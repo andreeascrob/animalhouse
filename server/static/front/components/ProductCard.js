@@ -11,7 +11,7 @@ export class ProductCard extends HTMLElement {
 			<a href="/front/product/${this.getAttribute('slug')}"><p class="font-bold font-lg">${this.getAttribute('productname')}</p></a>
 			<p>${window.eurIT.format(this.getAttribute('price'))}</p>
 		</div>
-		<button class="bg-emerald-500 dark:bg-emerald-800 p-4 rounded-full self-center shrink-0${this.getAttribute('available') > 0 ? '' : ' hidden'}" onclick="addToCart('${this.getAttribute('slug')}', 1)"><img class="dark:invert" width="20" src="/icons/cart-plus.svg"></button>
+		<button class="bg-emerald-500 dark:bg-emerald-800 p-4 rounded-full self-center shrink-0${this.getAttribute('available') > 0 ? '' : ' hidden'}" onclick="addToCart('${this.getAttribute('slug')}', 1)"><img class="dark:invert" width="20" src="/icons/cart-plus.svg" alt="Aggiungi al carrello"></button>
 	</div>
 </div>
 `;
