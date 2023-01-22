@@ -36,11 +36,20 @@
 						password: digestPassword
 					}),
 				})
-					.then((response) => response.json())
+					.then((response) => {
+						if (response.status == 403) {
+							alert('Indirizzo mail già registrato');
+							window.location.href = '/front/signin';
+						} else {
+							return response.json();
+						}
+					})
 					.then((data) => {
-						localStorage.token = data.token;
-						localStorage.userId = data.id;
-						window.location.href = '/front';
+						if (data) {
+							localStorage.token = data.token;
+							localStorage.userId = data.id;
+							window.location.href = '/front';
+						}
 					})
 					.catch((error) => {
 						console.error('Error:', error);

@@ -110,12 +110,18 @@ const signin = async (req, res) => {
 }
 async function signup(req, res, isadmin){
 	try {
-		if(isadmin)
-			req.body.isadmin = true;
-		const newUser = new User(req.body);
-		await newUser.save();
-		const token = jsonwebtoken.sign(newUser._id.toString(), jwtSecret);
-		res.status(201).send(JSON.stringify({'id': newUser._id, 'token': token}));
+		const user = await User.findOne({'email': req.body.email}).exec();
+		if (user == null) {
+			if(isadmin) {
+				req.body.isadmin = true;
+			}
+			const newUser = new User(req.body);
+			await newUser.save();
+			const token = jsonwebtoken.sign(newUser._id.toString(), jwtSecret);
+			res.status(201).send(JSON.stringify({'id': newUser._id, 'token': token}));
+		} else {
+			res.status(403).send('E-mail already in use');
+		}
 	} catch (err) {
 		res.status(400).send(err.message);
 	}
