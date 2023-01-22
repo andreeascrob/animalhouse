@@ -63,6 +63,15 @@ router.get('/', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequir
 		res.status(400).send(err.message);
 	}
 });
+router.get('/:branchId/:serviceId',/*jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true}),*/ async (req, res) => {
+	try {
+		const branch = await Branch.findOne({'_id': req.params.branchId}).exec();
+		const services = branch.servicesSlots.filter(s => s.serviceId == req.params.serviceId)
+		res.status(200).send(services);
+	} catch (err) {
+		res.status(400).send(err.message);
+	}
+});
 
 router.delete('/:serviceSlotId', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true}), async (req, res) => {
 	try {

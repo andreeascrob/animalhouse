@@ -1,0 +1,57 @@
+<h1 class="text-3xl font-bold text-center">Cerca servizi</h1>
+<div class="flex flex-col p-4 max-w-prose mx-auto gap-4">
+	<label for="branch">Sede</label>
+	<select name="branch" id="branch" class="dark:bg-neutral-800 rounded" onchange="updateServices()">
+	</select>
+</div>
+<div id="services" class="flex flex-col gap-4 p-4 max-w-screen-lg mx-auto">
+</div>
+<script>
+	fetch('/api/branches/')
+		.then((response) => response.json())
+		.then((branches) => {
+			branches.forEach(branch => {
+				let option = document.createElement('option');
+				option.value = branch._id;
+				option.innerHTML = `${branch.city} (${branch.address})`;
+				document.getElementById('branch').appendChild(option);
+			});
+			updateServices();
+		});
+	function updateServices() {
+		fetch('/api/branches/' + document.getElementById('branch').value)
+			.then((response) => response.json())
+			.then((branch) => {
+				document.getElementById('services').innerHTML = '';
+				if (branch.servicesSlots.length == 0) {
+					let info = document.createElement('p');
+					info.innerHTML = 'Nessun servizio disponibile';
+					document.getElementById('services').appendChild(info);
+				} else {
+					let servicesIds = new Set();
+					branch.servicesSlots.forEach(service => {
+						servicesIds.add(service.serviceId);
+					});
+					servicesIds.forEach(serviceId => {
+						fetch('/api/services/' + serviceId)
+							.then((response) => response.json())
+							.then((serviceData) => {
+                        let servicesCard= document.createElement("div");
+				servicesCard.innerHTML = `<div class="flex flex-col md:flex-row items-center gap-4">
+	<img class="w-full md:w-3/5 rounded-xl bg-neutral-300 dark:bg-neutral-800" src="${serviceData.imageUrl ?? ''}" loading="lazy" alt="">
+	<div class="flex flex-col gap-2 w-full md:w-2/5">
+		<h2 class="font-bold font-lg">${serviceData.name}</h2>
+		<p>${serviceData.description}</p>
+		<a href="/back/booking/?serviceId=${serviceData._id}${document.getElementById('branch').value ? '&branchId=' + document.getElementById('branch').value : ''}" class="flex flex-row gap-2 rounded p-1 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-40 ">
+			<span>Gestisci prenotazioni</span>
+      <img class="dark:invert " src="/icons/arrow.svg" width="20">
+		</a>
+	</div>
+</div>`;
+			document.getElementById('services').appendChild(servicesCard);
+							});
+					});
+				}
+			});
+	}
+      </script>

@@ -22,7 +22,6 @@
   if (!localStorage.token) {
     window.location.href = '/back/signin';
   } else {
-    console.log("entro")
     document.getElementById('form').onsubmit = update;
     fetch('/api/users/profile/admin', {
       method: 'GET',

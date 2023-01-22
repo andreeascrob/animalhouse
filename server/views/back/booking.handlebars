@@ -1,0 +1,25 @@
+<div id="booking" class="flex flex-col gap-4 p-4 max-w-2xl mx-auto">
+</div>
+<script>
+  
+  const params = (new URL(document.location)).searchParams;
+  fetch(`/api/bookings/${params.get('branchId')}/${params.get('serviceId')}`)
+  	.then((response) => response.json())
+		.then((services) => {
+      services.forEach(booking => {
+        console.log(booking)
+        let bookingCard= document.createElement("div");
+								bookingCard.innerHTML = `<div
+                class="flex flex-row border border-neutral-300 dark:border-neutral-800 rounded-xl shadow-md max-w-screen-lg mx-auto">
+	<div class="w-1/5 p-4 gap-4">
+  <img class="dark:invert" src="/icons/calendar.svg" width="40">
+		<p>${booking.start}${booking.end}</p>
+	</div>
+	<div class="w-4/5 p-4">
+		<p>${booking.info}</p>
+	</div>
+</div>`;
+document.getElementById('booking').appendChild(bookingCard)
+      })
+    })
+</script>
