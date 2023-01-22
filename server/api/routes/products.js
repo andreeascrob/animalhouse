@@ -49,6 +49,15 @@ router.get('/:productSlug', async (req, res) => {
 	}
 });
 
+router.patch('/:productSlug', async (req, res) => {
+	try {
+		const prod = await Product.updateOne({'slug': req.params.productSlug}, req.body).exec();
+		res.status(202).send();
+	} catch (err) {
+		res.status(400).send(err.message);
+	}
+});
+
 router.delete('/:productSlug', async (req, res) => {
 	try {
 		await Product.findOneAndDelete({'slug': req.params.productSlug}).exec();

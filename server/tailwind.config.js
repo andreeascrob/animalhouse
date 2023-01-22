@@ -1,5 +1,5 @@
 module.exports = {
-	content: ['./static/front/components/*.js', './views/**/*.handlebars', './views/**/**/*.handlebars',],
+	content: ['./static/front/components/*.js','./views/back/*.handlebars', './views/**/*.handlebars', './views/**/**/*.handlebars',],
 	theme: {
 		extend: {},
 	},
