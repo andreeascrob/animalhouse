@@ -1,7 +1,14 @@
 <div id="booking" class="flex flex-col gap-4 p-4 max-w-2xl mx-auto">
 </div>
 <script>
-  
+	const dateTimeFormat = Intl.DateTimeFormat('it-IT', {
+		hour: 'numeric',
+		minute: 'numeric',
+		day: 'numeric',
+		month: 'short',
+		year: 'numeric',
+		weekday: 'short',
+	});
   const params = (new URL(document.location)).searchParams;
   fetch(`/api/bookings/${params.get('branchId')}/${params.get('serviceId')}`)
   	.then((response) => response.json())
@@ -13,7 +20,7 @@
                 class="flex flex-row border border-neutral-300 dark:border-neutral-800 rounded-xl shadow-md max-w-screen-lg mx-auto">
 	<div class="w-1/5 p-4 gap-4">
   <img class="dark:invert" src="/icons/calendar.svg" width="40">
-		<p>${booking.start}${booking.end}</p>
+		<p>${dateTimeFormat.format(new Date(booking.start))} - ${dateTimeFormat.format(new Date(booking.end))}</p>
 	</div>
 	<div class="w-4/5 p-4">
 		<p>${booking.info}</p>
