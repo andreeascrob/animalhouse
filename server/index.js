@@ -9,6 +9,8 @@ const { engine } = require('express-handlebars');
 const port = 8000;
 global.jwtSecret = 'secret';
 
+// Suppress warning
+mongoose.set('strictQuery', false);
 mongoose.connect('mongodb://0.0.0.0:27017/test').then(() => {
 	const app = express();
 	app.use(cors());
