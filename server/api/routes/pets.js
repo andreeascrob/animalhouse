@@ -29,9 +29,9 @@ router.post('/', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequi
 	}
 });
 
-router.get('/', async (req, res) => {
+router.get('/', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true},), async (req, res) => {
 	try {
-		const pets = await Pet.find({'owner': req.auth}).select('-informations').exec();
+		const pets = await Pet.find({'ownerId': req.auth}).select('-informations').exec();
 		res.status(200).send(pets);
 	} catch (err) {
 		res.status(400).send(err.message);

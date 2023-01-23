@@ -5,7 +5,7 @@ export class ProductCard extends HTMLElement {
 @import "/front/style.css";
 </style>
 <div class="flex flex-col min-w-[16rem] w-full md:max-w-xs h-full border border-neutral-300 dark:border-neutral-800 rounded-xl shadow-md hover:border-emerald-500 dark:hover:border-emerald-800 hover:scale-[1.02] snap-center">
-	<a href="/front/product/${this.getAttribute('slug')}"><img class="w-full aspect-square rounded-t-xl bg-neutral-300 dark:bg-neutral-800" src="${this.getAttribute('image') ?? ''}" loading="lazy" alt=""></a>
+	<a href="/front/product/${this.getAttribute('slug')}"><img class="w-full aspect-square rounded-t-xl bg-neutral-300 dark:bg-neutral-800" src="${this.getAttribute('image') ?? ''}" loading="lazy" alt="${this.getAttribute('productname')}"></a>
 	<div class="flex flex-row p-4 gap-2 grow">
 		<div class="flex flex-col justify-center grow">
 			<a href="/front/product/${this.getAttribute('slug')}"><p class="font-bold font-lg">${this.getAttribute('productname')}</p></a>

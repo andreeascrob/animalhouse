@@ -1,3 +1,4 @@
+<h1 class="text-3xl font-bold text-center p-4"></h1>
 <div class="flex flex-row justify-between max-w-screen-lg mx-auto p-4">
 	<h2 class="text-3xl font-bold">I tuoi animali</h2>
 	<a href="/front/addpet" class="flex flex-row gap-2 rounded p-1 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-52 hover:font-bold">
@@ -33,7 +34,14 @@
 		window.location.href = '/front/signin';
 	} else {
 		document.getElementById('form').onsubmit = update;
-		fetch('/api/pets/')
+		fetch('/api/pets/', {
+			method: 'GET',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.token}`
+			}
+		})
 			.then((response) => response.json())
 			.then((pets) => {
 				pets.forEach(pet => {
@@ -60,6 +68,7 @@
 		})
 			.then(response => response.json())
 			.then(data => {
+				document.querySelector('h1').innerHTML = data.name + ' ' + data.surname;
 				document.getElementById('name').value = data.name;
 				document.getElementById('surname').value = data.surname;
 				document.getElementById('email').value = data.email;
