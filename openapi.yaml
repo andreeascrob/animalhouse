@@ -106,6 +106,28 @@ paths:
         '400':
           description: Error.
   /bookings/{serviceSlotId}:
+    patch:
+      summary: Edit the list of bookings.
+      tags:
+        - service
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: serviceSlotId
+          in: path
+          required: true
+          description: The _id of the service slot.
+          schema:
+            type: string
+      responses:
+        '202':
+          description: ok
+          content:
+            application/json:
+              schema:
+                      $ref: '#/components/schemas/Booking'
+        '400':
+          description: Error.
     delete:
       summary: Cancel a service slot by id.
       tags:

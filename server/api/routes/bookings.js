@@ -77,7 +77,6 @@ router.patch('/:serviceSlotId', async (req, res) => {
 		const booking = await Branch.updateOne({'servicesSlots._id': req.params.serviceSlotId}, {$set: {
 			'servicesSlots.$.info': req.body.info,
 		}}).exec();
-		console.log(booking)
 		res.status(202).send();
 	} catch (err) {
 		res.status(400).send(err.message);
