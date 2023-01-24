@@ -57,12 +57,9 @@
     class="p-2 bg-emerald-500 dark:bg-emerald-800 rounded hover:font-bold" onclick="add_product()">
     <span>Aggiungi prodotto</span>
   </button>
-
 </form>
 <script>
-  	if(localStorage.isAdmin==false || !localStorage.token){
-		window.location.href = '/front';
-	}
+
 	fetch('/api/animals')
 		.then((response) => response.json())
 		.then((animals) => {

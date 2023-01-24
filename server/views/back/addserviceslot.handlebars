@@ -55,7 +55,6 @@
     class="p-2 bg-emerald-500 dark:bg-emerald-800 rounded hover:font-bold" onclick="add_serviceslot()">
     <span>Aggiungi prenotazione</span>
   </button>
-
 </form>
 <script>
   fetch('/api/animals')
@@ -74,7 +73,7 @@
 			branches.forEach(branch => {
 				let option = document.createElement('option');
 				option.value = branch._id;
-				option.innerHTML = branch.address + '; ' + branch.city ;
+				option.innerHTML =branch.city +' ('+ branch.address + ')' ;
 				document.getElementById('branches').appendChild(option);
 			});
     });

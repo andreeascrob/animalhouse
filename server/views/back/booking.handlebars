@@ -1,10 +1,15 @@
 <h1 class="font-bold text-3xl text-center p-4">Gestisci prenotazioni</h1>
-<div id="booking" class="flex flex-col gap-4 p-4 max-w-2xl mx-auto">
+<div id="booking" class="flex flex-col gap-4 p-4 max-w-2xl mx-auto justify-center">
+
+<div class=" flex flex-row items-stretch order-last md:order-none w-full md:w-auto justify-center">
+
+	<a href="/back/addserviceslot" role="button" class="flex flex-row gap-2 rounded p-4 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-52 hover:font-bold" >
+	<img class="dark:invert" width="20" src="/icons/plus.svg" alt="">
+	<span> Aggiungi un nuova disponibilità <span>
+ </a>
+	</div>
 </div>
 <script>
-	if (localStorage.isAdmin == false || !localStorage.token) {
-		window.location.href = '/front';
-	}
 	const dateTimeFormat = Intl.DateTimeFormat('it-IT', {
 		hour: 'numeric',
 		minute: 'numeric',

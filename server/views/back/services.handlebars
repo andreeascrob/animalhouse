@@ -7,9 +7,6 @@
 <div id="services" class="flex flex-col gap-4 p-4 max-w-screen-lg mx-auto">
 </div>
 <script>
-		if(localStorage.isAdmin==false || !localStorage.token){
-		window.location.href = '/front';
-	}
 	fetch('/api/branches/')
 		.then((response) => response.json())
 		.then((branches) => {
