@@ -51,8 +51,9 @@ router.post('/:id/servicesSlots', async (req, res) => {
 	try {
 		await Branch.updateOne(
 			{'_id': req.params.id},
-			{$push: {'services': req.body}}
+			{$push: {'servicesSlots': req.body}}
 		).exec();
+		
 		res.status(201).send();
 	} catch (err) {
 		res.status(400).send(err.message);
@@ -65,7 +66,7 @@ router.get('/:id/servicesSlots', async (req, res) => {
 			const pet = await Pet.findOne({'_id': req.query.petId}).exec();
 			const branch = await Branch.findOne({'_id': req.params.id}).exec();
 			let slots = branch.servicesSlots.filter((element) => {
-				return element.serviceId == req.query.serviceId && element.animalId.equals(pet.animalId) && element.start > new Date() && !element.petId;
+				return element.serviceId == req.query.serviceId && element.animalId.equals(pet.animalId) && element.start >= new Date() && !element.petId;
 			});
 			res.status(200).send(slots);
 		} else {

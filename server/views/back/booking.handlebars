@@ -2,6 +2,9 @@
 <div id="booking" class="flex flex-col gap-4 p-4 max-w-2xl mx-auto">
 </div>
 <script>
+	if (localStorage.isAdmin == false || !localStorage.token) {
+		window.location.href = '/front';
+	}
 	const dateTimeFormat = Intl.DateTimeFormat('it-IT', {
 		hour: 'numeric',
 		minute: 'numeric',
@@ -10,27 +13,28 @@
 		year: 'numeric',
 		weekday: 'short',
 	});
-  const params = (new URL(document.location)).searchParams;
-  fetch(`/api/bookings/${params.get('branchId')}/${params.get('serviceId')}`)
-  	.then((response) => response.json())
+	const params = (new URL(document.location)).searchParams;
+	fetch(`/api/bookings/${params.get('branchId')}/${params.get('serviceId')}`)
+		.then((response) => response.json())
 		.then((services) => {
-      services.forEach(booking => {
-        console.log(booking)
-        let bookingCard= document.createElement("div");
-								bookingCard.innerHTML = `<div
+			services.forEach(booking => {
+				console.log(booking)
+				let bookingCard = document.createElement("div");
+				bookingCard.innerHTML = `<div
                 class="flex flex-row border border-neutral-300 dark:border-neutral-800 rounded-xl shadow-md max-w-screen-lg mx-auto">
 	<div class="w-2/5 p-4 gap-4 justify-center">
   <img class="dark:invert" src="/icons/calendar.svg" width="40" alt="">
 		<p>${dateTimeFormat.format(new Date(booking.start))} -</p><p> ${dateTimeFormat.format(new Date(booking.end))}</p>
 	</div>
 	<div class="w-3/5 p-4">
-		<label for="informazioni" >Informazioni:</label><input id="informazioni" class=" w-auto dark:bg-neutral-800 rounded" value= "${booking.info}">
-    <p>identificativo animale: ${booking.animalId}</p>
+		<label for="informazioni-${booking._id}" >Informazioni:</label><input id="informazioni-${booking._id}" class=" w-auto dark:bg-neutral-800 rounded" value= "${booking.info}">
+    <p>identificativo genere animale: ${booking.animalId}</p>
+		 <p>identificativo animale: ${booking.petId ? booking.petId : 'non prenotato'}</p>
     <div class="flex  flex-row grap-2 justify-end p-2">
-				<button type="submit" class="flex flex-row gap-2 rounded p-2 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-30 hover:font-bold">
+				<button type="submit" class="flex flex-row gap-2 rounded p-2 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-30 hover:font-bold" onclick="modifybooking('${booking._id}')"">
 					<span> Aggiorna prenotazione <span>
 				</button>
-        	<button type="delete" class="flex flex-row gap-2 rounded p-2 bg-red-500 dark:bg-red-800 justify-center items-center w-30 hover:font-bold" onclick="deleteBook('${booking._Id}')">
+        	<button type="delete" class="flex flex-row gap-2 rounded p-2 bg-red-500 dark:bg-red-800 justify-center items-center w-30 hover:font-bold" onclick="deleteBooking('${booking._id}')">
 					<span> Elimina prenotazione <span>
 				</button>
         </div>
@@ -39,7 +43,49 @@
 
 
 </div>`;
-document.getElementById('booking').appendChild(bookingCard)
-      })
-    })
+				document.getElementById('booking').appendChild(bookingCard)
+			})
+		})
+	function deleteBooking(bookingId) {
+		fetch('/api/bookings/' + bookingId, {
+			method: 'DELETE',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.token}`
+			}
+		})
+			.then((response) => {
+				if (response.ok) {
+					window.location.replace('/back/services');
+				}
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
+	}
+	function modifybooking(servicesSlotid ) {
+		fetch('/api/bookings/'+servicesSlotid, {
+			method: 'PATCH',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.token}`
+			},
+			body: JSON.stringify(
+				{
+					info: document.getElementById("informazioni-" + servicesSlotid).value
+				}
+			),
+		})
+			.then((response) => {
+				if (response.ok) {
+					window.location.reload();
+				}
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
+	}
+
 </script>

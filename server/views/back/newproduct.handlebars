@@ -60,6 +60,9 @@
 
 </form>
 <script>
+  	if(localStorage.isAdmin==false || !localStorage.token){
+		window.location.href = '/front';
+	}
 	fetch('/api/animals')
 		.then((response) => response.json())
 		.then((animals) => {

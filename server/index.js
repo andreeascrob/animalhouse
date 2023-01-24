@@ -118,6 +118,9 @@ mongoose.connect('mongodb://0.0.0.0:27017/test').then(() => {
 	app.get('/back/booking', (req, res) => {
 		res.render('back/booking', {layout: 'back/main'});
 	});
+	app.get('/back/addserviceslot', (req, res) => {
+		res.render('back/addserviceslot', {layout: 'back/main'});
+	});
 
 
 

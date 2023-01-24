@@ -72,6 +72,18 @@ router.get('/:branchId/:serviceId',/*jwt({secret: jwtSecret, algorithms: ['HS256
 		res.status(400).send(err.message);
 	}
 });
+router.patch('/:serviceSlotId', async (req, res) => {
+	try {
+		const booking = await Branch.updateOne({'servicesSlots._id': req.params.serviceSlotId}, {$set: {
+			'servicesSlots.$.info': req.body.info,
+		}}).exec();
+		console.log(booking)
+		res.status(202).send();
+	} catch (err) {
+		res.status(400).send(err.message);
+	}
+});
+
 
 router.delete('/:serviceSlotId', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true}), async (req, res) => {
 	try {
@@ -80,6 +92,7 @@ router.delete('/:serviceSlotId', jwt({secret: jwtSecret, algorithms: ['HS256'], 
 			return element._id == req.params.serviceSlotId;
 		})[0];
 		const pet = await Pet.findOne({'_id': slot.petId}).exec();
+
 		if (pet.ownerId == req.auth) {
 			await Branch.updateOne({'servicesSlots._id': req.params.serviceSlotId}, {'$unset': {'servicesSlots.$.petId': ''}}).exec();
 			res.status(200).send();

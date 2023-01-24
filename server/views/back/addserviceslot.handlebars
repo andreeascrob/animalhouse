@@ -1,0 +1,129 @@
+<h1 class="font-bold text-3xl text-center p-4">Aggiungi disponibilità</h1>
+
+<form id="form" class="flex flex-col p-4 max-w-prose mx-auto gap-4">
+
+  <label for="info">Info</label>
+  <input
+    type="text"
+    name="info"
+    id="info"
+    class="dark:bg-neutral-800 rounded"
+    required
+  />
+  <label for="animalSlug" class="justify-center">Animale</label>
+  <select
+    name="animalSlug"
+    id="animalSlug"
+    class="dark:bg-neutral-800 rounded"
+  >
+  </select>
+  <label for="branches">Luogo</label>
+  <select
+    name="branches"
+    id="branches"
+    class="dark:bg-neutral-800 rounded"
+    required
+  />
+  </select>
+    <label for="services">Servizio</label>
+  <select
+    name="services"
+    id="services"
+    class="dark:bg-neutral-800 rounded"
+    required
+  />
+  </select>
+  <label for="dateStart">Data-Ora Inizio</label>
+  <input
+    type="datetime-local"
+    name="dateStart"
+    id="dateStart"
+    class="dark:bg-neutral-800 rounded" 
+    required
+  />
+    <label for="dateEnd">Data-Ora Fine</label>
+  <input
+    type="datetime-local"
+    name="dateEnd"
+    id="dateEnd"
+    class="dark:bg-neutral-800 rounded" 
+    min=
+    required
+  />
+  <button
+    type="submit"
+    class="p-2 bg-emerald-500 dark:bg-emerald-800 rounded hover:font-bold" onclick="add_serviceslot()">
+    <span>Aggiungi prenotazione</span>
+  </button>
+
+</form>
+<script>
+  fetch('/api/animals')
+		.then((response) => response.json())
+		.then((animals) => {
+			animals.forEach(animal => {
+				let option = document.createElement('option');
+				option.value = animal._id;
+				option.innerHTML = animal.name;
+				document.getElementById('animalSlug').appendChild(option);
+			});
+    });
+      fetch('/api/branches')
+		.then((response) => response.json())
+		.then((branches) => {
+			branches.forEach(branch => {
+				let option = document.createElement('option');
+				option.value = branch._id;
+				option.innerHTML = branch.address + '; ' + branch.city ;
+				document.getElementById('branches').appendChild(option);
+			});
+    });
+    fetch('/api/services')
+		.then((response) => response.json())
+		.then((services) => {
+			services.forEach(service => {
+				let option = document.createElement('option');
+				option.value = service._id;
+				option.innerHTML =service.name;
+				document.getElementById('services').appendChild(option);
+			});
+    });
+    function add_serviceslot() {
+    fetch('/api/branches/'+ document.getElementById('branches').value +'/servicesSlots', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.token}`
+      },
+      body: JSON.stringify({
+        serviceId: document.getElementById('services').value,
+        animalId: document.getElementById('animalSlug').value,
+        info: document.getElementById('info').value,
+        start: document.getElementById('dateStart').value,
+        end: document.getElementById('dateEnd').value,
+      }),
+    })
+      .then(response => {
+        if (response.status == 201){
+          window.location.replace('/back/services');
+        }else
+          alert("Si è verificato un errore")
+
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
+  
+
+  let today= new Date();
+  today = new Date(today.getTime() + 60 * 60000)
+  let isoToday = (today.toISOString()).substring(0, today.toISOString().indexOf("T") + 6);
+  document.getElementById('dateStart').min= isoToday;
+  document.getElementById('dateEnd').min= isoToday;
+  document.getElementById('dateStart').value= isoToday;
+  document.getElementById('dateEnd').value= isoToday;
+
+
+</script>

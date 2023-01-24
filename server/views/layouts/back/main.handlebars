@@ -10,6 +10,11 @@
 		<link rel="stylesheet" href="/front/style.css">
 	</head>
 	<body class="dark:bg-neutral-900 dark:text-white">
+		<script>
+				if(localStorage.isAdmin==false || !localStorage.token){
+		window.location.href = '/front';
+	}
+		</script>
 		{{> back/nav}}
 		{{{body}}}
 	</body>
