@@ -1,12 +1,13 @@
 <h1 class="font-bold text-3xl text-center p-4">Gestisci prenotazioni</h1>
 <div id="booking" class="flex flex-col gap-4 p-4 max-w-2xl mx-auto justify-center">
 
-<div class=" flex flex-row items-stretch order-last md:order-none w-full md:w-auto justify-center">
+	<div class=" flex flex-row items-stretch order-last md:order-none w-full md:w-auto justify-center">
 
-	<a href="/back/addserviceslot" role="button" class="flex flex-row gap-2 rounded p-4 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-52 hover:font-bold" >
-	<img class="dark:invert" width="20" src="/icons/plus.svg" alt="">
-	<span> Aggiungi un nuova disponibilità <span>
- </a>
+		<a href="/back/addserviceslot" role="button"
+			class="flex flex-row gap-2 rounded p-4 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-52 hover:font-bold">
+			<img class="dark:invert" width="20" src="/icons/plus.svg" alt="">
+			<span> Aggiungi un nuova disponibilità <span>
+		</a>
 	</div>
 </div>
 <script>
@@ -33,7 +34,10 @@
 	</div>
 	<div class="w-3/5 p-4">
 		<label for="informazioni-${booking._id}" >Informazioni:</label><input id="informazioni-${booking._id}" class=" w-auto dark:bg-neutral-800 rounded" value= "${booking.info}">
-    <p>identificativo genere animale: ${booking.animalId}</p>
+		<br>
+      <label for="animalSlug" class="justify-center">Tipologia del animale:</label>
+  <select name="animalSlug" id="animalSlug" class="dark:bg-neutral-800 rounded">
+  </select>
 		 <p>identificativo animale: ${booking.petId ? booking.petId : 'non prenotato'}</p>
     <div class="flex  flex-row grap-2 justify-end p-2">
 				<button type="submit" class="flex flex-row gap-2 rounded p-2 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-30 hover:font-bold" onclick="modifybooking('${booking._id}')"">
@@ -51,6 +55,16 @@
 				document.getElementById('booking').appendChild(bookingCard)
 			})
 		})
+	fetch('/api/animals')
+		.then((response) => response.json())
+		.then((animals) => {
+			animals.forEach(animal => {
+				let option = document.createElement('option');
+				option.value = animal._id;
+				option.innerHTML = animal.name;
+				document.getElementById('animalSlug').appendChild(option);
+			});
+		});
 	function deleteBooking(bookingId) {
 		fetch('/api/bookings/' + bookingId, {
 			method: 'DELETE',
@@ -69,8 +83,8 @@
 				console.error('Error:', error);
 			});
 	}
-	function modifybooking(servicesSlotid ) {
-		fetch('/api/bookings/'+servicesSlotid, {
+	function modifybooking(servicesSlotid) {
+		fetch('/api/bookings/' + servicesSlotid, {
 			method: 'PATCH',
 			headers: {
 				'Accept': 'application/json',

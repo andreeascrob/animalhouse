@@ -92,10 +92,10 @@ mongoose.connect('mongodb://0.0.0.0:27017/test').then(() => {
 		res.render('back/profile', {layout: 'back/main'});
 	});
 	app.get('/back/signup', (req, res) => {
-		res.render('back/signup', {layout: 'back/main'});
+		res.render('back/signup', {layout: 'back_public/main'});
 	});
 	app.get('/back/signin', (req, res) => {
-		res.render('back/signin', {layout: 'back/main'});
+		res.render('back/signin', {layout: 'back_public/main'});
 	});
 	app.get('/back/e-commerce', (req, res) => {
 		res.render('back/e-commerce', {layout: 'back/main'});
@@ -105,9 +105,6 @@ mongoose.connect('mongodb://0.0.0.0:27017/test').then(() => {
 	});
 	app.get('/back/modifyprod/:slug', (req, res) => {
 		res.render('back/modifyprod', {layout: 'back/main'});
-	});
-	app.get('/back/services', (req, res) => {
-		res.render('back/services', {layout: 'back/main'});
 	});
 	app.get('/back/services', (req, res) => {
 		res.render('back/services', {layout: 'back/main'});
