@@ -32,7 +32,7 @@ router.post('/', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequi
 
 router.get('/', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true}), async (req, res) => {
 	try {
-		const pets = await Pet.find({'owner': req.auth}).exec();
+		const pets = await Pet.find({'ownerId': req.auth}).exec();
 		let bookings = {};
 		for(var i = 0; i < pets.length; ++i){
 			const branches = await Branch.find({'servicesSlots.petId': pets[i]._id}).lean().exec();
