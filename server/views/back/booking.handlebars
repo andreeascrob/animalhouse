@@ -34,10 +34,7 @@
 	</div>
 	<div class="w-3/5 p-4">
 		<label for="informazioni-${booking._id}" >Informazioni:</label><input id="informazioni-${booking._id}" class=" w-auto dark:bg-neutral-800 rounded" value= "${booking.info}">
-		<br>
-      <label for="animalSlug" class="justify-center">Tipologia del animale:</label>
-  <select name="animalSlug" id="animalSlug" class="dark:bg-neutral-800 rounded">
-  </select>
+		<p id="animal-${booking._id}">Animale: </p>
 		 <p>identificativo animale: ${booking.petId ? booking.petId : 'non prenotato'}</p>
     <div class="flex  flex-row grap-2 justify-end p-2">
 				<button type="submit" class="flex flex-row gap-2 rounded p-2 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-30 hover:font-bold" onclick="modifybooking('${booking._id}')"">
@@ -53,18 +50,13 @@
 
 </div>`;
 				document.getElementById('booking').appendChild(bookingCard)
+				fetch(`/api/animals/${booking.animalId}`)
+					.then((response) => response.json())
+					.then((animal) => {
+						document.getElementById(`animal-${booking._id}`).innerHTML += animal.name;
+					});
 			})
 		})
-	fetch('/api/animals')
-		.then((response) => response.json())
-		.then((animals) => {
-			animals.forEach(animal => {
-				let option = document.createElement('option');
-				option.value = animal._id;
-				option.innerHTML = animal.name;
-				document.getElementById('animalSlug').appendChild(option);
-			});
-		});
 	function deleteBooking(bookingId) {
 		fetch('/api/bookings/' + bookingId, {
 			method: 'DELETE',
