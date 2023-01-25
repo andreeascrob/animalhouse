@@ -48,6 +48,7 @@
 						if (data) {
 							localStorage.token = data.token;
 							localStorage.userId = data.id;
+							delete localStorage.isAdmin;
 							window.location.href = '/front';
 						}
 					})

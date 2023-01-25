@@ -38,7 +38,7 @@ export class AccountButton extends HTMLElement {
 	logout() {
 		delete localStorage.userId;
 		delete localStorage.token;
-		localStorage.isAdmin= false;
+		delete localStorage.isAdmin;
 		window.location.reload();
 	}
 }

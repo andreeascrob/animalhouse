@@ -35,6 +35,7 @@
 					.then((data) => {
 						localStorage.userId = data.id;
 						localStorage.token = data.token;
+						delete localStorage.isAdmin;
 						window.location.href = '/front';
 					})
 					.catch((error) => {

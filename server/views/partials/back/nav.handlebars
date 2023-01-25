@@ -5,7 +5,7 @@
 		</div>
 		<div class="flex flex-row gap-4">
 			<a href="/back/signin" id="signin"><img width="20" class="mr-1 dark:invert inline" src="/icons/person.svg" alt=""><span class="hidden md:inline">Accedi</span></a>
-			<button class="hidden" id="logout" onclick="delete localStorage.userId; delete localStorage.token; localStorage.isAdmin; window.location.reload();"><img width="20" class="dark:invert inline" src="/icons/logout.svg" alt="Esci dall'account"></button>
+			<button class="hidden" id="logout" onclick="delete localStorage.userId; delete localStorage.token; delete localStorage.isAdmin; window.location.reload();"><img width="20" class="dark:invert inline" src="/icons/logout.svg" alt="Esci dall'account"></button>
 		</div>
 	</div>
 	<div id="categories" class="flex hidden md:flex flex-col md:flex-row items-center md:justify-around gap-4">

@@ -11,9 +11,9 @@
 	</head>
 	<body class="dark:bg-neutral-900 dark:text-white">
 		<script>
-				if( !localStorage.token){
-		window.location.href = '/back';
-	}
+			if (localStorage.admin && localStorage.token) {
+				window.location.href = '/back';
+			}
 		</script>
 		{{> back/nav}}
 		{{{body}}}
