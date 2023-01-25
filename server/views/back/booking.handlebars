@@ -11,26 +11,23 @@
 	</div>
 </div>
 <script>
-	const dateTimeFormat = Intl.DateTimeFormat('it-IT', {
-		hour: 'numeric',
-		minute: 'numeric',
-		day: 'numeric',
-		month: 'short',
-		year: 'numeric',
-		weekday: 'short',
-	});
 	const params = (new URL(document.location)).searchParams;
 	fetch(`/api/bookings/${params.get('branchId')}/${params.get('serviceId')}`)
 		.then((response) => response.json())
 		.then((services) => {
 			services.forEach(booking => {
-				console.log(booking)
 				let bookingCard = document.createElement("div");
 				bookingCard.innerHTML = `<div
                 class="flex flex-row border border-neutral-300 dark:border-neutral-800 rounded-xl shadow-md max-w-screen-lg mx-auto">
 	<div class="w-2/5 p-4 gap-4 justify-center">
   <img class="dark:invert" src="/icons/calendar.svg" width="40" alt="">
-		<p>${dateTimeFormat.format(new Date(booking.start))} -</p><p> ${dateTimeFormat.format(new Date(booking.end))}</p>
+	</div>
+	<div class="w-2/5 p-4 gap-4 justify-center">
+  <label for="dateStart">Data-Ora inizio</label>
+  <input type="datetime-local" name="dateStart" id="dateStart" class="dark:bg-neutral-800 rounded" required value="${booking.start}"/>
+	<br>
+	<label for="dateEnd">Data-Ora fine</label>
+  <input type="datetime-local" name="dateEnd" id="dateEnd" class="dark:bg-neutral-800 rounded" required value="${booking.end}"/>
 	</div>
 	<div class="w-3/5 p-4">
 		<label for="informazioni-${booking._id}" >Informazioni:</label><input id="informazioni-${booking._id}" class=" w-auto dark:bg-neutral-800 rounded" value= "${booking.info}">

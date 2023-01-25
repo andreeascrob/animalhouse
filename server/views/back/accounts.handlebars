@@ -1,0 +1,16 @@
+<h1 class="font-bold text-3xl text-center p-4">Gestisci accounts</h1>
+<div id="user" class="flex flex-col gap-4 p-4 max-w-2xl mx-auto justify-center">
+</div>
+<script>
+	fetch(`/api/users/`)
+		.then((response) => response.json())
+		.then((users) => {
+			users.forEach(user => {
+				let userCard = document.createElement("div");
+				userCard.innerHTML = `<div
+                class="flex flex-row border border-neutral-300 dark:border-neutral-800 rounded-xl shadow-md max-w-screen-lg mx-auto">
+
+</div>`;
+				document.getElementById('user').appendChild(userCard)
+			})
+		})
