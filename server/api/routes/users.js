@@ -28,6 +28,16 @@ router.get('/info/:id', async (req, res) => {
 		res.status(404).send();
 	}
 });
+
+router.patch('/info/:id', async (req, res) => {
+	try {
+		await User.updateOne({'_id': req.params.id}, req.body).exec();
+		res.status(202).send();
+	} catch (err) {
+		res.status(400).send(err.message);
+	}
+});
+
 router.delete('/info/:id', async (req, res) => {
 	try {
 		await User.findOneAndDelete({'_id': req.params.id}).exec();

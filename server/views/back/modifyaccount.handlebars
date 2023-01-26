@@ -1,16 +1,17 @@
 <div id="account" class="flex flex-col gap-4 p-4 max-w-screen-lg mx-auto">
-</div><script>
-  	fetch('/api/users/info/'+ window.location.pathname.match(/[^\/]+(?=\/?$)/)[0])
-  .then((response) => response.json())
+</div>
+<script>
+	fetch('/api/users/info/' + window.location.pathname.match(/[^\/]+(?=\/?$)/)[0])
+		.then((response) => response.json())
 		.then((data) => {
-let user = document.createElement("form");
-user.className = 'flex flex-col md:flex-row gap-4 p-4 max-w-screen-lg mx-auto'
-user.innerHTML =`<div class="basis-1/4">
+			let user = document.createElement("form");
+			user.className = 'flex flex-col md:flex-row gap-4 p-4 max-w-screen-lg mx-auto'
+			user.innerHTML = `<div class="basis-1/4">
 	 <img class="dark:invert" src="/icons/person.svg" width="90" alt="">
 	</div>
 	<div class="basis-3/4">
 		<div class="flex flex-col basis-3/4 gap-2">
-			<h1 class="text-3xl font-bold">${ data.name} ${data.surname}</h1>
+			<h1 class="text-3xl font-bold">${data.name} ${data.surname}</h1>
 			<div class="flex flex-row gap-2">
 			<label for="name"> Nome: </label><input id="name" class=" dark:bg-neutral-800 rounded" value= "${data.name}"/>
      	</div>
@@ -42,20 +43,44 @@ user.innerHTML =`<div class="basis-1/4">
 		</div>
 	</div>
     `
-      document.getElementById('account').appendChild(user)
-			fetch(`/api/pets/`)
-					.then((response) => response.json())
-					.then((pet) => {
-						if(pet.owner==data._id){
-						let option=document.createElement('option');
-						option.value= pet._id;
-						option.innerHTML = pet.name;
-						document.getElementById(`pet-${data._id}`).appendChild(option);
-						}
-					});
-    });
+			document.getElementById('account').appendChild(user)
+			user.addEventListener('submit', function () {
+				const name = document.getElementById('name').value
+				const surname = document.getElementById('surname').value
+				const email = document.getElementById('email').value
+				const address = document.getElementById('address').value
+				const city = document.getElementById('city').value
 
-			function deleteAccount(userId) {
+				modifyAccount(data._id, {
+					name,
+					surname,
+					email, address, city
+				})
+
+			});
+		});
+	function modifyAccount(userId, data) {
+		fetch('/api/users/info/' + userId, {
+			method: 'PATCH',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.token}`
+			},
+			body: JSON.stringify(data),
+		})
+			.then((response) => {
+				if (response.ok) {
+					window.location.reload();
+				}
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
+	}
+
+
+	function deleteAccount(userId) {
 		fetch('/api/users/info/' + userId, {
 			method: 'DELETE',
 			headers: {
@@ -73,4 +98,4 @@ user.innerHTML =`<div class="basis-1/4">
 				console.error('Error:', error);
 			});
 	}
-  </script>
+</script>
