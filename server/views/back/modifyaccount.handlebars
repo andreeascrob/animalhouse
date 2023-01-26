@@ -1,6 +1,6 @@
 <div id="account" class="flex flex-col gap-4 p-4 max-w-screen-lg mx-auto">
 </div><script>
-  	fetch('/api/user/'+ window.location.pathname.match(/[^\/]+(?=\/?$)/)[0])
+  	fetch('/api/users/info/'+ window.location.pathname.match(/[^\/]+(?=\/?$)/)[0])
   .then((response) => response.json())
 		.then((data) => {
 let user = document.createElement("form");
