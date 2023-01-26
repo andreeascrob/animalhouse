@@ -8,19 +8,17 @@
 			users.forEach(user => {
 				let userCard = document.createElement("div");
 				userCard.innerHTML = `<div
-                class="flex flex-row border border-neutral-300 dark:border-neutral-800 rounded-xl shadow-md max-w-screen-lg mx-auto">
+                class="flex  flex-row border border-neutral-300 dark:border-neutral-800 rounded-xl shadow-md max-w-screen-lg mx-auto">
 								<div class="w-1/3 p-4 gap-4 ">
 									  <img class="dark:invert" src="/icons/person.svg" width="60" alt="">
 								</div>
 								<div class="w-1/3 p-4 gap-4 justify-center">
-											<label id="name-">Nome: </lanel><input id="name" class=" w-auto dark:bg-neutral-800 rounded" value= "${user.name}">
-											<br>
-											<label id="surnamename">Cognome: </label><input id="surname" class=" w-auto dark:bg-neutral-800 rounded" value= "${user.surname}">
-											<br>
-											<label id="email">Email: </label><input id="email" class=" w-auto dark:bg-neutral-800 rounded" value= "${user.email}">
+											<p>Nome: ${user.name} </p>
+											<p>Cognome: ${user.surname} </p>
+											<p>Email: ${user.email} </p>
 								</div>
 								<div class="1/3 item-center p-8 grap-4 "> 
-										<a href="/back/modifyaccount/${user.email}" class="flex flex-row gap-2 rounded p-1 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-40 ">
+								<a href="/back/modifyaccount/${user._id}" class="flex flex-row gap-2 rounded p-1 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-40 ">
 			<span>Gestisci account</span>
       <img class="dark:invert " src="/icons/arrow.svg" width="20" alt="">
 		</a>
