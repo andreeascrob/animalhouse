@@ -26,15 +26,6 @@ user.innerHTML =`<div class="basis-1/4">
 				<div class="flex flex-row gap-2">
 				<label for="city">Città: </label><input id="city" class=" dark:bg-neutral-800 rounded" value= "${data.city}"/>
 				</div>
-				<div class="flex flex-row gap-2">
-				 <label for="pet-${data._id}" class="justify-center">Animali: </label>
-  <select
-    name="pet"
-    id="pet-${data._id}"
-    class="dark:bg-neutral-800 rounded"
-  >
-  </select>
-				</div>
 			<div class="flex flex-row gap-2">
 				<button type="submit" class="flex flex-row gap-2 rounded p-4 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-52 hover:font-bold">
 					<span> Aggiorna profilo <span>
@@ -65,7 +56,7 @@ user.innerHTML =`<div class="basis-1/4">
     });
 
 			function deleteAccount(userId) {
-		fetch('/api/user/' + userId, {
+		fetch('/api/users/info/' + userId, {
 			method: 'DELETE',
 			headers: {
 				'Accept': 'application/json',

@@ -28,6 +28,14 @@ router.get('/info/:id', async (req, res) => {
 		res.status(404).send();
 	}
 });
+router.delete('/info/:id', async (req, res) => {
+	try {
+		await User.findOneAndDelete({'_id': req.params.id}).exec();
+		res.status(200).send();
+	} catch (err) {
+		res.status(400).send(err.message);
+	}
+});
 
 async function getUser(req, res, isadmin) {
 	let query = User.findOne({'_id': req.auth});
