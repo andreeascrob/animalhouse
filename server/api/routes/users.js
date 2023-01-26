@@ -69,7 +69,7 @@ router.get('/profile/admin', jwt({secret: jwtSecret, algorithms: ['HS256'], cred
 
 async function postChangep(req, res, isadmin){
 	try {
-		let query = await User.findOne({'_id': req.auth});
+		let query = User.findOne({'_id': req.auth});
 		if(isadmin)
 			query = query.where('isadmin').equals(true);
 		const user = await query.exec();
@@ -90,7 +90,7 @@ async function postChangep(req, res, isadmin){
 };
 
 router.post('/changepassword', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true},), async (req, res) => {
-	await postChangep(res, req, false)
+	await postChangep(req, res, false)
 });
 
 router.post('/changepassword/admin', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true},), async (req, res) => {
