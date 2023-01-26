@@ -24,10 +24,10 @@
 	</div>
 	<div class="w-2/5 p-4 gap-4 justify-center">
   <label for="dateStart">Data-Ora inizio</label>
-  <input type="datetime-local" name="dateStart" id="dateStart" class="dark:bg-neutral-800 rounded" required value="${booking.start}"/>
+  <input type="datetime-local" name="dateStart" id="dateStart" class="dark:bg-neutral-800 rounded" required value="${booking.start.substring(0,16)}"/>
 	<br>
 	<label for="dateEnd">Data-Ora fine</label>
-  <input type="datetime-local" name="dateEnd" id="dateEnd" class="dark:bg-neutral-800 rounded" required value="${booking.end}"/>
+  <input type="datetime-local" name="dateEnd" id="dateEnd" class="dark:bg-neutral-800 rounded" required value="${booking.end.substring(0,16)}"/>
 	</div>
 	<div class="w-3/5 p-4">
 		<label for="informazioni-${booking._id}" >Informazioni:</label><input id="informazioni-${booking._id}" class=" w-auto dark:bg-neutral-800 rounded" value= "${booking.info}">
