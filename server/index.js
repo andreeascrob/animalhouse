@@ -106,20 +106,23 @@ mongoose.connect('mongodb://0.0.0.0:27017/test').then(() => {
 	app.get('/back/modifyprod/:slug', (req, res) => {
 		res.render('back/modifyprod', {layout: 'back/main'});
 	});
-	app.get('/back/services', (req, res) => {
-		res.render('back/services', {layout: 'back/main'});
-	});
 	app.get('/back/accounts', (req, res) => {
 		res.render('back/accounts', {layout: 'back/main'});
 	});
 	app.get('/back/modifyaccount/:id', (req, res) => {
 		res.render('back/modifyaccount', {layout: 'back/main'});
 	});
+	app.get('/back/services', (req, res) => {
+		res.render('back/services', {layout: 'back/main'});
+	});
 	app.get('/back/booking', (req, res) => {
 		res.render('back/booking', {layout: 'back/main'});
 	});
 	app.get('/back/addserviceslot', (req, res) => {
 		res.render('back/addserviceslot', {layout: 'back/main'});
+	});
+	app.get('/back/newservice', (req, res) => {
+		res.render('back/newservice', {layout: 'back/main'});
 	});
 	app.get('/back/rank', (req, res) => {
 		res.render('back/rank', {layout: 'back/main'});
