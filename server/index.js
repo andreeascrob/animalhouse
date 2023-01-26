@@ -112,7 +112,7 @@ mongoose.connect('mongodb://0.0.0.0:27017/test').then(() => {
 	app.get('/back/accounts', (req, res) => {
 		res.render('back/accounts', {layout: 'back/main'});
 	});
-	app.get('/back/modifyaccount', (req, res) => {
+	app.get('/back/modifyaccount/:id', (req, res) => {
 		res.render('back/modifyaccount', {layout: 'back/main'});
 	});
 	app.get('/back/booking', (req, res) => {
