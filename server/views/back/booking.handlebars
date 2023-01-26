@@ -1,8 +1,6 @@
 <h1 class="font-bold text-3xl text-center p-4">Gestisci prenotazioni</h1>
 <div id="booking" class="flex flex-col gap-4 p-4 max-w-2xl mx-auto justify-center">
-
 	<div class=" flex flex-row items-stretch order-last md:order-none w-full md:w-auto justify-center">
-
 		<a href="/back/addserviceslot" role="button"
 			class="flex flex-row gap-2 rounded p-4 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-52 hover:font-bold">
 			<img class="dark:invert" width="20" src="/icons/plus.svg" alt="">
@@ -19,7 +17,7 @@
 				let bookingCard = document.createElement("div");
 				bookingCard.innerHTML = `<div
                 class="flex flex-row border border-neutral-300 dark:border-neutral-800 rounded-xl shadow-md max-w-screen-lg mx-auto">
-	<div class="w-2/5 p-4 gap-4 justify-center">
+	<div class="w-1/5 p-4 gap-4 justify-item-center">
   <img class="dark:invert" src="/icons/calendar.svg" width="40" alt="">
 	</div>
 	<div class="w-2/5 p-4 gap-4 justify-center">
@@ -29,7 +27,7 @@
 	<label for="dateEnd">Data-Ora fine</label>
   <input type="datetime-local" name="dateEnd" id="dateEnd" class="dark:bg-neutral-800 rounded" required value="${booking.end.substring(0,16)}"/>
 	</div>
-	<div class="w-3/5 p-4">
+	<div class="w-2/5 p-4">
 		<label for="informazioni-${booking._id}" >Informazioni:</label><input id="informazioni-${booking._id}" class=" w-auto dark:bg-neutral-800 rounded" value= "${booking.info}">
 		<p id="animal-${booking._id}">Animale: </p>
 		 <p>identificativo animale: ${booking.petId ? booking.petId : 'non prenotato'}</p>

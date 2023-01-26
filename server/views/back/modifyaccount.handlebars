@@ -1,0 +1,13 @@
+<div id="account" class="flex flex-col gap-4 p-4 max-w-screen-lg mx-auto">
+</div><script>
+  	fetch('/api/user/' + window.location.pathname.match(/[^\/]+(?=\/?$)/)[0])
+  .then((response) => response.json())
+		.then((data) => {
+let user = document.createElement("form");
+user.className = 'flex flex-col md:flex-row gap-4 p-4 max-w-screen-lg mx-auto'
+user.innerHTML =`<div class="basis-1/4">
+    `
+      document.getElementById('account').appendChild(user)
+
+    });
+  </script>

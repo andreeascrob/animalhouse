@@ -4,8 +4,24 @@ const router = express.Router();
 var { expressjwt: jwt } = require('express-jwt');
 const jsonwebtoken = require('jsonwebtoken');
 
+
+router.post('/', async (req, res) => {
+	try {
+		const newUser = new User(req.body);
+		await newUser.save();
+		res.status(201).send(newUser);
+	} catch (err) {
+		res.status(400).send(err.message);
+	}
+});
+
+router.get('/', async (req, res) => {
+	const user = await User.find().exec();
+	res.send(user);
+});
+
 router.get('/info/:id', async (req, res) => {
-	const user = await User.findOne({'_id': req?.params?.id}).select('name surname').exec();
+	const user = await User.findOne({'_id': req.params.id}).select('name surname').exec();
 	if (user) {
 		res.status(200).send(user);
 	} else {
