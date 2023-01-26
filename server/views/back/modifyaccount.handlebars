@@ -12,6 +12,21 @@ user.innerHTML =`<div class="basis-1/4">
 		<div class="flex flex-col basis-3/4 gap-2">
 			<h1 class="text-3xl font-bold">${ data.name} ${data.surname}</h1>
 			<div class="flex flex-row gap-2">
+			<label for="name"> Nome: </label><input id="name" class=" dark:bg-neutral-800 rounded" value= "${data.name}"/>
+     	</div>
+				<div class="flex flex-row gap-2">
+				<label for="surname"> Cognome: </label><input id="surname" class=" dark:bg-neutral-800 rounded" value= "${data.surname}"/>
+				</div>
+				<div class="flex flex-row gap-2">
+				<label for="email"> Email: </label><input id="email" class=" dark:bg-neutral-800 rounded" value= "${data.email}"/>
+				</div>
+				<div class="flex flex-row gap-2">
+				<label for="address">Via: </label><input id="address" class=" dark:bg-neutral-800 rounded" value= "${data.address}"/>
+				</div>
+				<div class="flex flex-row gap-2">
+				<label for="city">Città: </label><input id="city" class=" dark:bg-neutral-800 rounded" value= "${data.city}"/>
+				</div>
+			<div class="flex flex-row gap-2">
 				<button type="submit" class="flex flex-row gap-2 rounded p-4 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-52 hover:font-bold">
 					<span> Aggiorna profilo <span>
 				</button>
@@ -20,7 +35,7 @@ user.innerHTML =`<div class="basis-1/4">
   <img class="dark:invert" width="20" src="/icons/key.svg">
   <span>Cambia password</span>
 </a>
-        <button type="button" class="flex flex-row gap-2 rounded p-4 bg-red-500 dark:bg-red-800 justify-center items-center w-52 hover:font-bold" onclick="deleteProduct('${data.slug}')">
+        <button type="button" class="flex flex-row gap-2 rounded p-4 bg-red-500 dark:bg-red-800 justify-center items-center w-52 hover:font-bold" onclick="deleteAccount('${data._id}')">
 					<span> Elimina profilo <span>
 				</button>
 			</div>
@@ -28,6 +43,23 @@ user.innerHTML =`<div class="basis-1/4">
 	</div>
     `
       document.getElementById('account').appendChild(user)
-
     });
+			function deleteAccount(userId) {
+		fetch('/api/user/' + userId, {
+			method: 'DELETE',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.token}`
+			}
+		})
+			.then((response) => {
+				if (response.ok) {
+					window.location.replace('/back/accounts');
+				}
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
+	}
   </script>
