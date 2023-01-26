@@ -26,6 +26,15 @@ user.innerHTML =`<div class="basis-1/4">
 				<div class="flex flex-row gap-2">
 				<label for="city">Città: </label><input id="city" class=" dark:bg-neutral-800 rounded" value= "${data.city}"/>
 				</div>
+				<div class="flex flex-row gap-2">
+				 <label for="pet-${data._id}" class="justify-center">Animali: </label>
+  <select
+    name="pet"
+    id="pet-${data._id}"
+    class="dark:bg-neutral-800 rounded"
+  >
+  </select>
+				</div>
 			<div class="flex flex-row gap-2">
 				<button type="submit" class="flex flex-row gap-2 rounded p-4 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-52 hover:font-bold">
 					<span> Aggiorna profilo <span>
@@ -43,7 +52,18 @@ user.innerHTML =`<div class="basis-1/4">
 	</div>
     `
       document.getElementById('account').appendChild(user)
+			fetch(`/api/pets/`)
+					.then((response) => response.json())
+					.then((pet) => {
+						if(pet.owner==data._id){
+						let option=document.createElement('option');
+						option.value= pet._id;
+						option.innerHTML = pet.name;
+						document.getElementById(`pet-${data._id}`).appendChild(option);
+						}
+					});
     });
+
 			function deleteAccount(userId) {
 		fetch('/api/user/' + userId, {
 			method: 'DELETE',
