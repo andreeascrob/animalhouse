@@ -18,4 +18,12 @@ router.get('/:game', async (req, res) => {
 	res.send(scores);
 });
 
+router.delete('/:game', async (req, res) => {
+	try {
+		await Score.findOneAndDelete({'game':req.params.game}).lean().exec();;
+		res.status(201).send();
+	} catch (err) {
+		res.status(400).send(err.message);
+	}
+});
 module.exports = router;

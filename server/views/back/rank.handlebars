@@ -1,55 +1,62 @@
 <h1 class="text-3xl font-bold text-center">Classifiche</h1>
-<div id="rank" class="flex flex-col md:flex-row justify-between gap-4 p-4 max-w-screen-lg mx-auto">
-  <label for="animalSlug" class="justify-center">Seleziona l'animale:</label>
-  <select name="animalSlug" id="animalSlug" class="dark:bg-neutral-800 rounded" onchange="load_topics()">
-  </select>
-  <div id="memory" class="hidden">
-    <h2 class="text-xl font-bold">Memory</h2>
-    <ol id="memoryScores" class="list-decimal list-inside">
-    </ol>
-  </div>
-  <div id="trivia" class="hidden">
-    <h2 class="text-xl font-bold">Trivia</h2>
-    <ol id="triviaScores" class="list-decimal list-inside">
-    </ol>
-  </div>
-  <div id="multiple-choice" class="hidden">
-    <h2 class="text-xl font-bold">Multiple choice</h2>
-    <ol id="multiple-choiceScores" class="list-decimal list-inside">
-    </ol>
-  </div>
-  <div id="hangman" class="hidden">
-    <h2 class="text-xl font-bold">Hangman</h2>
-    <ol id="hangmanScores" class="list-decimal list-inside">
-    </ol>
-  </div>
+<div id="scores" class="flex flex-col md:flex-row justify-between gap-4 p-4 max-w-screen-lg mx-auto">
+	<div id="memory" class="hidden">
+		<h2 class="text-xl font-bold">Memory</h2>
+		<ol id="memoryScores" class="list-decimal list-inside">
+		</ol>
+	</div>
+	<div id="trivia" class="hidden">
+		<h2 class="text-xl font-bold">Trivia</h2>
+		<ol id="triviaScores" class="list-decimal list-inside">
+		</ol>
+	</div>
+	<div id="multiple-choice" class="hidden">
+		<h2 class="text-xl font-bold">Multiple choice</h2>
+		<ol id="multiple-choiceScores" class="list-decimal list-inside">
+		</ol>
+	</div>
+	<div id="hangman" class="hidden">
+		<h2 class="text-xl font-bold">Hangman</h2>
+		<ol id="hangmanScores" class="list-decimal list-inside">
+		</ol>
+	</div>
 </div>
 <script>
-  fetch('/api/animals')
-    .then((response) => response.json())
-    .then((animals) => {
-      animals.forEach(animal => {
-        let option = document.createElement('option');
-        option.value = animal.slug;
-        option.innerHTML = animal.name;
-        document.getElementById('animalSlug').appendChild(option);
-      });
-      load_rank();
-    });
-    function load_rank(){
-  ['memory', 'trivia', 'multiple-choice', 'hangman'].forEach((game) => {
-    fetch(`/api/scores/${game}`)
-      .then((response) => response.json())
-      .then((scores) => {
-        if (scores.length > 0) {
-          document.getElementById(game).classList.remove('hidden');
-          scores.forEach(score => {
-            let gameScore = document.createElement('li');
-            gameScore.innerHTML = `${score['player']} (${score['score']})`;
-            document.getElementById(`${game}Scores`).appendChild(gameScore);
-          });
-        }
-      });
-  });
-    };
+
+	['memory', 'trivia', 'multiple-choice', 'hangman'].forEach((game) => {
+		fetch(`/api/scores/${game}`)
+			.then((response) => response.json())
+			.then((scores) => {
+				if (scores.length > 0) {
+					document.getElementById(game).classList.remove('hidden');
+					scores.forEach(score => {
+						let gameScore = document.createElement('li');
+						gameScore.innerHTML = `${score['player']} (${score['score']})         
+            <button type="button" class="gap-2 rounded  bg-red-500 dark:bg-red-800 justify-center items-center w-30 hover:font-bold" onclick="deleteScore('${game}')">
+              	<img class="dark:invert" width="20" src="/icons/trash.svg" alt="">
+            </button>`;
+						document.getElementById(`${game}Scores`).appendChild(gameScore);
+					});
+				}
+			});
+	});
+  	function deleteScore(game) {
+		fetch('/api/scores/' + game, {
+			method: 'DELETE',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.token}`
+			}
+		})
+			.then((response) => {
+				if (response.ok) {
+					window.location.replace('/back/rank');
+				}
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
+	}
+
 </script>
