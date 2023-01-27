@@ -17,17 +17,17 @@
     class="dark:bg-neutral-800 rounded"
     required
   />
-  <label for="animalSlug" class="justify-center">Animale</label>
+  <label for="animalId" class="justify-center">Animale</label>
   <select
-    name="animalSlug"
-    id="animalSlug"
+    name="animalId"
+    id="animalId"
     class="dark:bg-neutral-800 rounded"
   >
   </select>
-  <label for="category">Categoria</label>
+  <label for="categoryId">Categoria</label>
   <select
-    name="category"
-    id="category"
+    name="categoryId"
+    id="categoryId"
     class="dark:bg-neutral-800 rounded"
     required
   />
@@ -48,18 +48,18 @@
     class="dark:bg-neutral-800 rounded"
     required
   />
-  <label for="text">Descrizione</label>
-	<textarea id="text" name="text" class="dark:bg-neutral-800 rounded" rows="5" required></textarea>
+  <label for="description">Descrizione</label>
+	<textarea id="description" name="description" class="dark:bg-neutral-800 rounded" rows="5" required></textarea>
   <label for="image">Immagine</label>
   <input type="file" id="image" name="image" accept="image/png, image/jpeg" />
   <button
     type="submit"
-    class="p-2 bg-emerald-500 dark:bg-emerald-800 rounded hover:font-bold" onclick="add_product()">
+    class="p-2 bg-emerald-500 dark:bg-emerald-800 rounded hover:font-bold">
     <span>Aggiungi prodotto</span>
   </button>
 </form>
 <script>
-
+	document.getElementById('form').onsubmit = add_product;
 	fetch('/api/animals')
 		.then((response) => response.json())
 		.then((animals) => {
@@ -67,7 +67,7 @@
 				let option = document.createElement('option');
 				option.value = animal._id;
 				option.innerHTML = animal.name;
-				document.getElementById('animalSlug').appendChild(option);
+				document.getElementById('animalId').appendChild(option);
 			});
     });
     	fetch('/api/categories/')
@@ -77,27 +77,19 @@
 				let option = document.createElement('option');
 				option.value = category._id;
 				option.innerHTML = category.name;
-				document.getElementById('category').appendChild(option);
+				document.getElementById('categoryId').appendChild(option);
 			});
     });
-    function add_product() {
+    function add_product(event) {
+	event.preventDefault();
+	const formData = new FormData(document.getElementById('form'));
     fetch('/api/products', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.token}`
       },
-      body: JSON.stringify({
-        slug: document.getElementById('slug').value,
-        name: document.getElementById('name').value,
-        price: document.getElementById('price').value,
-        available: document.getElementById('available').value,
-        animalId: document.getElementById('animalSlug').value,
-        categoryId: document.getElementById('category').value,
-        description: document.getElementById('text').value,
-        imageUrl: document.getElementById('image').value
-      }),
+      body: formData
     })
       .then(response => {
         if (response.status == 201){
@@ -105,7 +97,6 @@
           return response.json()
         }else
           alert("Si è verificato un errore")
-
       })
       .catch((error) => {
         console.error('Error:', error);

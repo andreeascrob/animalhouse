@@ -14,8 +14,8 @@ product.innerHTML =`<div class="basis-1/4">
 			${data.price ? ('<label for="price" class="text-lg">Prezzo</label><input id="price" class=" w-24 dark:bg-neutral-800 rounded" value="' + data.price + '"/>') : '<div class="animate-pulse w-20 h-7 bg-neutral-300 dark:bg-neutral-800 rounded"></div>'}
 			<div class="flex flex-row gap-2">
 				<div class="flex flex-col">
-					<label for="quantity">Quantità:</label>
-					<input class="w-24 dark:bg-neutral-800 rounded" type="number" id="quantity" name="quantity" value="1">
+					<label for="available">Quantità:</label>
+					<input class="w-24 dark:bg-neutral-800 rounded" type="number" id="available" name="available" value="${data.available[0]}" min=0>
 				</div>
 				<button type="submit" class="flex flex-row gap-2 rounded p-4 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-52 hover:font-bold">
 					<span> Aggiorna prodotto <span>
@@ -29,13 +29,16 @@ product.innerHTML =`<div class="basis-1/4">
 		</div>
 	</div>`
   document.getElementById('product').appendChild(product)
-  product.addEventListener('submit', function() {
+  product.addEventListener('submit', function(event) {
+    event.preventDefault();
     const price = document.getElementById('price').value
+    const available = document.getElementById('available').value
     const description = document.getElementById('description').value
 
     modifyProduct(data.slug, {
       price,
-      description
+      available,
+      description,
     })
   })
     });
