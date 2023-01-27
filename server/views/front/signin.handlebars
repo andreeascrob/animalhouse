@@ -31,7 +31,14 @@
 						password: digestPassword
 					}),
 				})
-					.then((response) => response.json())
+					.then((response) => {
+						if (response.status == 404) {
+							alert('Credenziali errate');
+							window.location.reload();
+						} else {
+							return response.json();
+						}
+					})
 					.then((data) => {
 						localStorage.userId = data.id;
 						localStorage.token = data.token;

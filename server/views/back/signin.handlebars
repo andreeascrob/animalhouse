@@ -32,6 +32,10 @@
 						password: digestPassword
 					}),
 				})
+			if (res.status == 404) {
+				alert('Credenziali errate');
+				window.location.reload();
+			}
           let data = await res.json()
 						localStorage.userId = data.id;
 						localStorage.isAdmin = true;
