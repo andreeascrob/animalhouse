@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/info/:id', async (req, res) => {
-	const user = await User.findOne({'_id': req.params.id}).select('name surname email address city').exec();
+	const user = await User.findOne({'_id': req.params.id}).exec();
 	if (user) {
 		res.status(200).send(user);
 	} else {

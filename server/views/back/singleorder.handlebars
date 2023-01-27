@@ -22,13 +22,13 @@
     </div>
     `
       document.getElementById('singleorder').appendChild(userdati);
-      data.forEach(products => {
+      data.products.forEach(product => {
         let orderB = document.createElement('div');
         orderB.innerHTML = `
     	<div class="w-4/5 p-4 gap-4 text-center "> 
-    <p>slug: ${products.slug}</p>
-    <p>Prezzo: ${products.price}</p>
-        <p>Quantità: ${products.quantity}</p>
+    <p>slug: ${product.slug}</p>
+    <p>Prezzo: ${product.price}</p>
+        <p>Quantità: ${product.quantity}</p>
                     </div> `;
         document.getElementById('order').appendChild(orderB);
       });
