@@ -1,0 +1,37 @@
+<h1 class="font-bold text-3xl text-center p-4">Aggiungi nuova sede</h1>
+<form id="formsede" class="flex flex-col p-4 max-w-prose mx-auto gap-4">
+  <label for="city"> Città:</label>
+  <input name="city" id="city" class="dark:bg-neutral-800 rounded" />
+  <label for="address"> Via/Piazza:</label>
+  <input name="address" id="address" class="dark:bg-neutral-800 rounded" />
+  <button type="submitSede" class="p-2 bg-emerald-500 dark:bg-emerald-800 rounded hover:font-bold" onclick="add_sede()">
+    <span>Aggiungi servizio</span>
+  </button>
+</form>
+<script>
+    function add_sede() {
+    fetch('/api/branches/', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.token}`
+      },
+      body: JSON.stringify({
+        city: document.getElementById('city').value,
+        address: document.getElementById('address').value,
+      }),
+    })
+      .then(response => {
+        if (response.status == 201) {
+          window.location.replace('/back/services');
+        } else
+          alert("Si è verificato un errore")
+
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
+
+</script>

@@ -124,6 +124,9 @@ mongoose.connect('mongodb://0.0.0.0:27017/test').then(() => {
 	app.get('/back/newservice', (req, res) => {
 		res.render('back/newservice', {layout: 'back/main'});
 	});
+	app.get('/back/newbranch', (req, res) => {
+		res.render('back/newbranch', {layout: 'back/main'});
+	});
 	app.get('/back/rank', (req, res) => {
 		res.render('back/rank', {layout: 'back/main'});
 	});
