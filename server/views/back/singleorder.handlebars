@@ -4,7 +4,10 @@
 <h2 class="text-left text-xl"> Dati del acquirente:</h2>   
 </div>
 <div id="order" class="  font-bold   mx-auto ">
-  <h2 class="text-left text-xl">Dati del prodotto:</h2>   
+  <h2 class="text-left text-xl">Dati del prodotto:</h2>  
+</div>
+<div id="total" class=" font-bold  text-xl  mx-auto ">
+  Totale:
   </div>
 </div>
 <script>
@@ -38,6 +41,7 @@
                     </div>`;
         document.getElementById('order').appendChild(orderB);
       });
+              const total = data.products.reduce((prev, subtotal) => prev + parseFloat(subtotal.price), 0);
+			document.getElementById('total').appendChild(document.createTextNode(window.eurIT.format(total)));
     });
-
 </script>
