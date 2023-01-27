@@ -1,5 +1,5 @@
 <h1 class="font-bold text-3xl text-center p-4">Gestisci Clienti</h1>
-<div id="users" class="flex flex-col gap-4 p-4 max-w-2xl mx-auto justify-center">
+<div id="users" class="flex flex-col gap-4 p-4 max-w-2xl mx-auto font-bold justify-center">
 </div>
 <script>
 	fetch(`/api/users/`)
@@ -12,7 +12,7 @@
 								<div class="w-1/5 p-4 gap-4 ">
 									  <img class="dark:invert" src="/icons/person.svg" width="60" alt="">
 								</div>
-								<div class="w-4/5 p-4 gap-4 text-center">
+								<div class="w-3/5 p-4 gap-4 text-center">
 											<p>Nome: ${user.name} </p>
 											<p>Cognome: ${user.surname} </p>
 											<p>Email: ${user.email} </p>

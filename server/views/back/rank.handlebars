@@ -1,5 +1,5 @@
 <h1 class="text-3xl font-bold text-center">Classifiche</h1>
-<div id="scores" class="flex flex-col md:flex-row justify-between gap-4 p-4 max-w-screen-lg mx-auto">
+<div id="scores" class="flex flex-col md:flex-row justify-between gap-4 p-4 max-w-screen-lg font-bold mx-auto">
 	<div id="memory" class="hidden">
 		<h2 class="text-xl font-bold">Memory</h2>
 		<ol id="memoryScores" class="list-decimal list-inside">
@@ -33,7 +33,7 @@
 						let gameScore = document.createElement('li');
 						gameScore.innerHTML = `${score['player']} (${score['score']})         
             <button type="button" class="gap-2 rounded  bg-red-500 dark:bg-red-800 justify-center items-center w-30 hover:font-bold" onclick="deleteScore('${game}')">
-              	<img class="dark:invert" width="20" src="/icons/trash.svg" alt="">
+              	<img class="dark:invert" width="20" src="/icons/trash.svg" alt="Elimina">
             </button>`;
 						document.getElementById(`${game}Scores`).appendChild(gameScore);
 					});

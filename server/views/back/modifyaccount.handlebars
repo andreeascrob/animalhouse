@@ -13,27 +13,27 @@
 		<div class="flex flex-col basis-3/4 gap-2">
 			<h1 class="text-3xl font-bold">${data.name} ${data.surname}</h1>
 			<div class="flex flex-row gap-2">
-			<label for="name"> Nome: </label><input id="name" class=" dark:bg-neutral-800 rounded" value= "${data.name}"/>
+			<label for="name"> Nome: </label><input type="text" id="name" class=" dark:bg-neutral-800 rounded" value= "${data.name}"/>
      	</div>
 				<div class="flex flex-row gap-2">
-				<label for="surname"> Cognome: </label><input id="surname" class=" dark:bg-neutral-800 rounded" value= "${data.surname}"/>
+				<label for="surname"> Cognome: </label><input type="text" id="surname" class=" dark:bg-neutral-800 rounded" value= "${data.surname}"/>
 				</div>
 				<div class="flex flex-row gap-2">
-				<label for="email"> Email: </label><input id="email" class=" dark:bg-neutral-800 rounded" value= "${data.email}"/>
+				<label for="email"> Email: </label><input type="text" id="email" class=" dark:bg-neutral-800 rounded" value= "${data.email}"/>
 				</div>
 				<div class="flex flex-row gap-2">
-				<label for="address">Via: </label><input id="address" class=" dark:bg-neutral-800 rounded" value= "${data.address}"/>
+				<label for="address">Via: </label><input type="text" id="address" class=" dark:bg-neutral-800 rounded" value= "${data.address}"/>
 				</div>
 				<div class="flex flex-row gap-2">
-				<label for="city">Città: </label><input id="city" class=" dark:bg-neutral-800 rounded" value= "${data.city}"/>
+				<label for="city">Città: </label><input type="text" id="city" class=" dark:bg-neutral-800 rounded" value= "${data.city}"/>
 				</div>
 			<div class="flex flex-row gap-2">
 				<button type="submit" class="flex flex-row gap-2 rounded p-4 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-52 hover:font-bold">
 					<span> Aggiorna profilo <span>
 				</button>
-				<a href="/back/changepassword"
-  class="flex flex-row w-52 mx-auto gap-2 rounded p-2 bg-emerald-500 dark:bg-emerald-800 justify-center items-center hover:font-bold">
-  <img class="dark:invert" width="20" src="/icons/key.svg">
+				<a href="/back/changepassword" role="button" id="changepass"
+  class="flex flex-row w-52 mx-auto gap-2 rounded p-2 bg-emerald-500 dark:bg-emerald-800 justify-center items-center hover:font-bold"> 
+  <img class="dark:invert" width="20" src="/icons/key.svg" alt="">
   <span>Cambia password</span>
 </a>
         <button type="button" class="flex flex-row gap-2 rounded p-4 bg-red-500 dark:bg-red-800 justify-center items-center w-52 hover:font-bold" onclick="deleteAccount('${data._id}')">

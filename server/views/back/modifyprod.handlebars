@@ -11,7 +11,7 @@ product.innerHTML =`<div class="basis-1/4">
 	<div class="basis-3/4">
 		<div class="flex flex-col basis-3/4 gap-2">
 			${data.name ? ('<h1 class="text-3xl font-bold">' + data.name + '</h1>') : '<div class="animate-pulse w-full h-9 bg-neutral-300 dark:bg-neutral-800 rounded"></div>'}
-			${data.price ? ('<label for="price" class="text-lg">Prezzo</label><input id="price" class=" w-24 dark:bg-neutral-800 rounded" value="' + data.price + '"/>') : '<div class="animate-pulse w-20 h-7 bg-neutral-300 dark:bg-neutral-800 rounded"></div>'}
+			${data.price ? ('<label for="price" class="text-lg">Prezzo</label><input type="text" id="price" class=" w-24 dark:bg-neutral-800 rounded" value="' + data.price + '"/>') : '<div class="animate-pulse w-20 h-7 bg-neutral-300 dark:bg-neutral-800 rounded"></div>'}
 			<div class="flex flex-row gap-2">
 				<div class="flex flex-col">
 					<label for="available">Quantità:</label>
