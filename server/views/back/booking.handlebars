@@ -31,11 +31,11 @@
 		<label for="informazioni-${booking._id}" >Informazioni:</label><input id="informazioni-${booking._id}" class=" w-auto dark:bg-neutral-800 rounded" value= "${booking.info}"/>
 		<p id="animal-${booking._id}">Animale: </p>
 		 <p>id animale: ${booking.petId ? booking.petId : 'non prenotato'}</p>
-    <div class="flex  flex-row grap-2 justify-end p-2">
-				<button type="submit" class="flex flex-row gap-2 rounded p-2 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-30 hover:font-bold" onclick="modifybooking('${booking._id}')"">
+    <div class="flex  flex-row grap-2 justify-end p-1">
+				<button type="submit" class="flex p-2 rounded bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-30 hover:font-bold" onclick="modifybooking('${booking._id}')"">
 					<span> Aggiorna prenotazione <span>
 				</button>
-        	<button type="delete" class="flex flex-row gap-2 rounded p-2 bg-red-500 dark:bg-red-800 justify-center items-center w-30 hover:font-bold" onclick="deleteBooking('${booking._id}')">
+        	<button type="delete" class="flex p-2 rounded bg-red-500 dark:bg-red-800 justify-center items-center w-30 hover:font-bold" onclick="deleteBooking('${booking._id}')">
 					<span> Annulla prenotazione <span>
 				</button>
         </div>
