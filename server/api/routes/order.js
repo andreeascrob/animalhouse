@@ -41,6 +41,7 @@ router.post('/', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequi
 					}}
 				);
 			}
+			order.save();
 			res.status(201).send();
 		} else {
 			res.status(400).send('Empty cart');
@@ -49,5 +50,25 @@ router.post('/', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequi
 		res.status(400).send(err.message);
 	}
 });
+router.get('/', async (req, res) => {
+	const orderbuy = await Order.find().exec();
+	res.send(orderbuy);
+});
 
+router.get('/:id', async (req, res) => {
+	const orderbuy= await Order.findOne({'_id': req.params.id }).exec();
+	if (orderbuy) {
+		res.status(200).send(orderbuy);
+	} else {
+		res.status(404).send();
+	}
+});
+router.delete('/:id', async (req, res) => {
+	try {
+		await Order.findOneAndDelete({'_id': req.params.id}).exec();
+		res.status(200).send();
+	} catch (err) {
+		res.status(400).send(err.message);
+	}
+});
 module.exports = router;

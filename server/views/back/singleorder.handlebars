@@ -1,0 +1,37 @@
+<h1 class="font-bold text-3xl text-center p-4">Ordine</h1>
+<div id="singleorder" class="flex flex-col gap-2 p-4 max-w-screen-sm mx-auto ">
+</div>
+<div id="order" class="flex flex-col gap-2 p-4 max-w-screen-sm mx-auto ">
+</div>
+<script>
+  fetch('/api/order/' + window.location.pathname.match(/[^\/]+(?=\/?$)/)[0])
+    .then((response) => response.json())
+    .then((data) => {
+      let userdati = document.createElement("div");
+      userdati.innerHTML = `<div
+                class="flex  flex-row   rounded-xl shadow-md   mx-auto">
+    								<div class="w-4/5 p-4 gap-4 text-center ">
+    <h2 class="text-left">Dati del acquirente:</h2>   
+    <br>        
+    <p>Name: ${data.name}</p>
+    <p>Cognome: ${data.surnema}</p>
+    <p>Email: ${data.email}</p>
+    <p>Via/Piazza: ${data.address}</p>
+    <p>City: ${data.address}</p>
+    </div>
+    </div>
+    `
+      document.getElementById('singleorder').appendChild(userdati);
+      data.forEach(products => {
+        let orderB = document.createElement('div');
+        orderB.innerHTML = `
+    	<div class="w-4/5 p-4 gap-4 text-center "> 
+    <p>slug: ${products.slug}</p>
+    <p>Prezzo: ${products.price}</p>
+        <p>Quantità: ${products.quantity}</p>
+                    </div> `;
+        document.getElementById('order').appendChild(orderB);
+      });
+    });
+
+</script>

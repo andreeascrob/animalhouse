@@ -1,0 +1,47 @@
+<h1 class="font-bold text-3xl text-center p-4">Prodotti venduti</h1>
+<div id="order" class="flex flex-col gap-4 p-4 max-w-2xl mx-auto justify-center">
+</div>
+<script>
+  fetch('/api/order/')
+    .then(response => response.json())
+    .then(data => {
+      data.forEach(order => {
+        let orderCard = document.createElement("div");
+        orderCard.innerHTML = `<div
+                class="flex  flex-row border border-neutral-300 dark:border-neutral-800 rounded-xl  p-2 shadow-md max-w-screen-lg mx-auto">
+       <div class="w-1/5 p-4 gap-4 text-center ">
+       <p>Numero ordine: </p>
+       </div>
+        <div class="w-2/5 p-4 gap-4 text-left ">
+        <a href="/back/singleorder/${order._id}" class="hover:font-bold">${order._id}</a>
+        </div>
+        <div class="w-2/5 p-4 gap-4 text-center ">
+          <button type="button" class="gap-2 rounded  bg-red-500 dark:bg-red-800 justify-center p-4 items-center w-54 hover:font-bold" onclick="deleteOrder('${order._id}')">
+            	<span> Elimina ordine <span>
+            </button>
+        </div>
+        </div>`
+      document.getElementById('order').appendChild(orderCard);
+     });
+    });
+    	function deleteOrder(orderId) {
+		fetch('/api/order/' + orderId, {
+			method: 'DELETE',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.token}`
+			}
+		})
+			.then((response) => {
+				if (response.ok) {
+					window.location.replace('/back/e-commerce');
+				}
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
+	}
+
+
+</script>
