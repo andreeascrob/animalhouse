@@ -1,31 +1,27 @@
 <h1 class="font-bold text-3xl text-center p-4">Aggiungi nuovo servizio</h1>
 <form id="form" class="flex flex-col p-4 max-w-prose mx-auto gap-4">
-  <label for="newservice">Servizio: </label>
-  <input name="newservice" id="newservice" class="dark:bg-neutral-800 rounded"  />
+  <label for="name">Servizio: </label>
+  <input name="name" id="name" class="dark:bg-neutral-800 rounded" type="text" />
   <label for="description">Descrizione:</label>
-  <textarea rows="5" name="description" id="description" class="dark:bg-neutral-800 rounded" >
-  </textarea>
+  <textarea rows="5" name="description" id="description" class="dark:bg-neutral-800 rounded"></textarea>
   <label for="image">Immagine</label>
   <input type="file" id="image" name="image" accept="image/png, image/jpeg" />
-  <button type="submitService" class="p-2 bg-emerald-500 dark:bg-emerald-800 rounded hover:font-bold"
-    onclick="add_service()">
+  <button type="submit" class="p-2 bg-emerald-500 dark:bg-emerald-800 rounded hover:font-bold">
     <span>Aggiungi servizio</span>
   </button>
 </form>
 <script>
-  function add_service() {
+document.getElementById('form').onsubmit = add_service;
+function add_service() {
+    event.preventDefault();
+    const formData = new FormData(document.getElementById('form'));
     fetch('/api/services/', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.token}`
       },
-      body: JSON.stringify({
-        name: document.getElementById('newservice').value,
-        description: document.getElementById('description').value,
-        imageUrl: document.getElementById('image').value,
-      }),
+      body: formData
     })
       .then(response => {
         if (response.status == 201) {
