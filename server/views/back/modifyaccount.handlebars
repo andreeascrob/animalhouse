@@ -6,7 +6,7 @@
 		.then((data) => {
 			let user = document.createElement("form");
 			user.className = 'flex flex-col md:flex-row gap-4 p-4 max-w-screen-lg mx-auto'
-			user.innerHTML = `<div class="basis-1/4">
+			user.innerHTML = `<div class="basis-1/4 mx-auto justify-item-center">
 	 <img class="dark:invert" src="/icons/person.svg" width="90" alt="">
 	</div>
 	<div class="basis-3/4">
@@ -27,16 +27,16 @@
 				<div class="flex flex-row gap-2">
 				<label for="city">Città: </label><input type="text" id="city" class=" dark:bg-neutral-800 rounded" value= "${data.city}"/>
 				</div>
-			<div class="flex flex-row gap-2">
-				<button type="submit" class="flex flex-row gap-2 rounded p-4 bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-52 hover:font-bold">
+			<div class="flex flex-col md:flex-row gap-2  mx-auto justify-item-center">
+				<button type="submit" class="flex flex-row gap-2 rounded p-4 bg-emerald-500 dark:bg-emerald-800 mx-auto justify-center items-center w-52 hover:font-bold">
 					<span> Aggiorna profilo <span>
 				</button>
 				<a href="/back/changepassword" role="button" id="changepass"
-  class="flex flex-row w-52 mx-auto gap-2 rounded p-2 bg-emerald-500 dark:bg-emerald-800 justify-center items-center hover:font-bold"> 
+  class="flex flex-row w-52 mx-auto  rounded p-2 bg-emerald-500 dark:bg-emerald-800 justify-center items-center hover:font-bold"> 
   <img class="dark:invert" width="20" src="/icons/key.svg" alt="">
   <span>Cambia password</span>
 </a>
-        <button type="button" class="flex flex-row gap-2 rounded p-4 bg-red-500 dark:bg-red-800 justify-center items-center w-52 hover:font-bold" onclick="deleteAccount('${data._id}')">
+        <button type="button" class="flex flex-row gap-2 rounded p-4 mx-auto bg-red-500 dark:bg-red-800 justify-center items-center w-52 hover:font-bold" onclick="deleteAccount('${data._id}')">
 					<span> Elimina profilo <span>
 				</button>
 			</div>

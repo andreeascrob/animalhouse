@@ -6,6 +6,11 @@
 		<div class="flex flex-row gap-4">
 			<a href="/back/signin" id="signin"><img width="20" class="mr-1 dark:invert inline" src="/icons/person.svg" alt=""><span class="hidden md:inline">Accedi</span></a>
 			<button class="hidden" id="logout" onclick="delete localStorage.userId; delete localStorage.token; delete localStorage.isAdmin; window.location.reload();"><img width="20" class="dark:invert inline" src="/icons/logout.svg" alt="Esci dall'account"></button>
+			<button class="md:hidden" onclick="document.getElementById('menu').classList.toggle('hidden');document.getElementById('x').classList.toggle('hidden');document.getElementById('categories').classList.toggle('hidden')">
+				<img id="menu" width="20" class="dark:invert" src="/icons/menu.svg" alt="Apri navigazione">
+				<img id="x" width="20" class="hidden dark:invert" src="/icons/x.svg" alt="Chiudi navigazione">
+			</button>
+
 		</div>
 	</div>
 	<div id="categories" class="flex hidden md:flex flex-col md:flex-row items-center md:justify-around gap-4">

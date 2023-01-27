@@ -8,16 +8,16 @@
 			users.forEach(user => {
 				let userCard = document.createElement("div");
 				userCard.innerHTML = `<div
-                class="flex  flex-row border border-neutral-300 dark:border-neutral-800 rounded-xl shadow-md max-w-screen-lg mx-auto">
-								<div class="w-1/5 p-4 gap-4 ">
+                class="flex flex-col md:flex-row border border-neutral-300 dark:border-neutral-800 rounded-xl shadow-md max-w-screen-lg mx-auto justify-item-center">
+								<div class="md:w-1/5 p-4 mx-auto justify-item-center  ">
 									  <img class="dark:invert" src="/icons/person.svg" width="60" alt="">
 								</div>
-								<div class="w-3/5 p-4 gap-4 text-center">
+								<div class="md:w-3/5 p-4  text-center">
 											<p>Nome: ${user.name} </p>
 											<p>Cognome: ${user.surname} </p>
 											<p>Email: ${user.email} </p>
 								</div>
-								<div class="w-2/5 item-center p-8 grap-4 flex"> 
+								<div class="md:w-2/5 item-center p-8  mx-auto justify-item-center"> 
 								<a href="/back/modifyaccount/${user._id}" class="flex flex-row self-center gap-2 rounded p-1 bg-emerald-500 dark:bg-emerald-800 w-40 ">
 			<span>Gestisci account</span>
       <img class="dark:invert " src="/icons/arrow.svg" width="20" alt="">
