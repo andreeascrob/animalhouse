@@ -1,15 +1,17 @@
 <h1 class="font-bold text-3xl text-center p-4">Aggiungi nuova sede</h1>
-<form id="formsede" class="flex flex-col p-4 max-w-prose mx-auto gap-4">
+<form id="form" class="flex flex-col p-4 max-w-prose mx-auto gap-4">
   <label for="city"> Città:</label>
-  <input name="city" id="city" class="dark:bg-neutral-800 rounded" />
+  <input name="city" id="city" class="dark:bg-neutral-800 rounded" type="text" required />
   <label for="address"> Via/Piazza:</label>
-  <input name="address" id="address" class="dark:bg-neutral-800 rounded" />
-  <button type="submitSede" class="p-2 bg-emerald-500 dark:bg-emerald-800 rounded hover:font-bold" onclick="add_sede()">
-    <span>Aggiungi servizio</span>
+  <input name="address" id="address" class="dark:bg-neutral-800 rounded" type="text" required />
+  <button type="submit" class="p-2 bg-emerald-500 dark:bg-emerald-800 rounded hover:font-bold">
+    <span>Aggiungi sede</span>
   </button>
 </form>
 <script>
-    function add_sede() {
+document.getElementById('form').onsubmit = add_sede;
+function add_sede(event) {
+    event.preventDefault();
     fetch('/api/branches/', {
       method: 'POST',
       headers: {
