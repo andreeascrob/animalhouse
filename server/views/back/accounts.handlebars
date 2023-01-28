@@ -10,7 +10,7 @@
 				userCard.innerHTML = `<div
                 class="flex flex-col md:flex-row border border-neutral-300 dark:border-neutral-800 rounded-xl shadow-md max-w-screen-lg mx-auto justify-item-center">
 								<div class="md:w-1/5 p-4 mx-auto justify-item-center  ">
-									  <img class="dark:invert" src="/icons/person.svg" width="60" alt="">
+									  <img class="w-24 aspect-square object-cover rounded-full" src="${user.profileImage ?? 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'}" width="60" alt="">
 								</div>
 								<div class="md:w-3/5 p-4  text-center">
 											<p>Nome: ${user.name} </p>

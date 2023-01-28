@@ -22,6 +22,8 @@
 	<input id="address" class="dark:bg-neutral-800 rounded" type="text">
 	<label for="city">Città</label>
 	<input id="city" class="dark:bg-neutral-800 rounded" type="text">
+	<label for="image">Immagine</label>
+	<input type="file" id="image" name="image" accept="image/png, image/jpeg" />
 	<input type="submit" class="p-2 bg-emerald-500 dark:bg-emerald-800 rounded hover:font-bold" value="Aggiorna profilo">
 </form>
 <a href="/front/changepassword" class="flex flex-row w-52 mx-auto gap-2 rounded p-2 bg-emerald-500 dark:bg-emerald-800 justify-center items-center hover:font-bold">
@@ -109,20 +111,14 @@
 	}
 	function update(event) {
 		event.preventDefault();
+		const formData = new FormData(document.getElementById('form'));
 		fetch('/api/users/profile', {
 			method: 'POST',
 			headers: {
 				'Accept': 'application/json',
-				'Content-Type': 'application/json',
 				'Authorization': `Bearer ${localStorage.token}`				
 			},
-			body: JSON.stringify({
-				name: document.getElementById('name').value,
-				surname: document.getElementById('surname').value,
-				email: document.getElementById('email').value,
-				address: document.getElementById('address').value,
-				city: document.getElementById('city').value,
-			}),
+			body: formData
 		})
 			.then((response) => {
 				if (response.ok) {

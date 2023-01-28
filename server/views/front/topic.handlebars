@@ -34,6 +34,9 @@
 				.then(data => {
 					boardTopic.setAttribute('name', data.name);
 					boardTopic.setAttribute('surname', data.surname);
+					if (data.profileImage) {
+						boardTopic.setAttribute('profileimage', data.profileImage);
+					}
 				});
 			boardTopic.setAttribute('text', topic.text);
 			if (topic.imageUrl) {
@@ -49,6 +52,9 @@
 					.then(commentAuthor => {
 						boardMessage.setAttribute('name', commentAuthor.name);
 						boardMessage.setAttribute('surname', commentAuthor.surname);
+						if (commentAuthor.profileImage) {
+							boardMessage.setAttribute('profileimage', commentAuthor.profileImage);
+						}
 						if (localStorage.token) {
 							if (localStorage.userId == comment.authorId  ) {
 								let deleteButton = document.createElement('button');

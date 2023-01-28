@@ -3,7 +3,9 @@ const express = require('express');
 const router = express.Router();
 var { expressjwt: jwt } = require('express-jwt');
 const jsonwebtoken = require('jsonwebtoken');
-
+const multer  = require('multer');
+const upload = multer({ dest: 'static/uploads/' });
+const fs = require('fs');
 
 router.post('/', async (req, res) => {
 	try {
@@ -29,8 +31,15 @@ router.get('/info/:id', async (req, res) => {
 	}
 });
 
-router.patch('/info/:id', async (req, res) => {
+router.patch('/info/:id', upload.single('image'), async (req, res) => {
 	try {
+		if (req.file) {
+			req.body['profileImage'] = req.file.path.replace('static', '');
+			const user = await User.findOne({'_id': req.params.id}).exec();
+			if (!user.profileImage.startsWith('http')) {
+				fs.unlinkSync('static' + user.profileImage);
+			}
+		}
 		await User.updateOne({'_id': req.params.id}, req.body).exec();
 		res.status(202).send();
 	} catch (err) {
@@ -40,6 +49,10 @@ router.patch('/info/:id', async (req, res) => {
 
 router.delete('/info/:id', async (req, res) => {
 	try {
+		const user = await User.findOne({'_id': req.params.id}).exec();
+		if (user.profileImage && !user.profileImage.startsWith('http')) {
+			fs.unlinkSync('static' + user.profileImage);
+		}
 		await User.findOneAndDelete({'_id': req.params.id}).exec();
 		res.status(200).send();
 	} catch (err) {
@@ -98,8 +111,15 @@ router.post('/changepassword/admin', jwt({secret: jwtSecret, algorithms: ['HS256
 });
 
 
-async function postProfile(req, res, isamin){
+async function postProfile(req, res, isadmin){
 	try {
+		if (req.file) {
+			req.body['profileImage'] = req.file.path.replace('static', '');
+			const user = await User.findOne({'_id': req.auth}).exec();
+			if (user.profileImage && !user.profileImage.startsWith('http')) {
+				fs.unlinkSync('static' + user.profileImage);
+			}
+		}
 		let query = await User.updateOne(
 			{'_id': req.auth},
 			{$set: {
@@ -107,7 +127,8 @@ async function postProfile(req, res, isamin){
 				'surname': req.body.surname,
 				'email': req.body.email,
 				'address': req.body.address,
-				'city': req.body.city
+				'city': req.body.city,
+				...(req.file && {'profileImage': req.body.profileImage})
 			}}
 		);
 		if(isadmin)
@@ -118,13 +139,13 @@ async function postProfile(req, res, isamin){
 	}
 }
 
-router.post('/profile', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true},), async (req, res) => {
-	await getUser(req, res, false)
+router.post('/profile', upload.single('image'), jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true},), async (req, res) => {
+	await postProfile(req, res, false);
 });
 
 
-router.post('/profile/admin', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true},), async (req, res) => {
-	await postProfile(req, res, false) 
+router.post('/profile/admin', upload.single('image'), jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true},), async (req, res) => {
+	await postProfile(req, res, false);
 });
 
 const signin = async (req, res) => {

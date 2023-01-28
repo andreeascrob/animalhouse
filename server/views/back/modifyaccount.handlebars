@@ -7,7 +7,7 @@
 			let user = document.createElement("form");
 			user.className = 'flex flex-col md:flex-row gap-4 p-4 max-w-screen-lg mx-auto'
 			user.innerHTML = `<div class="basis-1/4 mx-auto justify-item-center">
-	 <img class="dark:invert" src="/icons/person.svg" width="90" alt="">
+		<img class="w-24 aspect-square object-cover rounded-full" src="${data.profileImage ?? 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'}" alt="">
 	</div>
 	<div class="basis-3/4">
 		<div class="flex flex-col basis-3/4 gap-2">
@@ -22,10 +22,10 @@
 				<label for="email"> Email: </label><input type="text" id="email" class=" dark:bg-neutral-800 rounded" value= "${data.email}"/>
 				</div>
 				<div class="flex flex-row gap-2">
-				<label for="address">Via: </label><input type="text" id="address" class=" dark:bg-neutral-800 rounded" value= "${data.address}"/>
+				<label for="address">Via: </label><input type="text" id="address" class=" dark:bg-neutral-800 rounded" value= "${data.address ?? ''}"/>
 				</div>
 				<div class="flex flex-row gap-2">
-				<label for="city">Città: </label><input type="text" id="city" class=" dark:bg-neutral-800 rounded" value= "${data.city}"/>
+				<label for="city">Città: </label><input type="text" id="city" class=" dark:bg-neutral-800 rounded" value= "${data.city ?? ''}"/>
 				</div>
 			<div class="flex flex-col md:flex-row gap-2  mx-auto justify-item-center">
 				<button type="submit" class="flex flex-row gap-2 rounded p-4 bg-emerald-500 dark:bg-emerald-800 mx-auto justify-center items-center w-52 hover:font-bold">
@@ -44,7 +44,8 @@
 	</div>
     `;
 			document.getElementById('account').appendChild(user);
-			user.addEventListener('submit', function () {
+			user.addEventListener('submit', function (event) {
+				event.preventDefault();
 				const name = document.getElementById('name').value
 				const surname = document.getElementById('surname').value
 				const email = document.getElementById('email').value

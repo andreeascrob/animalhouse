@@ -53,6 +53,9 @@
 							.then(data => {
 								boardTopic.setAttribute('name', data.name);
 								boardTopic.setAttribute('surname', data.surname);
+								if (data.profileImage) {
+									boardTopic.setAttribute('profileimage', data.profileImage);
+								}
 							});
 						boardTopic.setAttribute('text', topic.text);
 						if (topic.imageUrl) {
