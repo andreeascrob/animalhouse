@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Topic = require('../models/Topic');
 const express = require('express');
 const router = express.Router();
 var { expressjwt: jwt } = require('express-jwt');
@@ -53,7 +54,9 @@ router.delete('/info/:id', async (req, res) => {
 		if (user.profileImage && !user.profileImage.startsWith('http')) {
 			fs.unlinkSync('static' + user.profileImage);
 		}
+		await Topic.findOneAndDelete({'authorId': req.params.id}).exec();
 		await User.findOneAndDelete({'_id': req.params.id}).exec();
+
 		res.status(200).send();
 	} catch (err) {
 		res.status(400).send(err.message);
