@@ -54,7 +54,7 @@ router.delete('/info/:id', async (req, res) => {
 		if (user.profileImage && !user.profileImage.startsWith('http')) {
 			fs.unlinkSync('static' + user.profileImage);
 		}
-		await Topic.findDelete({'authorId': req.params.id}).exec();
+		await Topic.deleteMany({'authorId': req.params.id}).exec();
 		await User.findOneAndDelete({'_id': req.params.id}).exec();
 
 		res.status(200).send();
