@@ -6,12 +6,12 @@
 let product = document.createElement("form");
 product.className = 'flex flex-col md:flex-row gap-4 p-4 max-w-screen-lg mx-auto'
 product.innerHTML =`<div class="basis-1/4">
-		<img class="rounded-xl aspect-square w-full bg-neutral-300 dark:bg-neutral-800" src="${data.imageUrl}" alt="">
+		<img class="rounded-xl aspect-square object-contain w-full bg-neutral-300 dark:bg-neutral-800" src="${data.imageUrl}" alt="">
 	</div>
 	<div class="basis-3/4">
 		<div class="flex flex-col basis-3/4 gap-2">
 			${data.name ? ('<h1 class="text-3xl font-bold">' + data.name + '</h1>') : '<div class="animate-pulse w-full h-9 bg-neutral-300 dark:bg-neutral-800 rounded"></div>'}
-			${data.price ? ('<label for="price" class="text-lg">Prezzo</label><input type="text" id="price" class=" w-24 dark:bg-neutral-800 rounded" value="' + data.price + '"/>') : '<div class="animate-pulse w-20 h-7 bg-neutral-300 dark:bg-neutral-800 rounded"></div>'}
+			${data.price ? ('<label for="price" class="text-lg">Prezzo</label><input type="number" step="0.01" min="0" id="price" class=" w-24 dark:bg-neutral-800 rounded" value="' + data.price + '"/>') : '<div class="animate-pulse w-20 h-7 bg-neutral-300 dark:bg-neutral-800 rounded"></div>'}
 			<div class="flex flex-row gap-2">
 				<div class="flex flex-col">
 					<label for="available">Quantità:</label>

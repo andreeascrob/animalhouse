@@ -54,6 +54,12 @@ router.delete('/info/:id', async (req, res) => {
 		if (user.profileImage && !user.profileImage.startsWith('http')) {
 			fs.unlinkSync('static' + user.profileImage);
 		}
+		const topics = await Topic.find({'authorId': req.params.id}).exec();
+		topics.forEach((topic) => {
+			if (topic.imageUrl && !topic.imageUrl.startsWith('http')) {
+				fs.unlinkSync('static' + topic.imageUrl);
+			}
+		});
 		await Topic.deleteMany({'authorId': req.params.id}).exec();
 		await User.findOneAndDelete({'_id': req.params.id}).exec();
 
@@ -134,8 +140,6 @@ async function postProfile(req, res, isadmin){
 				...(req.file && {'profileImage': req.body.profileImage})
 			}}
 		);
-		if(isadmin)
-			query = query.where('isadmin').equals(true);
 		res.status(200).send();
 	} catch (err) {
 		res.status(400).send(err.message);
@@ -148,7 +152,7 @@ router.post('/profile', upload.single('image'), jwt({secret: jwtSecret, algorith
 
 
 router.post('/profile/admin', upload.single('image'), jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true},), async (req, res) => {
-	await postProfile(req, res, false);
+	await postProfile(req, res, true);
 });
 
 const signin = async (req, res) => {

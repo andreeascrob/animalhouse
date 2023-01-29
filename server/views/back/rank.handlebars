@@ -31,8 +31,8 @@
 					document.getElementById(game).classList.remove('hidden');
 					scores.forEach(score => {
 						let gameScore = document.createElement('li');
-						gameScore.innerHTML = `${score['player']} (${score['score']})         
-            <button type="button" class="gap-2 rounded  bg-red-500 dark:bg-red-800 justify-center items-center w-30 hover:font-bold" onclick="deleteScore('${game}')">
+						gameScore.innerHTML = `${score['player']} (${score['score']})
+            <button type="button" class="p-1 gap-2 rounded bg-red-500 dark:bg-red-800 justify-center items-center w-30 hover:font-bold" onclick="deleteScore('${game}')">
               	<img class="dark:invert" width="20" src="/icons/trash.svg" alt="Elimina">
             </button>`;
 						document.getElementById(`${game}Scores`).appendChild(gameScore);

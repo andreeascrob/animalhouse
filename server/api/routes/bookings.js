@@ -103,4 +103,13 @@ router.delete('/:serviceSlotId', jwt({secret: jwtSecret, algorithms: ['HS256'], 
 	}
 });
 
+router.delete('/:serviceSlotId/admin', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true}), async (req, res) => {
+	try {
+		await Branch.updateOne({'servicesSlots._id': req.params.serviceSlotId}, {'$unset': {'servicesSlots.$.petId': ''}}).exec();
+		res.status(200).send();
+	} catch (err) {
+		res.status(400).send(err.message);
+	}
+});
+
 module.exports = router;

@@ -1,6 +1,6 @@
 <h1 class="text-center text-3xl p-4">Il tuo profilo</h1>
 <form id="form" class="flex flex-col p-4 max-w-prose mx-auto gap-4">
-  <label for="email">Nome</label>
+  <label for="name">Nome</label>
   <input id="name" class="dark:bg-neutral-800 rounded" type="text" required>
   <label for="surname">Cognome</label>
   <input id="surname" class="dark:bg-neutral-800 rounded" type="text" required>
@@ -14,7 +14,7 @@
 </form>
 <a href="/back/changepassword"
   class="flex flex-row w-52 mx-auto gap-2 rounded p-2 bg-emerald-500 dark:bg-emerald-800 justify-center items-center hover:font-bold">
-  <img class="dark:invert" width="20" src="/icons/key.svg">
+  <img class="dark:invert" width="20" src="/icons/key.svg" alt="">
   <span>Cambia password</span>
 </a>
 <script>
@@ -62,17 +62,14 @@
         city: document.getElementById('city').value,
       }),
     })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success == true) {
-           alert('Profilo aggiornato')
-        } else {
-          alert(data.description)
-          window.location.href = '/back/signin';
-        }
-      })
-      .catch ((error) => {
-      console.error('Error:', error);
-    });
+		  .then((response) => {
+			  if (response.ok) {
+				  alert('Profilo aggiornato');
+				  window.location.reload();
+			  }
+		  })
+		  .catch((error) => {
+			  console.error('Error:', error);
+		  });
   }
 </script>

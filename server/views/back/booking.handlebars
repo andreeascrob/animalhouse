@@ -28,14 +28,14 @@
   <input type="datetime-local" name="dateEnd" id="dateEnd" class="dark:bg-neutral-800 rounded" required value="${booking.end.substring(0,16)}"/>
 	</div>
 	<div class="md:w-2/5 p-4">
-		<label for="informazioni-${booking._id}" >Informazioni:</label><input id="informazioni-${booking._id}" class=" w-auto dark:bg-neutral-800 rounded" value= "${booking.info}"/>
+		<label for="informazioni-${booking._id}" >Informazioni:</label><input id="informazioni-${booking._id}" class=" w-auto dark:bg-neutral-800 rounded" value= "${booking.info}" type="text" />
 		<p id="animal-${booking._id}">Animale: </p>
 		 <p>id animale: ${booking.petId ? booking.petId : 'non prenotato'}</p>
     <div class="flex flex-col md:flex-row grap-2 justify-end p-1">
-				<button type="submit" class="flex p-2 rounded bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-30 hover:font-bold" onclick="modifybooking('${booking._id}')"">
+				<button type="button" class="flex p-2 rounded bg-emerald-500 dark:bg-emerald-800 justify-center items-center w-30 hover:font-bold" onclick="modifybooking('${booking._id}')">
 					<span> Aggiorna prenotazione <span>
 				</button>
-        	<button type="delete" class="flex p-2 mt-4 md:mt-0 rounded bg-red-500 dark:bg-red-800 justify-center items-center w-30 hover:font-bold" onclick="deleteBooking('${booking._id}')">
+				<button type="button" class="flex p-2 mt-4 md:mt-0 rounded bg-red-500 dark:bg-red-800 justify-center items-center w-30 hover:font-bold ${booking.petId ? '' : 'hidden'}" onclick="deleteBooking('${booking._id}')">
 					<span> Annulla prenotazione <span>
 				</button>
         </div>
@@ -53,7 +53,7 @@
 			})
 		})
 	function deleteBooking(bookingId) {
-		fetch('/api/bookings/' + bookingId, {
+		fetch('/api/bookings/' + bookingId + '/admin', {
 			method: 'DELETE',
 			headers: {
 				'Accept': 'application/json',
@@ -63,7 +63,7 @@
 		})
 			.then((response) => {
 				if (response.ok) {
-					window.location.replace('/back/services');
+					window.location.reload();
 				}
 			})
 			.catch((error) => {
