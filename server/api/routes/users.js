@@ -4,8 +4,9 @@ const express = require('express');
 const router = express.Router();
 var { expressjwt: jwt } = require('express-jwt');
 const jsonwebtoken = require('jsonwebtoken');
+const path = require('path');
 const multer  = require('multer');
-const upload = multer({ dest: 'static/uploads/' });
+const upload = multer({ dest: path.join(__dirname, '../../static/uploads/') });
 const fs = require('fs');
 
 router.post('/', async (req, res) => {
@@ -35,10 +36,10 @@ router.get('/info/:id', async (req, res) => {
 router.patch('/info/:id', upload.single('image'), async (req, res) => {
 	try {
 		if (req.file) {
-			req.body['profileImage'] = req.file.path.replace('static', '');
+			req.body['profileImage'] = '/uploads/' + req.file.filename;
 			const user = await User.findOne({'_id': req.params.id}).exec();
-			if (!user.profileImage.startsWith('http')) {
-				fs.unlinkSync('static' + user.profileImage);
+			if (user.profileImage && !user.profileImage.startsWith('http')) {
+				fs.unlinkSync(path.join(__dirname, '../../static', user.imageUrl));
 			}
 		}
 		await User.updateOne({'_id': req.params.id}, req.body).exec();
@@ -52,12 +53,12 @@ router.delete('/info/:id', async (req, res) => {
 	try {
 		const user = await User.findOne({'_id': req.params.id}).exec();
 		if (user.profileImage && !user.profileImage.startsWith('http')) {
-			fs.unlinkSync('static' + user.profileImage);
+			fs.unlinkSync(path.join(__dirname, '../../static', user.profileImage));
 		}
 		const topics = await Topic.find({'authorId': req.params.id}).exec();
 		topics.forEach((topic) => {
 			if (topic.imageUrl && !topic.imageUrl.startsWith('http')) {
-				fs.unlinkSync('static' + topic.imageUrl);
+				fs.unlinkSync(path.join(__dirname, '../../static', topic.imageUrl));
 			}
 		});
 		await Topic.deleteMany({'authorId': req.params.id}).exec();
@@ -123,10 +124,10 @@ router.post('/changepassword/admin', jwt({secret: jwtSecret, algorithms: ['HS256
 async function postProfile(req, res, isadmin){
 	try {
 		if (req.file) {
-			req.body['profileImage'] = req.file.path.replace('static', '');
+			req.body['profileImage'] = '/uploads/' + req.file.filename;
 			const user = await User.findOne({'_id': req.auth}).exec();
 			if (user.profileImage && !user.profileImage.startsWith('http')) {
-				fs.unlinkSync('static' + user.profileImage);
+				fs.unlinkSync(path.join(__dirname, '../../static', user.profileImage));
 			}
 		}
 		let query = await User.updateOne(

@@ -4,8 +4,9 @@ const express = require('express');
 const router = express.Router();
 var { expressjwt: jwt } = require('express-jwt');
 const jsonwebtoken = require('jsonwebtoken');
+const path = require('path');
 const multer  = require('multer');
-const upload = multer({ dest: 'static/uploads/' });
+const upload = multer({ dest: path.join(__dirname, '../../static/uploads/') });
 const fs = require('fs');
 
 router.post('/', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true}), upload.single('image'), async (req, res) => {
@@ -21,7 +22,7 @@ router.post('/', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequi
 		}
 		topicData['board'] = req.body.board;
 		if (req.file) {
-			topicData['imageUrl'] = req.file.path.replace('static', '');
+			topicData['imageUrl'] = '/uploads/' + req.file.filename;
 		}
 		topicData['text'] = req.body.text;
 		const newTopic = new Topic(topicData);
@@ -69,7 +70,7 @@ router.delete('/:id', jwt({secret: jwtSecret, algorithms: ['HS256'], credentials
 		if (req.auth == topic.authorId) {
 			await Topic.findByIdAndDelete(req.params.id).exec();
 			if (topic.imageUrl) {
-				fs.unlinkSync('static' + topic.imageUrl);
+				fs.unlinkSync(path.join(__dirname, '../../static', topic.imageUrl));
 			}
 			const animal = await Animal.findOne({'_id': topic.animalId}).select('slug').exec();
 			res.status(200).send({'animalSlug': animal.slug});

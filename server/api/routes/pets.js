@@ -4,8 +4,9 @@ const express = require('express');
 const router = express.Router();
 var { expressjwt: jwt } = require('express-jwt');
 const jsonwebtoken = require('jsonwebtoken');
+const path = require('path');
 const multer  = require('multer');
-const upload = multer({ dest: 'static/uploads/' });
+const upload = multer({ dest: path.join(__dirname, '../../static/uploads/') });
 const fs = require('fs');
 
 router.post('/', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true}), upload.single('image'), async (req, res) => {
@@ -19,7 +20,7 @@ router.post('/', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequi
 		petData['birth'] = req.body.birth;
 		petData['informations'] = req.body.informations;
 		if (req.file) {
-			petData['imageUrl'] = req.file.path.replace('static', '');
+			petData['imageUrl'] = '/uploads/' + req.file.filename;
 		}
 		const newPet = new Pet(petData);
 		await newPet.save();
@@ -55,12 +56,12 @@ router.post('/:id', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRe
 			);
 			if (req.file) {
 				if (pet.imageUrl) {
-					fs.unlinkSync('static' + pet.imageUrl);
+					fs.unlinkSync(path.join(__dirname, '../../static', pet.imageUrl));
 				}
 				await Pet.updateOne(
 					{'_id': req.params.id},
 					{$set: {
-						'imageUrl': req.file.path.replace('static', '')
+						'imageUrl': '/uploads/' + req.file.filename
 					}}
 				);
 			}
@@ -92,7 +93,7 @@ router.delete('/:id', jwt({secret: jwtSecret, algorithms: ['HS256'], credentials
 		if (req.auth == pet.ownerId) {
 			await Pet.findByIdAndDelete(req.params.id).exec();
 			if (pet.imageUrl) {
-				fs.unlinkSync('static' + pet.imageUrl);
+				fs.unlinkSync(path.join(__dirname, '../../static', pet.imageUrl));
 			}
 			res.status(200).send();
 		} else {

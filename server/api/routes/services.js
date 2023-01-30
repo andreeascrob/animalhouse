@@ -1,14 +1,15 @@
 const express = require('express');
 const Service = require('../models/Service');
 const router = express.Router();
+const path = require('path');
 const multer  = require('multer');
-const upload = multer({ dest: 'static/uploads/' });
+const upload = multer({ dest: path.join(__dirname, '../../static/uploads/') });
 const fs = require('fs');
 
 router.post('/', upload.single('image'), async (req, res) => {
 	try {
 		if (req.file) {
-			req.body['imageUrl'] = req.file.path.replace('static', '');
+			req.body['imageUrl'] = '/uploads/' + req.file.filename;
 		}
 		const newService = new Service(req.body);
 		await newService.save();
@@ -40,7 +41,7 @@ router.delete('/:serviceId', async (req, res) => {
 	try {
 		const service = await Service.findOne({'_id': req.params.serviceId}).exec();
 		if (!service.imageUrl.startsWith('http')) {
-			fs.unlinkSync('static' + service.imageUrl);
+			fs.unlinkSync(path.join(__dirname, '../../static', service.imageUrl));
 		}
 		await Service.findOneAndDelete({'_id': req.params.serviceId}).exec();
 		res.status(200).send();

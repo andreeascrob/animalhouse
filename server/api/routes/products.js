@@ -2,14 +2,15 @@ const Animal = require("../models/Animal");
 const Product = require("../models/Product");
 const express = require("express");
 const router = express.Router();
+const path = require('path');
 const multer  = require('multer');
-const upload = multer({ dest: 'static/uploads/' });
+const upload = multer({ dest: path.join(__dirname, '../../static/uploads/') });
 const fs = require('fs');
 
 router.post('/', upload.single('image'), async (req, res) => {
 	try {
 		if (req.file) {
-			req.body['imageUrl'] = req.file.path.replace('static', '');
+			req.body['imageUrl'] = '/uploads/' + req.file.filename;
 		}
 		const newProduct = new Product(req.body);
 		await newProduct.save();
@@ -58,10 +59,10 @@ router.get('/:productSlug', async (req, res) => {
 router.patch('/:productSlug', upload.single('image'), async (req, res) => {
 	try {
 		if (req.file) {
-			req.body['imageUrl'] = req.file.path.replace('static', '');
+			req.body['imageUrl'] = '/uploads/' + req.file.filename;
 			const product = await Product.findOne({'slug': req.params.productSlug}).exec();
 			if (!product.imageUrl.startsWith('http')) {
-				fs.unlinkSync('static' + product.imageUrl);
+				fs.unlinkSync(path.join(__dirname, '../../static', product.imageUrl));
 			}
 		}
 		await Product.updateOne({'slug': req.params.productSlug}, req.body).exec();
@@ -75,7 +76,7 @@ router.delete('/:productSlug', async (req, res) => {
 	try {
 		const product = await Product.findOne({'slug': req.params.productSlug}).exec();
 		if (!product.imageUrl.startsWith('http')) {
-			fs.unlinkSync('static' + product.imageUrl);
+			fs.unlinkSync(path.join(__dirname, '../../static', product.imageUrl));
 		}
 		await Product.findOneAndDelete({'slug': req.params.productSlug}).exec();
 		res.status(200).send();

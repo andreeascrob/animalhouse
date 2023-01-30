@@ -11,14 +11,14 @@ global.jwtSecret = 'secret';
 
 // Suppress warning
 mongoose.set('strictQuery', false);
-mongoose.connect('mongodb://0.0.0.0:27017/test').then(() => {
+mongoose.connect('mongodb://0.0.0.0:27017/').then(() => {
 	const app = express();
 	app.use(cors());
 	app.use(express.json());
 
 	app.engine('handlebars', engine());
 	app.set('view engine', 'handlebars');
-	app.set('views', './views');
+	app.set('views', path.join(__dirname, '/views'));
 
 	app.get('/front/', (req, res) => {
 		res.render('front/home', {layout: 'front/main'});
@@ -139,9 +139,9 @@ mongoose.connect('mongodb://0.0.0.0:27017/test').then(() => {
 
 
 
-	app.use(express.static('static'));
+	app.use(express.static(path.join(__dirname, '/static')));
 	app.get('/game/game-*', (req, res) => {
-		res.sendFile(path.join(__dirname + '/static/game/index.html'));
+		res.sendFile(path.join(__dirname, '/static/game/index.html'));
 	});
 
 	app.use('/api/populate', require('./api/routes/populate.js'));
