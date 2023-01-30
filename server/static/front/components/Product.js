@@ -6,7 +6,7 @@ export class Product extends HTMLElement {
 </style>
 <div class="flex flex-col md:flex-row gap-4 p-4 max-w-screen-lg mx-auto">
 	<div class="basis-1/4">
-		<img class="rounded-xl aspect-square object-contain w-full bg-neutral-300 dark:bg-neutral-800" src="${this.getAttribute('image')}">
+		<img class="rounded-xl aspect-square object-contain w-full bg-neutral-300 dark:bg-neutral-800" src="${this.getAttribute('image')}" alt="">
 	</div>
 	<div class="basis-3/4">
 		<div class="flex flex-col basis-3/4 gap-2">
