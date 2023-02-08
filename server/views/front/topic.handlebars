@@ -24,7 +24,7 @@
 		.then((topic) => {
 			document.querySelector('h1').innerHTML = topic.title;
 			if (localStorage.token) {
-				if (localStorage.userId == topic.authorId || localStorage.isAdmin == true) {
+				if (localStorage.userId == topic.authorId || localStorage.isAdmin) {
 					document.getElementById('delete-topic').classList.remove('hidden');
 				}
 			}

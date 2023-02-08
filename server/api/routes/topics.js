@@ -1,5 +1,6 @@
 const Animal = require('../models/Animal');
 const Topic = require('../models/Topic');
+const User = require('../models/User');
 const express = require('express');
 const router = express.Router();
 var { expressjwt: jwt } = require('express-jwt');
@@ -67,7 +68,8 @@ router.get('/:id', async (req, res) => {
 router.delete('/:id', jwt({secret: jwtSecret, algorithms: ['HS256'], credentialsRequired: true}), async (req, res) => {
 	try {
 		const topic = await Topic.findOne({'_id': req.params.id}).exec();
-		if (req.auth == topic.authorId) {
+		const user = await User.findOne({'_id': req.auth}).exec();
+		if (req.auth == topic.authorId || user.isadmin) {
 			await Topic.findByIdAndDelete(req.params.id).exec();
 			if (topic.imageUrl) {
 				fs.unlinkSync(path.join(__dirname, '../../static', topic.imageUrl));
