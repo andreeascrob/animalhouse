@@ -122,11 +122,11 @@
 					let productPill = document.createElement('ah-productpill');
 					productPill.setAttribute('productname', data.name);
 					productPill.setAttribute('price', data.price);
-					productPill.setAttribute('slug', slug);
+					productPill.setAttribute('slug', data.slug);
 					productPill.setAttribute('image', data.imageUrl);
 					let subtotalPrice = document.createElement('ah-price');
 					subtotalPrice.classList = 'subtotal';
-					subtotalPrice.setAttribute('value', data.price * cart[slug]);
+					subtotalPrice.setAttribute('value', data.price * cart[data.slug]);
 					subtotal.appendChild(subtotalPrice);
 					product.appendChild(removeProduct);
 					product.appendChild(productPill);
