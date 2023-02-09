@@ -21,11 +21,11 @@
   <img class="dark:invert" src="/icons/calendar.svg" width="40" alt="">
 	</div>
 	<div class="md:w-2/5 p-4 justify-center">
-  <label for="dateStart">Data-Ora inizio</label>
-  <input type="datetime-local" name="dateStart" id="dateStart" class="dark:bg-neutral-800 rounded" required value="${booking.start.substring(0,16)}"/>
+  <label for="dateStart-${booking._id}">Data-Ora inizio</label>
+  <input type="datetime-local" name="dateStart" id="dateStart-${booking._id}" class="dark:bg-neutral-800 rounded" required value="${booking.start.substring(0,16)}"/>
 	<br>
-	<label for="dateEnd">Data-Ora fine</label>
-  <input type="datetime-local" name="dateEnd" id="dateEnd" class="dark:bg-neutral-800 rounded" required value="${booking.end.substring(0,16)}"/>
+	<label for="dateEnd-${booking._id}">Data-Ora fine</label>
+  <input type="datetime-local" name="dateEnd" id="dateEnd-${booking._id}" class="dark:bg-neutral-800 rounded" required value="${booking.end.substring(0,16)}"/>
 	</div>
 	<div class="md:w-2/5 p-4">
 		<label for="informazioni-${booking._id}" >Informazioni:</label><input id="informazioni-${booking._id}" class=" w-auto dark:bg-neutral-800 rounded" value= "${booking.info}" type="text" />
@@ -80,7 +80,9 @@
 			},
 			body: JSON.stringify(
 				{
-					info: document.getElementById("informazioni-" + servicesSlotid).value
+					info: document.getElementById("informazioni-" + servicesSlotid).value,
+					start: document.getElementById("dateStart-" + servicesSlotid).value,
+					end: document.getElementById("dateEnd-" + servicesSlotid).value,
 				}
 			),
 		})
