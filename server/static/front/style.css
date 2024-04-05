@@ -699,6 +699,10 @@ select {
   order: 9999;
 }
 
+.order-none {
+  order: 0;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -713,12 +717,40 @@ select {
   margin-right: 0.25rem;
 }
 
+.ml-2 {
+  margin-left: 0.5rem;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
 .mt-4 {
   margin-top: 1rem;
 }
 
 .mt-6 {
   margin-top: 1.5rem;
+}
+
+.ml-8 {
+  margin-left: 2rem;
+}
+
+.ml-32 {
+  margin-left: 8rem;
+}
+
+.ml-28 {
+  margin-left: 7rem;
+}
+
+.ml-24 {
+  margin-left: 6rem;
+}
+
+.ml-20 {
+  margin-left: 5rem;
 }
 
 .inline {
@@ -797,16 +829,20 @@ select {
   width: 10rem;
 }
 
+.w-2\/5 {
+  width: 40%;
+}
+
 .w-auto {
   width: auto;
 }
 
-.w-screen {
-  width: 100vw;
+.w-3\/5 {
+  width: 60%;
 }
 
-.w-2\/5 {
-  width: 40%;
+.w-screen {
+  width: 100vw;
 }
 
 .min-w-\[16rem\] {
@@ -823,6 +859,34 @@ select {
 
 .max-w-prose {
   max-width: 65ch;
+}
+
+.max-w-screen-md {
+  max-width: 768px;
+}
+
+.max-w-screen-sm {
+  max-width: 640px;
+}
+
+.max-w-xl {
+  max-width: 36rem;
+}
+
+.max-w-3xl {
+  max-width: 48rem;
+}
+
+.max-w-screen-xl {
+  max-width: 1280px;
+}
+
+.max-w-screen-2xl {
+  max-width: 1536px;
+}
+
+.flex-1 {
+  flex: 1 1 0%;
 }
 
 .shrink-0 {
@@ -1173,9 +1237,28 @@ select {
   }
 }
 
+@media (min-width: 640px) {
+  .sm\:flex-col {
+    flex-direction: column;
+  }
+}
+
 @media (min-width: 768px) {
   .md\:order-none {
     order: 0;
+  }
+
+  .md\:mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .md\:mr-2 {
+    margin-right: 0.5rem;
+  }
+
+  .md\:ml-2 {
+    margin-left: 0.5rem;
   }
 
   .md\:mt-0 {
@@ -1202,12 +1285,12 @@ select {
     width: 40%;
   }
 
-  .md\:w-1\/5 {
-    width: 20%;
-  }
-
   .md\:w-auto {
     width: auto;
+  }
+
+  .md\:w-1\/5 {
+    width: 20%;
   }
 
   .md\:max-w-xs {
@@ -1222,7 +1305,21 @@ select {
     flex-direction: row;
   }
 
+  .md\:flex-col {
+    flex-direction: column;
+  }
+
   .md\:justify-around {
     justify-content: space-around;
+  }
+
+  .md\:p-4 {
+    padding: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:flex-col {
+    flex-direction: column;
   }
 }
